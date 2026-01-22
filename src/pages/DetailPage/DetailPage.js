@@ -10,7 +10,7 @@ import DetailMaimu from "../../components/DetailMaimu/DetailMaimu";
 
 const DetailPage = () => {
   const [pasteState, setPasteState] = useState(false);
-  const { groupName, groupColor } = useParams();
+  const { groupName, groupColor, group_id } = useParams();
 
   // URL 파라미터로 받아온 값을 디코딩
   const decodedGroupName = decodeURI(groupName);

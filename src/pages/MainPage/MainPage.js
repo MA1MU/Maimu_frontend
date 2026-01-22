@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import "./MainPage.css";
 import Locker from "../../components/Locker/Locker";
 import SmallLogoImg from "../../images/SmallLogo.svg";
-import ProfileImgPomegranate from "../../images/ProfilePomegranate.svg";
+import ProfilePomegranate from "../../images/ProfilePomegranate.svg";
+import ProfileCitron from "../../images/ProfileCitron.svg";
+import ProfilePlum from "../../images/ProfilePlum.svg";
 import Modal from "../../components/Modal/Modal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import HelpIcon from "../../images/MainPage/HelpIcon.svg";
 import InformationModal from "../../components/InformationModal/InformationModal";
 import WarningModal from "../../components/WarningModal/WarningModal";
@@ -14,6 +16,9 @@ import axios from "axios";
 import api from "../../api/api";
 
 const MainPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  
   const [modalOpen, setModalOpen] = useState(false);
   const [clickedButton, setClickedButton] = useState(null);
   const [isInformationModalOpen, setIsInformationModalOpen] = useState(false);
@@ -22,9 +27,24 @@ const MainPage = () => {
   const [selectedLocker, setSelectedLocker] = useState(null);
   const [selectedLockerInfo, setSelectedLockerInfo] = useState(null); // 선택된 사물함의 정보를 저장하는 상태
   const [warningModalOpen, setWarningModalOpen] = useState(false);
-  const [lockers, setLockers] = useState(Array.from({ length: 9 }, () => ({ groupName: "", groupColor: "", group_id: null })));
+  const [lockers, setLockers] = useState(Array.from({ length: 9 }, () => ({ groupName: "", groupColor: "", group_id: null, unreadMaimuCount: 0 })));
+  const [profileIcon, setProfileIcon] = useState(null); // 사용자 프로필 아이콘 상태
 
   const access_token = localStorage.getItem("access_token");
+
+  // 프로필 아이콘을 가져오는 함수
+  const getProfileImage = (iconName) => {
+    switch (iconName) {
+      case "유자":
+        return ProfileCitron;
+      case "매실":
+        return ProfilePlum;
+      case "석류":
+        return ProfilePomegranate;
+      default:
+        return ProfilePomegranate; // 기본값
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,22 +58,46 @@ const MainPage = () => {
 
           console.log("Backend response:", response.data);
 
-          const newLockers = response.data.data.map((item) => ({
-            groupName: item.groupName,
-            groupColor: item.groupColor,
-            group_id: item.id,
+          // ResponseDTO로 감싸진 응답에서 data 배열 추출
+          const groupList = response.data.data || [];
+          
+          // GroupResponse 배열을 lockers 형식으로 변환
+          const newLockers = groupList.map((item) => ({
+            groupName: item.groupName || "",
+            groupColor: item.groupColor || "",
+            group_id: item.id || null,
+            unreadMaimuCount: item.unreadMaimuCount || 0,
           }));
 
-          // 받아온 데이터를 lockers 배열에 대체
-          for (let i = 0; i < newLockers.length; i++) {
-            lockers[i] = newLockers[i];
-          }
+          // 9개 고정 배열로 만들기 (빈 사물함으로 채우기)
+          const updatedLockers = Array.from({ length: 9 }, (_, index) => {
+            if (index < newLockers.length) {
+              return newLockers[index];
+            }
+            return { groupName: "", groupColor: "", group_id: null, unreadMaimuCount: 0 };
+          });
 
-          setLockers([...lockers]);
+          setLockers(updatedLockers);
 
         } catch (error) {
-          console.error("Error fetching data from backend:", error);
-          // 오류 처리
+          console.error('Error sending data to backend:', error);
+      
+          // 오류 처리 - ErrorResponse 구조: { code, message, method, requestURI }
+          if (error.response && error.response.data) {
+            const errorResponse = error.response.data;
+            const errorMessage = errorResponse.message || '서버 오류가 발생했습니다.';
+            
+            toast.error(errorMessage, {
+              autoClose: 3000,
+              hideProgressBar: true,
+            });
+          } else {
+            // 네트워크 오류 등
+            toast.error('서버 오류가 발생했습니다.', {
+              autoClose: 3000,
+              hideProgressBar: true,
+            });
+          }
         }
       }
     };
@@ -61,22 +105,11 @@ const MainPage = () => {
     fetchData();
   }, [access_token]);
 
-  const navigate = useNavigate();
-
-  // const checkDuplicateGroupName = (name) => {
-  //   return lockers.some((locker) => locker.groupName === name);
-  // };
-
   const addButtonClick = (groupName) => {
     if (lockers.filter((locker) => locker.groupName !== "").length >= 9) {
       toast.error("최대 9개까지 그룹을 생성할 수 있습니다.");
       return;
     }
-
-    // if (checkDuplicateGroupName(groupName)) {
-    //   toast.error("이미 존재하는 그룹명입니다.");
-    //   return;
-    // }
 
     const emptyLockerIndex = lockers.findIndex((locker) => locker.groupName === "" && locker.groupColor === "");
 
@@ -110,7 +143,8 @@ const MainPage = () => {
       const newGroup = {
         groupName: groupName,
         groupColor: groupColor,
-        group_id: group_id, 
+        group_id: group_id,
+        unreadMaimuCount: 0,
       };
 
       const updatedLockers = [...lockers];
@@ -132,7 +166,7 @@ const MainPage = () => {
     if (lockers[index].groupName !== "" && !isDeleting && !isEditing) {
       const encodedGroupName = encodeURI(lockers[index].groupName);
       const encodedGroupColor = encodeURI(lockers[index].groupColor);
-      MoveToDetailPage(encodedGroupName, encodedGroupColor);
+      MoveToDetailPage(encodedGroupName, encodedGroupColor, lockers[index].group_id);
     } else if (lockers[index].groupName !== "" && isEditing) {
       setSelectedLocker(index);
       setModalOpen(true);
@@ -162,6 +196,7 @@ const MainPage = () => {
         groupName: "",
         groupColor: "",
         group_id: null,
+        unreadMaimuCount: 0,
       };
   
       if (updatedLockers.length < 9) {
@@ -186,10 +221,10 @@ const MainPage = () => {
     navigate("/MyPage");
   };
 
-  const MoveToDetailPage = (groupName, groupColor) => {
+  const MoveToDetailPage = (groupName, groupColor, group_id) => {
     const encodedGroupName = encodeURI(groupName);
     const encodedGroupColor = encodeURI(groupColor);
-    navigate(`/DetailPage/${encodedGroupName}/${encodedGroupColor}`);
+    navigate(`/DetailPage/${encodedGroupName}/${encodedGroupColor}/${group_id}`);
   };
 
   const openInformationModal = () => setIsInformationModalOpen(true);
@@ -208,6 +243,7 @@ const MainPage = () => {
               key={index}
               GroupName={locker.groupName}
               groupColor={locker.groupColor}
+              unreadMaimuCount={locker.unreadMaimuCount}
               isEditing={isEditing}
               isDeleting={isDeleting}
               onClick={() => handleLockerClick(index)}
@@ -279,7 +315,7 @@ const MainPage = () => {
         <img
           className="ProfilePomegranate"
           alt="ProfileButton"
-          src={ProfileImgPomegranate}
+          src={getProfileImage(location.state?.focusedIcon)}
           onClick={MoveToMyPage}
         />
       </div>

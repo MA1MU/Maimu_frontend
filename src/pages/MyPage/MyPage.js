@@ -17,10 +17,7 @@ const MyPage = () => {
   const location = useLocation();
 
   const access_token = localStorage.getItem("access_token");
-
-
-
-  console.log("access_token: ", access_token)
+  // console.log("access_token: ", access_token)
 
   const [nickname, setNickname] = useState('');
   const [selectedYear, setSelectedYear] = useState(null);
@@ -30,11 +27,6 @@ const MyPage = () => {
   const [userInfo, setUserInfo] = useState(null);
   const [error, setError] = useState(null);
   const [role, setRole] = useState(null);
-
-  // const handleProfileEdit = async () => {
-
-  // };
-
   
   const headers = {
     'Authorization': `Bearer ${access_token}`
@@ -42,46 +34,62 @@ const MyPage = () => {
 
 
   const handleConfirmClick = async () => {
-    
-    const profileData = {
-      maimuName: nickname,
-      year: selectedYear?.value,
-      month: selectedMonth?.value,
-      date: selectedDay?.value,
-      maimuProfile: location.state?.focusedIcon
-    };
-
-  
-    if (access_token) {
-      try {
-        const response = await axios.post(`${api.baseUrl}/user/join`, profileData, {
-          headers: headers
-        });
-  
-        console.log('Backend response:', response.data);
-  
-        // 성공적으로 백엔드에 데이터를 보낸 후 처리할 작업
-        navigate("/MainPage"); 
         
-      } catch (error) {
-        console.error('Error sending data to backend:', error);
-  
-        // 오류 처리
-        if (error.response && error.response.status === 409) {
-          // 닉네임 중복 오류
-          toast.error('이미 존재하는 닉네임입니다.', {
-            autoClose: 3000,
-            hideProgressBar: true,
-          });
-        } else {
-          // 기타 오류
-          toast.error('서버 오류가 발생했습니다.', {
-            autoClose: 3000,
-            hideProgressBar: true,
-          });
-    }
-  }
-}
+        const profileData = {
+          maimuProfile: location.state?.focusedIcon,
+          nickName: nickname,
+          year: selectedYear?.value,
+          month: selectedMonth?.value,
+          date: selectedDay?.value
+        };
+
+      
+        if (access_token) {
+          try {
+            const response = await axios.post(`${api.baseUrl}/v1/api/member/join`, profileData, {
+              headers: headers,
+              withCredentials: true // 쿠키를 받기 위한 설정
+            });
+      
+            console.log('Backend response:', response.data);
+            
+            // 헤더에서 accessToken 추출 (헤더 이름은 소문자로 변환됨)
+            const newAccessToken = response.headers['accesstoken'] || response.headers['accessToken'];
+            
+            if (newAccessToken) {
+              // 새로운 accessToken을 localStorage에 저장
+              localStorage.setItem('access_token', newAccessToken);
+              console.log('New accessToken saved:', newAccessToken);
+            }
+            
+            // refreshToken은 httpOnly 쿠키로 자동 저장되므로 별도 처리 불필요
+            // 브라우저가 자동으로 쿠키를 저장하고 이후 요청 시 자동으로 전송함
+            
+            // 성공적으로 백엔드에 데이터를 보낸 후 처리할 작업
+            const iconToPass = location.state?.focusedIcon;
+            navigate("/MainPage", { state: { focusedIcon: iconToPass } }); 
+            
+          } catch (error) {
+            console.error('Error sending data to backend:', error);
+      
+            // 오류 처리 - ErrorResponse 구조: { code, message, method, requestURI }
+            if (error.response && error.response.data) {
+              const errorResponse = error.response.data;
+              const errorMessage = errorResponse.message || '서버 오류가 발생했습니다.';
+              
+              toast.error(errorMessage, {
+                autoClose: 3000,
+                hideProgressBar: true,
+              });
+            } else {
+              // 네트워크 오류 등
+              toast.error('서버 오류가 발생했습니다.', {
+                autoClose: 3000,
+                hideProgressBar: true,
+              });
+            }
+          }
+        }
   };
 
   useEffect(() => {

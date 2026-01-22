@@ -66,3 +66,21 @@
   position: relative;
   
 }
+
+.UnreadBadge {
+  position: relative;
+  top: -227px;
+  right: -87px;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  background-color: #f33aa0;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: Pretendard;
+  z-index: 5;
+}

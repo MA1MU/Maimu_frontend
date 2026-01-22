@@ -19,12 +19,7 @@ const ProfileEdit = () => {
   const [iconPosition, setIconPosition] = useState({ top: 0, left: 0 });
   const [bubbleImage, setBubbleImage] = useState(SpeechBubble);
 
-
-  const access_token = localStorage.getItem("access_token");
-
-
-  console.log("access_token: ", access_token)
-  
+  const temp_token = localStorage.getItem("access_token");
 
   const navigate = useNavigate();
 

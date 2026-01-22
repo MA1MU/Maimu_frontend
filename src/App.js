@@ -31,7 +31,7 @@ const App = () => {
           <Routes>
             <Route path="/" exact element={<StartPage />} />
             <Route path="/MainPage" element={<MainPage />}></Route>
-            <Route path="/DetailPage/:groupName/:groupColor" element={<DetailPage />} />
+            <Route path="/DetailPage/:groupName/:groupColor/:group_id" element={<DetailPage />} />
             <Route path="/LoadingPage" element={<LoadingPage />}></Route>
             <Route path="/CheckTaste" element={<CheckTaste />}></Route>
             <Route path="/CheckNote" element={<CheckNote />}></Route>

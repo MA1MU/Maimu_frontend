@@ -1,66 +1,41 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'; 
-import { useNavigate } from 'react-router-dom';
-import api from '../../api/api'
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const LoginHandeler = () => {
   const navigate = useNavigate();
-  let params = new URL(window.location.href).searchParams;
-  let access_token = params.get('accessToken');
-  const [username, setUsername] = useState('');
-  const [role, setRole] = useState('');
-  const [loading, setLoading] = useState(true);
-
-  console.log('access_token: ', access_token);
-  localStorage.setItem('access_token', access_token);
+  const {search} = useLocation();
 
   useEffect(() => {
-    const fetchData = async () => {
-      if (access_token) {
-        try {
-          const response = await axios.get(`${api.baseUrl}/user/validate`, {
-            headers: {
-              Authorization: `Bearer ${access_token}`,
-            },
-          });
-
-          console.log('Backend response:', response.data);
-          const { username, role } = response.data;
-          setUsername(username);
-          setRole(role);
-          setLoading(false);
-          // 성공적으로 백엔드에 데이터를 보낸 후 처리할 작업
-          // navigate("/MainPage");
-        } catch (error) {
-          console.error('Error sending data to backend:', error);
-          // 오류 처리
-        }
-      }
-    };
-
-    fetchData();
-  }, [access_token]);
-
-  // role에 따른 페이지 이동 함수
-  const handleRoleRedirect = () => {
-    switch (role) {
-      case 'ROLE_GUEST':
-        navigate('/ProfileEdit');
-        break;
-      case 'ROLE_USER':
-        navigate('/MainPage');
-        break;
-      default:
-        navigate('/LoginHandler');
+    // 1. URL에서 쿼리 파라미터를 읽어옵니다.
+    const params = new URLSearchParams(search);
+    const accessToken = params.get('accessToken');
+    const tempToken = params.get('tempToken');
+    // 2. 토큰 존재 여부에 따른 분기 처리
+    if (tempToken) {
+      // [시나리오 1] 신규 회원 (PREMEMBER)
+      console.log('신규 회원: 프로필 설정이 필요합니다.');
+      localStorage.setItem('access_token', tempToken); // 프로필 저장 API 호출 시 사용할 토큰
+      
+      // 주소창 세탁 후 이동
+      window.history.replaceState({}, null, window.location.pathname);
+      navigate('/ProfileEdit', { replace: true });
+    } 
+    else if (accessToken) {
+      // [시나리오 2] 기존 회원 (MEMBER)
+      console.log('기존 회원: 메인 페이지로 이동합니다.');
+      localStorage.setItem('access_token', accessToken); // 이후 모든 API 호출 헤더에 사용
+      
+      // 주소창 세탁 후 이동
+      window.history.replaceState({}, null, window.location.pathname);
+      navigate('/MainPage', { replace: true });
+    } 
+    else {
+      // 토큰이 없는 부적절한 접근
+      console.error('인증 정보가 없습니다.');
+      navigate('/', { replace: true });
     }
-  };
+  }, [search, navigate]);
 
-  useEffect(() => {
-    // role 상태가 변경될 때마다 페이지 이동 처리
-    if (!loading && role) {
-      handleRoleRedirect();
-    }
-  }, [loading, role]);
 
   return (
     <div className="LoginHandeler">
