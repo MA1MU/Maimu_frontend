@@ -1,10 +1,28 @@
 .LoadingPage {
   width: 100%;
+}
+
+.CitronBackground {
   background: linear-gradient(
     180deg,
-    #fee4de 3.37%,
-    #fcedde 18.57%,
-    #fcfcfc 42.08%
+    #fffac8 0%,
+    rgba(255, 255, 255, 0) 35.06%
+  );
+}
+
+.PlumBackground {
+  background: linear-gradient(
+    180deg,
+    #eeffbd 0%,
+    rgba(255, 255, 255, 0) 35.06%
+  );
+}
+
+.PomegranateBackground {
+  background: linear-gradient(
+    180deg,
+    #ffecf1 0%,
+    rgba(255, 255, 255, 0) 35.06%
   );
 }
 

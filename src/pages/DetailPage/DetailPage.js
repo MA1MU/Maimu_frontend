@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { PasteLinkAlert } from "../../components/PasteLinkAlert/PasteLinkAlert";
+import axios from "axios";
+import api from "../../api/api";
 
 import "./DetailPage.css";
 import "../../components/PasteLinkAlert/PasteLinkAlert.css";
@@ -11,10 +13,117 @@ import DetailMaimu from "../../components/DetailMaimu/DetailMaimu";
 const DetailPage = () => {
   const [pasteState, setPasteState] = useState(false);
   const { groupName, groupColor, group_id } = useParams();
+  
+  // 마이무 목록 상태
+  const [maimuList, setMaimuList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  
+  const observerTarget = useRef(null);
+  const access_token = localStorage.getItem("access_token");
+  const groupId = group_id ? Number(group_id) : null;
 
   // URL 파라미터로 받아온 값을 디코딩
   const decodedGroupName = decodeURI(groupName);
   const decodedGroupColor = decodeURI(groupColor);
+
+  // 백엔드에서 마이무 목록 가져오기
+  const fetchMaimuList = useCallback(async (page = 0, append = false) => {
+    if (!groupId || !access_token) {
+      return;
+    }
+
+    // 이미 로딩 중이면 중복 요청 방지
+    if (isLoading) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`${api.baseUrl}/v1/api/maimu/${groupId}/all`, {
+        params: { page },
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
+      });
+
+      console.log("백엔드 응답:", response.data);
+      
+      // PageMaimuResponse 구조: { data, currentPage, totalPage }
+      const { data, currentPage: responseCurrentPage, totalPage: responseTotalPage } = response.data;
+      
+      console.log("마이무 목록:", data);
+      console.log("현재 페이지:", responseCurrentPage);
+      console.log("전체 페이지:", responseTotalPage);
+      
+      if (append) {
+        // 기존 목록에 추가 (중복 제거)
+        setMaimuList((prevList) => {
+          const existingIds = new Set(prevList.map(item => item.maimuId));
+          const newItems = (data || []).filter(item => !existingIds.has(item.maimuId));
+          return [...prevList, ...newItems];
+        });
+      } else {
+        // 새로 설정
+        setMaimuList(data || []);
+      }
+      
+      setCurrentPage(responseCurrentPage);
+      setTotalPage(responseTotalPage);
+      setHasMore(responseCurrentPage < responseTotalPage - 1);
+      
+    } catch (error) {
+      console.error("마이무 목록 가져오기 실패:", error);
+      if (error.response) {
+        console.error("에러 응답:", error.response.data);
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, [groupId, access_token, isLoading]);
+
+  // 초기 마이무 목록 로드
+  useEffect(() => {
+    if (groupId && access_token) {
+      setMaimuList([]);
+      setCurrentPage(0);
+      setHasMore(true);
+      fetchMaimuList(0, false);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [groupId, access_token]);
+
+  // 무한 스크롤을 위한 Intersection Observer
+  useEffect(() => {
+    if (!hasMore || isLoading) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && hasMore && !isLoading) {
+          const nextPage = currentPage + 1;
+          if (nextPage < totalPage) {
+            fetchMaimuList(nextPage, true);
+          }
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+    }
+
+    return () => {
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+      }
+    };
+  }, [hasMore, isLoading, currentPage, totalPage, fetchMaimuList]);
 
   const getBackgroundColor = () => {
     switch (decodedGroupColor) {
@@ -32,24 +141,28 @@ const DetailPage = () => {
   return (
     <div className="DetailPage" style={{ background: getBackgroundColor() }}>
       <div className="JustifyCenter">
-        <div className="DetailPageContent">
-          <img className="SmallLogo" alt="" src={SmallLogoImg} />
-          <div className="GroupName">{decodedGroupName}</div>
-          <div className="DetailMaimu">
-            <DetailMaimu />
-            <DetailMaimu />
-            <DetailMaimu />
-            <DetailMaimu />
+        <div className="DetailPageScroll">
+          <div className="DetailPageContent">
+            <img className="SmallLogo" alt="" src={SmallLogoImg} />
+            <div className="GroupName">{decodedGroupName}</div>
+            <div className="DetailMaimu">
+              {maimuList.map((maimu) => (
+                <DetailMaimu key={maimu.maimuId} maimu={maimu} />
+              ))}
+              {/* 무한 스크롤을 위한 관찰 대상 */}
+              {hasMore && (
+                <div ref={observerTarget} style={{ width: "100%", height: "20px", gridColumn: "1 / -1" }}>
+                  {isLoading && <div style={{ textAlign: "center", padding: "10px" }}>로딩 중...</div>}
+                </div>
+              )}
+            </div>
+            {pasteState && <PasteLinkAlert setPasteState={setPasteState} />}
           </div>
-          {pasteState && <PasteLinkAlert setPasteState={setPasteState} />}
         </div>
-        <img
-          className="PasteLink"
-          alt="PasteLink"
-          src={PasteLink}
-          onClick={() => setPasteState(true)}
-        />
       </div>
+      <img className="PasteLink" alt="PasteLink" src={PasteLink}
+              onClick={() => setPasteState(true)}
+            />
     </div>
   );
 };

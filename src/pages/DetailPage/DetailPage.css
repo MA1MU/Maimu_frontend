@@ -1,5 +1,15 @@
 .DetailPage {
   width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.DetailPageScroll {
+  width: 100%;
+  height: 100%;
+  max-height: 844px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .DetailPageContent {
@@ -12,7 +22,7 @@
 .DetailMaimu {
   display: grid;
   grid-template-columns: repeat(3, 94px);
-  grid-template-rows: repeat(6, 58px);
+  grid-auto-rows: 58px;
   gap: 27px;
   align-items: center;
   justify-content: center;
@@ -25,9 +35,14 @@
 
 .DetailPage .PasteLink {
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.15));
-  bottom: 607px;
-  left: 137px;
-  position: relative;
+  position: fixed;
+  /* width: 62px; */
+  height: 62px;
+  top: 63px;
+  left: 50%;
+  margin-left: 100px;
+  cursor: pointer;
+  z-index: 10;
 }
 
 .DetailPage .GroupName {

@@ -32,19 +32,23 @@ const MainPage = () => {
 
   const access_token = localStorage.getItem("access_token");
 
-  // 프로필 아이콘을 가져오는 함수
+  // 프로필 아이콘과 배경 클래스를 가져오는 함수
   const getProfileImage = (iconName) => {
     switch (iconName) {
       case "유자":
-        return ProfileCitron;
+        return { image: ProfileCitron, backgroundClass: "CitronBackground" };
       case "매실":
-        return ProfilePlum;
+        return { image: ProfilePlum, backgroundClass: "PlumBackground" };
       case "석류":
-        return ProfilePomegranate;
+        return { image: ProfilePomegranate, backgroundClass: "PomegranateBackground" };
       default:
-        return ProfilePomegranate; // 기본값
+        return { image: ProfilePomegranate, backgroundClass: "PomegranateBackground" }; // 기본값
     }
   };
+
+  // location.state에서 focusedIcon 가져오기
+  const focusedIcon = location.state?.focusedIcon;
+  const profileInfo = getProfileImage(focusedIcon);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -231,7 +235,7 @@ const MainPage = () => {
   const closeInformationModal = () => setIsInformationModalOpen(false);
 
   return (
-    <div className="MainPage">
+    <div className={`MainPage ${profileInfo?.backgroundClass || ""}`}>
       <div className="JustifyCenter">
         <ToastContainer />
 
@@ -315,7 +319,7 @@ const MainPage = () => {
         <img
           className="ProfilePomegranate"
           alt="ProfileButton"
-          src={getProfileImage(location.state?.focusedIcon)}
+          src={profileInfo?.image || ProfilePomegranate}
           onClick={MoveToMyPage}
         />
       </div>

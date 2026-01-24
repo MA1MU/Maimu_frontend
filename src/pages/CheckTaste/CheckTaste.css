@@ -1,11 +1,34 @@
-.CheckTaste {
+.LoadingPage {
   width: 100%;
+}
+
+.CheckTaste .PomegranateBackground{
   background: linear-gradient(
     180deg,
     #facccc 0%,
     rgba(255, 255, 255, 0) 37.96%,
     rgba(252, 252, 252, 0.36) 78.23%,
     #fce5e5 96%
+  );
+}
+
+.CheckTaste .CitronBackground {
+  background: linear-gradient(
+    180deg,
+    #fdf7c8 0%,
+    rgba(255, 255, 255, 0) 37.96%,
+    rgba(252, 252, 252, 0.36) 78.23%,
+    #fcf7c9 96%
+  );
+}
+
+.CheckTaste .PlumBackground {
+  background: linear-gradient(
+    180deg,
+    #dffab6 0%,
+    rgba(255, 255, 255, 0) 37.96%,
+    rgba(252, 252, 252, 0.36) 78.23%,
+    #dffab8 96%
   );
 }
 

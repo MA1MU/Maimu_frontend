@@ -7,6 +7,30 @@
   );
 }
 
+.CitronBackground {
+  background: linear-gradient(
+    180deg,
+    #fffac8 0%,
+    rgba(255, 255, 255, 0) 35.06%
+  );
+}
+
+.PlumBackground {
+  background: linear-gradient(
+    180deg,
+    #eeffbd 0%,
+    rgba(255, 255, 255, 0) 35.06%
+  );
+}
+
+.PomegranateBackground {
+  background: linear-gradient(
+    180deg,
+    #ffecf1 0%,
+    rgba(255, 255, 255, 0) 35.06%
+  );
+}
+
 .LockerContainer {
   display: grid;
   grid-template-columns: 117px 117px 117px;
