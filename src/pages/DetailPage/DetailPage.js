@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "react-router-dom";
 import { PasteLinkAlert } from "../../components/PasteLinkAlert/PasteLinkAlert";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import api from "../../api/api";
 
@@ -75,10 +77,24 @@ const DetailPage = () => {
       setHasMore(responseCurrentPage < responseTotalPage - 1);
       
     } catch (error) {
-      console.error("마이무 목록 가져오기 실패:", error);
-      if (error.response) {
-        console.error("에러 응답:", error.response.data);
-      }
+      console.error('Error sending data to backend:', error);
+      
+          // 오류 처리 - ErrorResponse 구조: { code, message, method, requestURI }
+          if (error.response && error.response.data) {
+            const errorResponse = error.response.data;
+            const errorMessage = errorResponse.message || '서버 오류가 발생했습니다.';
+            
+            toast.error(errorMessage, {
+              autoClose: 3000,
+              hideProgressBar: true,
+            });
+          } else {
+            // 네트워크 오류 등
+            toast.error('서버 오류가 발생했습니다.', {
+              autoClose: 3000,
+              hideProgressBar: true,
+            });
+          }
     } finally {
       setIsLoading(false);
     }
@@ -147,7 +163,7 @@ const DetailPage = () => {
             <div className="GroupName">{decodedGroupName}</div>
             <div className="DetailMaimu">
               {maimuList.map((maimu) => (
-                <DetailMaimu key={maimu.maimuId} maimu={maimu} />
+                <DetailMaimu maimuId={maimu.maimuId} maimuColor={maimu.maimuColor} groupName={groupName} groupColor={groupColor} group_id={group_id} />
               ))}
               {/* 무한 스크롤을 위한 관찰 대상 */}
               {hasMore && (

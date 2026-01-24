@@ -1,8 +1,8 @@
-.LoadingPage {
+.CheckTaste {
   width: 100%;
 }
 
-.CheckTaste .PomegranateBackground{
+.CheckTaste.PomegranateBackground{
   background: linear-gradient(
     180deg,
     #facccc 0%,
@@ -12,7 +12,7 @@
   );
 }
 
-.CheckTaste .CitronBackground {
+.CheckTaste.CitronBackground {
   background: linear-gradient(
     180deg,
     #fdf7c8 0%,
@@ -22,7 +22,7 @@
   );
 }
 
-.CheckTaste .PlumBackground {
+.CheckTaste.PlumBackground {
   background: linear-gradient(
     180deg,
     #dffab6 0%,
@@ -101,3 +101,16 @@
   line-height: 22px; /* 137.5% */
   letter-spacing: -0.408px;
 }
+
+.CheckTaste_Button.PomegranateButton {
+  background: #fbdada;
+}
+
+.CheckTaste_Button.CitronButton {
+  background: #feffc2;
+}
+
+.CheckTaste_Button.PlumButton {
+  background: #e5fbc5;
+}
+

@@ -7,11 +7,11 @@ import RedMaimu from "../../images/DetailPage/RedMaimu.svg";
 import YellowMaimu from "../../images/DetailPage/YellowMaimu.svg";
 import GreenMaimu from "../../images/DetailPage/GreenMaimu.svg";
 
-const DetailMaimu = ({ maimu }) => {
+const DetailMaimu = ({ maimuId, maimuColor, groupName, groupColor, group_id }) => {
   const navigate = useNavigate();
   
   const navigateToLoadingPage = () => {
-    navigate("/LoadingPage", { state: { maimu } });
+    navigate("/LoadingPage", { state: { maimuId, maimuColor, groupName, groupColor, group_id } });
   };
 
   return (

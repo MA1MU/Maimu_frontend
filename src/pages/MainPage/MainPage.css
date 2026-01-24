@@ -7,7 +7,7 @@
   );
 }
 
-.CitronBackground {
+.MainPage.CitronBackground {
   background: linear-gradient(
     180deg,
     #fffac8 0%,
@@ -15,7 +15,7 @@
   );
 }
 
-.PlumBackground {
+.MainPage.PlumBackground {
   background: linear-gradient(
     180deg,
     #eeffbd 0%,
@@ -23,7 +23,7 @@
   );
 }
 
-.PomegranateBackground {
+.MainPage.PomegranateBackground {
   background: linear-gradient(
     180deg,
     #ffecf1 0%,

@@ -61,13 +61,24 @@ const Modal = ({ isOpen, onClose, clickedButton, onSave, locker, lockers }) => {
     
             onSave(newGroup.groupName, newGroup.groupColor, newGroup.group_id);
           } catch (error) {
-            console.error("Error adding new group:", error);
-        
-            // if (checkDuplicateGroupName(groupName)) {
-            //   toast.error("이미 존재하는 그룹명입니다.");
-            // } else {
-              toast.error("그룹 추가 중에 오류가 발생했습니다.");
-            // }
+            console.error('Error sending data to backend:', error);
+      
+            // 오류 처리 - ErrorResponse 구조: { code, message, method, requestURI }
+            if (error.response && error.response.data) {
+              const errorResponse = error.response.data;
+              const errorMessage = errorResponse.message || '서버 오류가 발생했습니다.';
+              
+              toast.error(errorMessage, {
+                autoClose: 3000,
+                hideProgressBar: true,
+              });
+            } else {
+              // 네트워크 오류 등
+              toast.error('서버 오류가 발생했습니다.', {
+                autoClose: 3000,
+                hideProgressBar: true,
+              });
+            }
           }
           break;
 
@@ -102,7 +113,24 @@ const Modal = ({ isOpen, onClose, clickedButton, onSave, locker, lockers }) => {
           break;
       }
     } catch (error) {
-      console.error('Error saving group:', error);
+      console.error('Error sending data to backend:', error);
+      
+          // 오류 처리 - ErrorResponse 구조: { code, message, method, requestURI }
+          if (error.response && error.response.data) {
+            const errorResponse = error.response.data;
+            const errorMessage = errorResponse.message || '서버 오류가 발생했습니다.';
+            
+            toast.error(errorMessage, {
+              autoClose: 3000,
+              hideProgressBar: true,
+            });
+          } else {
+            // 네트워크 오류 등
+            toast.error('서버 오류가 발생했습니다.', {
+              autoClose: 3000,
+              hideProgressBar: true,
+            });
+          }
     }
 
     onClose(); // 모달 닫기

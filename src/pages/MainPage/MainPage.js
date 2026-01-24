@@ -28,7 +28,7 @@ const MainPage = () => {
   const [selectedLockerInfo, setSelectedLockerInfo] = useState(null); // 선택된 사물함의 정보를 저장하는 상태
   const [warningModalOpen, setWarningModalOpen] = useState(false);
   const [lockers, setLockers] = useState(Array.from({ length: 9 }, () => ({ groupName: "", groupColor: "", group_id: null, unreadMaimuCount: 0 })));
-  const [profileIcon, setProfileIcon] = useState(null); // 사용자 프로필 아이콘 상태
+  const [profileInfo, setProfileInfo] = useState(null); // 사용자 프로필 아이콘 상태
 
   const access_token = localStorage.getItem("access_token");
 
@@ -48,7 +48,6 @@ const MainPage = () => {
 
   // location.state에서 focusedIcon 가져오기
   const focusedIcon = location.state?.focusedIcon;
-  const profileInfo = getProfileImage(focusedIcon);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -61,7 +60,7 @@ const MainPage = () => {
           });
 
           console.log("Backend response:", response.data);
-
+          setProfileInfo(response.data.maimuProfile);
           // ResponseDTO로 감싸진 응답에서 data 배열 추출
           const groupList = response.data.data || [];
           
@@ -214,8 +213,24 @@ const MainPage = () => {
       setWarningModalOpen(false);
       setIsDeleting(false);
     } catch (error) {
-      console.error("Error deleting group:", error);
-      toast.error("그룹을 삭제하는 데 문제가 발생했습니다.");
+      console.error('Error sending data to backend:', error);
+      
+          // 오류 처리 - ErrorResponse 구조: { code, message, method, requestURI }
+          if (error.response && error.response.data) {
+            const errorResponse = error.response.data;
+            const errorMessage = errorResponse.message || '서버 오류가 발생했습니다.';
+            
+            toast.error(errorMessage, {
+              autoClose: 3000,
+              hideProgressBar: true,
+            });
+          } else {
+            // 네트워크 오류 등
+            toast.error('서버 오류가 발생했습니다.', {
+              autoClose: 3000,
+              hideProgressBar: true,
+            });
+          }
     }
   };
   
@@ -235,7 +250,7 @@ const MainPage = () => {
   const closeInformationModal = () => setIsInformationModalOpen(false);
 
   return (
-    <div className={`MainPage ${profileInfo?.backgroundClass || ""}`}>
+    <div className={`MainPage ${getProfileImage(profileInfo)?.backgroundClass || ""}`}>
       <div className="JustifyCenter">
         <ToastContainer />
 
@@ -319,7 +334,7 @@ const MainPage = () => {
         <img
           className="ProfilePomegranate"
           alt="ProfileButton"
-          src={profileInfo?.image || ProfilePomegranate}
+          src={getProfileImage(profileInfo)?.image || ProfilePomegranate}
           onClick={MoveToMyPage}
         />
       </div>

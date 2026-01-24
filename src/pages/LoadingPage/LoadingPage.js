@@ -12,18 +12,22 @@ import ThreeBubbles from "../../images/LoadingPage/ThreeBubbles.svg";
 const LoadingPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const maimu = location.state?.maimu;
+  const maimuId = location.state?.maimuId;
+  const maimuColor = location.state?.maimuColor;
+  const groupName = location.state?.groupName;
+  const groupColor = location.state?.groupColor;
+  const group_id = location.state?.group_id;
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/CheckTaste", { state: { maimu } }); // CheckTaste 페이지로 이동
+      navigate("/CheckTaste", { state: { maimuId, maimuColor, groupName, groupColor, group_id } }); // CheckTaste 페이지로 이동
     }, 2000); // 2초 후에 이동
 
     return () => clearTimeout(timer); // 타이머 해제
   }, [navigate]);
 
   const getBackgroundClass = () => {
-    switch (maimu?.maimuColor) {
+    switch (maimuColor) {
       case "RED":
         return "PomegranateBackground";
       case "YELLOW":
@@ -36,7 +40,7 @@ const LoadingPage = () => {
   };
 
   const getMaimuImage = () => {
-    switch (maimu?.maimuColor) {
+    switch (maimuColor) {
       case "RED":
         return RedMaimu;
       case "YELLOW":

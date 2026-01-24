@@ -2,7 +2,7 @@
   width: 100%;
 }
 
-.CitronBackground {
+.LoadingPage.CitronBackground {
   background: linear-gradient(
     180deg,
     #fffac8 0%,
@@ -10,7 +10,7 @@
   );
 }
 
-.PlumBackground {
+.LoadingPage.PlumBackground {
   background: linear-gradient(
     180deg,
     #eeffbd 0%,
@@ -18,7 +18,7 @@
   );
 }
 
-.PomegranateBackground {
+.LoadingPage.PomegranateBackground {
   background: linear-gradient(
     180deg,
     #ffecf1 0%,
