@@ -163,7 +163,8 @@ const DetailPage = () => {
             <div className="GroupName">{decodedGroupName}</div>
             <div className="DetailMaimu">
               {maimuList.map((maimu) => (
-                <DetailMaimu maimuId={maimu.maimuId} maimuColor={maimu.maimuColor} groupName={groupName} groupColor={groupColor} group_id={group_id} />
+                <DetailMaimu maimuId={maimu.maimuId} maimuColor={maimu.maimuColor} sugarContent={maimu.sugarContent} 
+                groupName={groupName} groupColor={groupColor} group_id={group_id} />
               ))}
               {/* 무한 스크롤을 위한 관찰 대상 */}
               {hasMore && (

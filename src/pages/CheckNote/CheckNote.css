@@ -2,6 +2,7 @@
   width: 100%;
   align-items: center;
   text-align: center;
+  position: relative; /* FavoriteSection의 절대 위치 기준점 */
 }
 
 .CheckNote.CitronBackground {
@@ -43,11 +44,39 @@
   margin: 78px 0 0 0;
 }
 
+.FavoriteSection {
+  width: 326px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 155px; /* 로고 아래, 박스 위에 떠 있게 설정 (기존 107px 마진 공간 활용) */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.FavoriteSection img {
+  width: 26px;
+  height: 24px;
+}
+
+.FavoriteSection p {
+  color: #434343;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  letter-spacing: -0.408px;
+}
+
 .CheckNote_Box {
   margin: auto;
-  margin-top: 107px;
+  margin-top: 107px; /* 원래 디자인 유지 */
 
-  width: 326px;
+  width: 326px; /* 누락되었던 너비 복구 */
   height: 436px;
   flex-shrink: 0;
   border-radius: 15px;

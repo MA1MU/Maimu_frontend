@@ -14,13 +14,14 @@ const LoadingPage = () => {
   const location = useLocation();
   const maimuId = location.state?.maimuId;
   const maimuColor = location.state?.maimuColor;
+  const sugarContent = location.state?.sugarContent;
   const groupName = location.state?.groupName;
   const groupColor = location.state?.groupColor;
   const group_id = location.state?.group_id;
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigate("/CheckTaste", { state: { maimuId, maimuColor, groupName, groupColor, group_id } }); // CheckTaste 페이지로 이동
+      navigate("/CheckTaste", { state: { maimuId, maimuColor, sugarContent, groupName, groupColor, group_id } }); // CheckTaste 페이지로 이동
     }, 2000); // 2초 후에 이동
 
     return () => clearTimeout(timer); // 타이머 해제

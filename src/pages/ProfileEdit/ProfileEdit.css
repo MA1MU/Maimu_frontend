@@ -1,6 +1,6 @@
 .ProfileEdit {
   width: 100%;
-  background: linear-gradient(0deg, #ffd2dc 0%, rgba(255, 247, 249, 0.58) 100%);
+  background: linear-gradient(0deg, #121212);
 }
 
 .JustifyContainer {
@@ -50,7 +50,7 @@
 }
 
 .IconName {
-  color: #000000;
+  color: #ffffff;
   text-align: center;
   font-size: 17px;
   font-style: normal;

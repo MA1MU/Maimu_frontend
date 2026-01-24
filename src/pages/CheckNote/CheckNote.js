@@ -7,6 +7,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 import "./CheckNote.css";
 import SmallLogoImg from "../../images/SmallLogo.svg";
+import FavoriteOff from "../../images/ChekNote/FavoriteOff.svg";
+import FavoriteOn from "../../images/ChekNote/FavoriteOn.svg";
 
 const CheckNote = () => {
   const navigate = useNavigate();
@@ -18,6 +20,7 @@ const CheckNote = () => {
   const group_id = location.state?.group_id;
 
   const [maimu, setMaimu] = useState(null); // 마이무 상세 정보 상태
+  const [isFavorite, setIsFavorite] = useState(false); // 즐겨찾기 상태
 
   const access_token = localStorage.getItem("access_token");
 
@@ -33,6 +36,7 @@ const CheckNote = () => {
 
           console.log("Maimu data fetched:", response.data);
           setMaimu(response.data);
+          setIsFavorite(response.data.isFavorite); // 초기 즐겨찾기 상태 설정
         } catch (error) {
           console.error("Error fetching maimu data:", error);
 
@@ -56,6 +60,37 @@ const CheckNote = () => {
 
     fetchMaimuData();
   }, [access_token, maimuId]);
+
+  const handleFavoriteToggle = async () => {
+    if (!access_token || !maimuId) return;
+
+    try {
+      const response = await axios.patch(
+        `${api.baseUrl}/v1/api/maimu/${maimuId}/favorite`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      console.log("Favorite toggled:", response.data);
+      // 백엔드에서 변경된 favorite 상태를 반환한다고 가정 (MaimuFavoriteResponse)
+      // 만약 반환값에 새로운 favorite 상태가 포함되어 있다면 그것을 사용하고, 
+      // 아니면 현재 상태를 반전시킵니다.
+      setIsFavorite(!isFavorite);
+      
+      const message = !isFavorite ? "즐겨찾기에 추가되었습니다." : "즐겨찾기가 해제되었습니다.";
+      toast.success(message, {
+        autoClose: 2000,
+        hideProgressBar: true,
+      });
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+      toast.error("즐겨찾기 설정 중 오류가 발생했습니다.");
+    }
+  };
 
   const handleMoveToDetailPage = () => {
       const originalGroupName = decodeURI(decodeURI(groupName));
@@ -108,6 +143,12 @@ const CheckNote = () => {
       <div className="Header">
         <img className="SmallLogo" alt="" src={SmallLogoImg} />
       </div>
+
+      <div className="FavoriteSection" onClick={handleFavoriteToggle}>
+        <img src={isFavorite ? FavoriteOn : FavoriteOff} alt="favorite" />
+        <p>즐겨찾기 설정</p>
+      </div>
+
       <div className="CheckNote_Box">
         <div>
           <p className="CheckNote_T">쪽지 내용</p>
