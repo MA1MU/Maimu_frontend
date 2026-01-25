@@ -8,7 +8,9 @@ import LoadingPage from "./pages/LoadingPage/LoadingPage";
 import CheckTaste from "./pages/CheckTaste/CheckTaste";
 import CheckNote from "./pages/CheckNote/CheckNote";
 import MyPage from "./pages/MyPage/MyPage";
+import MyPageEdit from "./pages/MyPageEdit/MyPageEdit";
 import ProfileEdit from "./pages/ProfileEdit/ProfileEdit";
+import MyPageProfileEdit from "./pages/MyPageProfileEdit/MyPageProfileEdit";
 import Withdrawal from "./pages/Withdrawal/Withdrawal";
 import WriteDetailPage from "./pages/WriteDetailPage/WriteDetailPage";
 import WriteNote from "./pages/WriteNote/WriteNote";
@@ -36,7 +38,9 @@ const App = () => {
             <Route path="/CheckTaste" element={<CheckTaste />}></Route>
             <Route path="/CheckNote" element={<CheckNote />}></Route>
             <Route path="/MyPage" element={<MyPage />}></Route>
+            <Route path="/MyPageEdit" element={<MyPageEdit />}></Route>
             <Route path="/ProfileEdit" element={<ProfileEdit />}></Route>
+            <Route path="/MyPageProfileEdit" element={<MyPageProfileEdit />}></Route>
             <Route path="/Withdrawal" element={<Withdrawal />}></Route>
             <Route path="/WriteDetailPage/:token" element={<WriteDetailPage />}></Route>
             <Route path="/WriteNote" element={<WriteNote />}></Route>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import './ProfileEdit.css';
+import './MyPageProfileEdit.css';
 import SpeechBubble from '../../images/ProfileEdit/SpeechBubble.svg';
 import Pomegranate from '../../images/ProfileEdit/Pomegranate.svg';
 import Plum from '../../images/ProfileEdit/Plum.svg';
@@ -13,7 +13,7 @@ import Citron from '../../images/ProfileEdit/Citron.svg';
 
 import '../../App.css'
 
-const ProfileEdit = () => {
+const MyPageProfileEdit = () => {
   const [name, setName] = useState('');
   const [iconName, setIconName] = useState('');
   const [iconPosition, setIconPosition] = useState({ top: 0, left: 0 });
@@ -30,7 +30,7 @@ const ProfileEdit = () => {
 
   const handleNextButtonClick = () => {
     // 석류, 매실, 유자 중 어떤 아이콘이 포커스되어 있는지 정보를 같이 전달
-    navigate('/MyPage', { state: { focusedIcon: iconName } });
+    navigate('/MyPageEdit', { state: { focusedIcon: iconName } });
   };
 
   return (
@@ -92,4 +92,4 @@ const ProfileEdit = () => {
   );
 };
 
-export default ProfileEdit;
+export default MyPageProfileEdit;

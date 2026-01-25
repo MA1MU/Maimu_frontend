@@ -1,0 +1,77 @@
+.ProfileEdit {
+  width: 100%;
+  background: linear-gradient(0deg, #121212);
+}
+
+.JustifyContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.SpeechBubble {
+  margin: 256px 0 0 0;
+  width: 244px;
+}
+
+.NextButton {
+  border-radius: 5px;
+  background: #fff;
+  width: 100px;
+  height: 43px;
+  border: none;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.MaimuContainer {
+  position: absolute;
+  top: 366px;
+}
+
+.Pomegranate {
+  margin-right: 40px;
+}
+
+.Citron {
+  margin-right: 40px;
+}
+
+.Arrow {
+  margin-left: 10px;
+}
+
+.NextButton {
+  position: absolute;
+  top: 566px;
+}
+
+.IconName {
+  color: #ffffff;
+  text-align: center;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.IconName p {
+  margin: 0;
+}
+
+.PomegranateTwinkle {
+  position: absolute;
+  top: 336px;
+  margin-left: -230px;
+}
+.CitronTwinkle {
+  position: absolute;
+  top: 336px;
+}
+.PlumTwinkle {
+  position: absolute;
+  top: 336px;
+  margin-left: 237px;
+}

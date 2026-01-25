@@ -89,6 +89,12 @@ input:focus {
   cursor: pointer;
 }
 
+.MyPage .MyPageGroup{
+  display: flex;
+  flex-direction: row;
+  margin-top: 17px;
+}
+
 .MyPage p{
   text-decoration: underline;
   margin: 0 28px 0 28px;

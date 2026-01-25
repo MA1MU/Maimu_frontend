@@ -14,7 +14,7 @@ const LoginHandeler = () => {
     if (tempToken) {
       // [시나리오 1] 신규 회원 (PREMEMBER)
       console.log('신규 회원: 프로필 설정이 필요합니다.');
-      localStorage.setItem('access_token', tempToken); // 프로필 저장 API 호출 시 사용할 토큰
+      localStorage.setItem('temp_token', tempToken); // 프로필 저장 API 호출 시 사용할 토큰
       
       // 주소창 세탁 후 이동
       window.history.replaceState({}, null, window.location.pathname);

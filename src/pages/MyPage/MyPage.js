@@ -15,22 +15,15 @@ import 'react-toastify/dist/ReactToastify.css';
 const MyPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const focusedIcon = location.state?.focusedIcon;
 
-  const access_token = localStorage.getItem("access_token");
-  // console.log("access_token: ", access_token)
+  const temp_token = localStorage.getItem("temp_token");
+  console.log("temp_token: ", temp_token);
 
   const [nickname, setNickname] = useState('');
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
-
-  const [userInfo, setUserInfo] = useState(null);
-  const [error, setError] = useState(null);
-  const [role, setRole] = useState(null);
-  
-  const headers = {
-    'Authorization': `Bearer ${access_token}`
-  };
 
 
   const handleConfirmClick = async () => {
@@ -44,10 +37,12 @@ const MyPage = () => {
         };
 
       
-        if (access_token) {
+        if (temp_token) {
           try {
             const response = await axios.post(`${api.baseUrl}/v1/api/member/join`, profileData, {
-              headers: headers,
+              headers: {
+                'Authorization': `Bearer ${temp_token}`
+              },
               withCredentials: true // 쿠키를 받기 위한 설정
             });
       
@@ -59,6 +54,7 @@ const MyPage = () => {
             if (newAccessToken) {
               // 새로운 accessToken을 localStorage에 저장
               localStorage.setItem('access_token', newAccessToken);
+              localStorage.removeItem('temp_token');
               console.log('New accessToken saved:', newAccessToken);
             }
             
@@ -67,6 +63,7 @@ const MyPage = () => {
             
             // 성공적으로 백엔드에 데이터를 보낸 후 처리할 작업
             const iconToPass = location.state?.focusedIcon;
+            console.log("iconToPass: ", iconToPass);
             navigate("/MainPage", { state: { focusedIcon: iconToPass } }); 
             
           } catch (error) {
@@ -92,44 +89,7 @@ const MyPage = () => {
         }
   };
 
-  useEffect(() => {
-    const fetchUserInfo = async () => {
-      try {
-        const response = await axios.get(`${api.baseUrl}/user/info`, {
-          headers: headers
-        });
-        const { maimuProfile, year, month, date, maimuName, role } = response.data;
-        // console.log('User info from backend:', response.data);
-        setUserInfo({
-          maimuProfile,
-          year,
-          month,
-          date,
-          maimuName,
-          role
-        });
 
-        if (role === 'ROLE_USER') {
-          setNickname(maimuName); 
-          setSelectedYear(year);
-          setSelectedMonth(month);
-          setSelectedDay(date);
-          setRole(role);
-
-          console.log('Nickname:', maimuName);
-          console.log('Selected Year:', year);
-          console.log('Selected Month:', month);
-          console.log('Selected Day:', date);
-          console.log('Role:', role);
-
-        }
-      } catch (error) {
-        setError(error.response.data.message);
-      }
-    };
-
-    fetchUserInfo();
-  }, [access_token]);
 
   const getProfileImage = (iconName) => {
     switch (iconName) {
@@ -144,24 +104,15 @@ const MyPage = () => {
     }
   };
 
-  const focusedIcon = location.state?.focusedIcon;
+
   const profileInfo = getProfileImage(focusedIcon);
 
   const MoveToProfileEdit = () => {
-    if (access_token) {
+    if (temp_token) {
       navigate(`/ProfileEdit`);
     } else {
-      console.log("accessToken이 없습니다.")
+      console.log("Token이 없습니다.")
     }
-  };
-
-  const handleLogout = async () => {
-    localStorage.removeItem('access_token');
-    navigate('/');
-  };
-
-  const handleWithdrawal = () => {
-    navigate('/Withdrawal');
   };
 
   return (
@@ -186,23 +137,11 @@ const MyPage = () => {
             onSelectDay={setSelectedDay}
           />
         </div>
-        {role === 'ROLE_USER' ? (
-          <div className="MyPageButtonGroup">
-            <button className="Confirmation" disabled={!access_token} onClick={handleConfirmClick}>
-              확인
-            </button>
-            <div className="MyPageGroup">
-              <p className="Logout" onClick={handleLogout}>로그아웃</p>
-              <p onClick={handleWithdrawal}>탈퇴</p>
-            </div>
-          </div>
-        ) : (
           <div className="MyPageButtonGroup">
             <button className="Confirmation" onClick={handleConfirmClick}>
               확인
             </button>
           </div>
-        )}
         <img className="ProfileEditButon" src={EditButton} alt="ProfileEditButon" onClick={MoveToProfileEdit}/>
       </div>
     </div>

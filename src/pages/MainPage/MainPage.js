@@ -105,6 +105,24 @@ const MainPage = () => {
     fetchData();
   }, [access_token]);
 
+  useEffect(() => {
+    // 현재 페이지의 히스토리를 하나 더 추가하여 뒤로 가기를 눌러도 현재 페이지에 머물게 함
+    window.history.pushState(null, null, window.location.href);
+
+    const handlePopState = () => {
+      // 사용자가 뒤로 가기를 눌렀을 때 실행됨
+      window.history.pushState(null, null, window.location.href);
+    };
+
+    // popstate 이벤트 리스너 등록
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      // 컴포넌트 언마운트 시 리스너 제거
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
   const addButtonClick = (groupName) => {
     if (lockers.filter((locker) => locker.groupName !== "").length >= 9) {
       toast.error("최대 9개까지 그룹을 생성할 수 있습니다.");
@@ -234,7 +252,7 @@ const MainPage = () => {
   
 
   const MoveToMyPage = () => {
-    navigate("/MyPage");
+    navigate("/MyPageEdit", { state: { focusedIcon: profileInfo } });
   };
 
   const MoveToDetailPage = (groupName, groupColor, group_id) => {
