@@ -5,6 +5,8 @@ import MiniLogo from '../../images/Withdrawal/MiniLogo.svg';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../api/api';
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Withdrawal = () => {
   const navigate = useNavigate();
@@ -14,29 +16,44 @@ const Withdrawal = () => {
   const access_token = localStorage.getItem("access_token");
 
   const handleWithdrawal = async () => {
+    if (!access_token) return;
+
     try {
-      const response = await axios.delete(`${api.baseUrl}/user/logout`, {
+      console.log("Requesting member withdrawal...");
+      
+      const response = await axios.delete(`${api.baseUrl}/v1/api/member`, {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
       });
 
-      console.log("탈퇴 성공");
-      localStorage.removeItem("access_token");
-  
-      navigate('/');
-  
+      if (response.status === 204 || response.status === 200) {
+        toast.success("회원 탈퇴가 완료되었습니다.", {
+          autoClose: 2000,
+          hideProgressBar: true,
+        });
+
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("temp_token");
+
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
+      }
     } catch (error) {
-      // 에러 발생시 처리할 로직
-      if (error.response) {
-        // 서버로부터 에러 응답을 받았을 때
-        console.error("탈퇴 요청에 실패했습니다. 서버 응답:", error.response.data);
-      } else if (error.request) {
-        // 요청이 완료되고 응답을 받지 못했을 때
-        console.error("탈퇴 요청에 실패했습니다. 응답을 받지 못했습니다.");
+      console.error("탈퇴 요청 중 오류 발생:", error);
+      
+      if (error.response && error.response.data) {
+        const errorMessage = error.response.data.message || '회원 탈퇴 중 오류가 발생했습니다.';
+        toast.error(errorMessage, {
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
       } else {
-        // 요청을 보내기 전에 발생한 에러
-        console.error("탈퇴 요청에 실패했습니다. 에러 메시지:", error.message);
+        toast.error('서버 오류가 발생했습니다. 다시 시도해주세요.', {
+          autoClose: 3000,
+          hideProgressBar: true,
+        });
       }
     }
   };
@@ -49,6 +66,7 @@ const Withdrawal = () => {
 
   return (
     <div className='Withdrawal'>
+        <ToastContainer />
         <div className='JustifyCenter'> 
             <img className='SmallLogoImg' src={SmallLogoImg} alt='SmallLogoImg'/>
             <div className='WithdrawalContainer'>탈퇴 안내</div>
