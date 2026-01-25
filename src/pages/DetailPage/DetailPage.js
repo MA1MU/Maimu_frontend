@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { PasteLinkAlert } from "../../components/PasteLinkAlert/PasteLinkAlert";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -13,6 +13,7 @@ import PasteLink from "../../images/DetailPage/PasteLink.svg";
 import DetailMaimu from "../../components/DetailMaimu/DetailMaimu";
 
 const DetailPage = () => {
+  const navigate = useNavigate();
   const [pasteState, setPasteState] = useState(false);
   const { groupName, groupColor, group_id } = useParams();
   
@@ -202,7 +203,7 @@ const DetailPage = () => {
       <div className="JustifyCenter">
         <div className="DetailPageScroll">
           <div className="DetailPageContent">
-            <img className="SmallLogo" alt="" src={SmallLogoImg} />
+            <img className="SmallLogo" alt="" src={SmallLogoImg} onClick={() => navigate("/MainPage")} />
             <div className="GroupName">{decodedGroupName}</div>
             <div className="DetailMaimu">
               {maimuList.map((maimu) => (
