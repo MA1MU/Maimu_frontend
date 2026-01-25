@@ -2,12 +2,14 @@ import React from 'react';
 import './Withdrawal.css';
 import SmallLogoImg from '../../images/SmallLogo.svg';
 import MiniLogo from '../../images/Withdrawal/MiniLogo.svg';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../../api/api';
 import axios from 'axios';
 
 const Withdrawal = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const focusedIcon = location.state?.focusedIcon;
 
   const access_token = localStorage.getItem("access_token");
 
@@ -41,7 +43,7 @@ const Withdrawal = () => {
   
 
   const handleGoBack=() => {
-    navigate('/MainPage');
+    navigate('/MainPage', { state: { focusedIcon: focusedIcon } });
   };
 
 

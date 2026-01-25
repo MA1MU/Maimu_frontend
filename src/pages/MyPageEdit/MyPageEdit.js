@@ -109,12 +109,36 @@ const MyPageEdit = () => {
   };
 
   const handleLogout = async () => {
-    localStorage.removeItem('access_token');
-    navigate('/');
+    try {
+      const logoutRequest = {
+        accessToken: access_token,
+      };
+
+      console.log("Logging out...");
+
+      await axios.post(`${api.baseUrl}/v1/api/auth/logout`, logoutRequest, {
+        withCredentials: true, // refreshToken 쿠키를 포함하기 위해 설정
+      });
+
+      // 성공 여부와 상관없이 로컬 스토리지 비우기 및 이동
+      localStorage.removeItem("access_token");
+      toast.success("로그아웃되었습니다.", {
+        autoClose: 2000,
+        hideProgressBar: true,
+      });
+      setTimeout(() => {
+        navigate("/");
+      }, 2000);
+    } catch (error) {
+      console.error("Error during logout:", error);
+      // 에러가 발생해도 일단 로컬 토큰은 지우고 홈으로 보냅니다.
+      localStorage.removeItem("access_token");
+      navigate("/");
+    }
   };
 
   const handleWithdrawal = () => {
-    navigate('/Withdrawal');
+    navigate('/Withdrawal', { state: { focusedIcon: focusedIcon } });
   };
 
   return (
