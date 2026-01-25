@@ -10,7 +10,7 @@ const TasteDropdown = ({ isOpen, onClose, onTasteSelected }) => {
     setSelectedColor(color);
     closeDropdown();
     // 부모 컴포넌트에게 알림
-    onTasteSelected(true);
+    onTasteSelected(color);
   };
 
   const handleDropdownToggle = () => {

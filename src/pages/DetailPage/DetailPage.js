@@ -100,6 +100,48 @@ const DetailPage = () => {
     }
   }, [groupId, access_token, isLoading]);
 
+  const handleCopyLink = async () => {
+    if (!groupId || !access_token) return;
+
+    try {
+      // 1. 백엔드에 토큰 생성 요청
+      const response = await axios.post(
+        `${api.baseUrl}/v1/api/group/${groupId}/invitation`,
+        null,
+        {
+          params: { groupName: decodedGroupName },
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      const token = response.data;
+      
+      // 2. 현재 브라우저의 origin을 포함한 전체 링크 생성
+      const inviteLink = `${window.location.origin}/WriteDetailPage/${token}`;
+
+      // 3. 클립보드 복사
+      await navigator.clipboard.writeText(inviteLink);
+
+      // // 4. 성공 알림
+      // toast.success("초대 링크가 복사되었습니다!", {
+      //   autoClose: 2000,
+      //   hideProgressBar: true,
+      // });
+      
+      setPasteState(true);
+
+    } catch (error) {
+      console.error("Error creating invite link:", error);
+      const errorMessage = error.response?.data?.message || "링크를 생성하는 중 오류가 발생했습니다.";
+      toast.error(errorMessage, {
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
+    }
+  };
+
   // 초기 마이무 목록 로드
   useEffect(() => {
     if (groupId && access_token) {
@@ -156,6 +198,7 @@ const DetailPage = () => {
 
   return (
     <div className="DetailPage" style={{ background: getBackgroundColor() }}>
+      <ToastContainer />
       <div className="JustifyCenter">
         <div className="DetailPageScroll">
           <div className="DetailPageContent">
@@ -178,7 +221,7 @@ const DetailPage = () => {
         </div>
       </div>
       <img className="PasteLink" alt="PasteLink" src={PasteLink}
-              onClick={() => setPasteState(true)}
+              onClick={handleCopyLink}
             />
     </div>
   );

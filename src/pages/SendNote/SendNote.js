@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 import "./SendNote.css";
 import SmallLogoImg from "../../images/SmallLogo.svg";
@@ -7,13 +7,20 @@ import ShareButton from "../../images/SendNote/ShareButton.svg";
 
 const SendNote = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const token = location.state?.token;
+  const groupName = location.state?.groupName;
 
   const navigateToStartPage = () => {
     navigate("/");
   };
 
   const navigateToWriteDetailPage = () => {
-    navigate("/WriteDetailPage");
+    if (token) {
+      navigate(`/WriteDetailPage/${token}`);
+    } else {
+      navigate("/"); // 토큰이 없으면 메인으로
+    }
   };
 
   return (
@@ -21,7 +28,7 @@ const SendNote = () => {
       <div className="Header">
         <img className="SmallLogo" alt="ShareButton" src={SmallLogoImg} />
       </div>
-      <div className="GroupName">cotato</div>
+      <div className="GroupName">{groupName}</div>
       <div className="ShareButton_Wrapper">
         <img className="ShareButton" alt="ShareButton" src={ShareButton} />
       </div>

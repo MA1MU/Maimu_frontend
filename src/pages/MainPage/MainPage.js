@@ -46,9 +46,6 @@ const MainPage = () => {
     }
   };
 
-  // location.state에서 focusedIcon 가져오기
-  const focusedIcon = location.state?.focusedIcon;
-
   useEffect(() => {
     const fetchData = async () => {
       if (access_token) {

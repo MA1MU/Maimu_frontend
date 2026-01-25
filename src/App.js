@@ -38,7 +38,7 @@ const App = () => {
             <Route path="/MyPage" element={<MyPage />}></Route>
             <Route path="/ProfileEdit" element={<ProfileEdit />}></Route>
             <Route path="/Withdrawal" element={<Withdrawal />}></Route>
-            <Route path="/WriteDetailPage" element={<WriteDetailPage />}></Route>
+            <Route path="/WriteDetailPage/:token" element={<WriteDetailPage />}></Route>
             <Route path="/WriteNote" element={<WriteNote />}></Route>
             <Route path="/SendNote" element={<SendNote />}></Route>
             <Route path="/LoginHandler" element={<LoginHandler />} /> 
