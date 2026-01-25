@@ -36,7 +36,7 @@ const CheckNote = () => {
 
           console.log("Maimu data fetched:", response.data);
           setMaimu(response.data);
-          setIsFavorite(response.data.isFavorite); // 초기 즐겨찾기 상태 설정
+          setIsFavorite(response.data.favorite); // 초기 즐겨찾기 상태 설정 (isFavorite 아님)
         } catch (error) {
           console.error("Error fetching maimu data:", error);
 
