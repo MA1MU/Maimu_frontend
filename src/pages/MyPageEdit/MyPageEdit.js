@@ -117,7 +117,7 @@ const MyPageEdit = () => {
       console.log("Logging out...");
 
       await axios.post(`${api.baseUrl}/v1/api/auth/logout`, logoutRequest, {
-        withCredentials: true, // refreshToken 쿠키를 포함하기 위해 설정
+        withCredentials: true,
       });
 
       // 성공 여부와 상관없이 로컬 스토리지 비우기 및 이동
