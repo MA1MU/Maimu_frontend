@@ -26,7 +26,6 @@ function LoginModal({ isLoginOpen, closeLoginModal }) {
     let params = new URL(window.location.href).searchParams;
     let temp_token = params.get("tempToken");
 
-    console.log("temp_token: ", temp_token)
     localStorage.setItem("temp_token", temp_token);
 
   return (

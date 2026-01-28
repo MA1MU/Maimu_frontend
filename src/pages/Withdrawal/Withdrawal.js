@@ -19,7 +19,6 @@ const Withdrawal = () => {
     if (!access_token) return;
 
     try {
-      console.log("Requesting member withdrawal...");
       
       const response = await axios.delete(`${api.baseUrl}/v1/api/member`, {
         headers: {

@@ -18,7 +18,6 @@ const MyPageEdit = () => {
   const focusedIcon = location.state?.focusedIcon;
 
   const access_token = localStorage.getItem("access_token");
-  console.log("access_token: ", access_token);
 
   const [nickname, setNickname] = useState('');
   const [selectedYear, setSelectedYear] = useState(null);
@@ -43,8 +42,6 @@ const MyPageEdit = () => {
         date: Number(selectedDay.value),
         nickName: nickname,
       };
-
-      console.log("Updating Profile:", profileRequest);
 
       const response = await axios.patch(
         `${api.baseUrl}/v1/api/member/edit`,

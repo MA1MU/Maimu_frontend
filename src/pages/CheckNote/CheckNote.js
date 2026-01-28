@@ -34,7 +34,6 @@ const CheckNote = () => {
             },
           });
 
-          console.log("Maimu data fetched:", response.data);
           setMaimu(response.data);
           setIsFavorite(response.data.favorite); // 초기 즐겨찾기 상태 설정 (isFavorite 아님)
         } catch (error) {
@@ -75,7 +74,6 @@ const CheckNote = () => {
         }
       );
 
-      console.log("Favorite toggled:", response.data);
       // 백엔드에서 변경된 favorite 상태를 반환한다고 가정 (MaimuFavoriteResponse)
       // 만약 반환값에 새로운 favorite 상태가 포함되어 있다면 그것을 사용하고, 
       // 아니면 현재 상태를 반전시킵니다.

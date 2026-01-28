@@ -27,7 +27,6 @@ const WriteDetailPage = () => {
         try {
           const response = await axios.get(`${api.baseUrl}/v1/api/guest/invitation/${token}`);
 
-          console.log("Invitation data fetched:", response.data);
           setGroupData(response.data);
         } catch (error) {
           console.error("Error fetching invitation data:", error);

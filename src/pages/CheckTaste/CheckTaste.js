@@ -19,11 +19,6 @@ const CheckTaste = () => {
   const navigate = useNavigate();
 
   const navigateToCheckNote = () => {
-    console.log("groupName:", groupName);
-    console.log("groupColor:", groupColor);
-    console.log("group_id:", group_id);
-    console.log(decodeURI(decodeURI(groupName)));
-    console.log(decodeURI(decodeURI(groupColor)));
     navigate("/CheckNote", { state: { maimuId, maimuColor, groupName, groupColor, group_id } });
   };
 

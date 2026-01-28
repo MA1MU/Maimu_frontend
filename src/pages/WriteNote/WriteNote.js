@@ -77,8 +77,6 @@ const WriteNote = () => {
         isAnonymous: isAnonymous,
       };
 
-      console.log("Sending Note:", guestRequest);
-
       const response = await axios.post(
         `${api.baseUrl}/v1/api/guest/${groupId}/${token}/add`,
         guestRequest

@@ -51,7 +51,6 @@ const Modal = ({ isOpen, onClose, clickedButton, onSave, locker, lockers }) => {
               }
             );
     
-            console.log("New group added:", response.data);
     
             const newGroup = {
               groupName: groupName,
@@ -100,8 +99,6 @@ const Modal = ({ isOpen, onClose, clickedButton, onSave, locker, lockers }) => {
               },
             }
           );
-
-          console.log("Group edited:", editResponse.data);
 
           onSave(groupName, groupColor, locker.group_id);
 

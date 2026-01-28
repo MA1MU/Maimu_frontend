@@ -52,14 +52,9 @@ const DetailPage = () => {
         },
       });
 
-      console.log("백엔드 응답:", response.data);
       
       // PageMaimuResponse 구조: { data, currentPage, totalPage }
       const { data, currentPage: responseCurrentPage, totalPage: responseTotalPage } = response.data;
-      
-      console.log("마이무 목록:", data);
-      console.log("현재 페이지:", responseCurrentPage);
-      console.log("전체 페이지:", responseTotalPage);
       
       if (append) {
         // 기존 목록에 추가 (중복 제거)
@@ -119,20 +114,45 @@ const DetailPage = () => {
 
       const token = response.data;
       
-      // 2. 현재 브라우저의 origin을 포함한 전체 링크 생성
+      // 현재 브라우저의 origin을 포함한 전체 링크 생성
       const inviteLink = `${window.location.origin}/WriteDetailPage/${token}`;
 
-      // 3. 클립보드 복사
-      await navigator.clipboard.writeText(inviteLink);
+      // --- iOS 대응 복사 로직 시작 ---
+    
+      // 1차 시도: navigator.clipboard (최신 브라우저용)
+      if (navigator.clipboard && window.isSecureContext) {
+        try {
+          await navigator.clipboard.writeText(inviteLink);
+          setPasteState(true);
+          return; // 성공 시 종료
+        } catch (err) {
+          console.warn("Clipboard API 실패, Fallback 시도");
+        }
+      }
 
-      // // 4. 성공 알림
-      // toast.success("초대 링크가 복사되었습니다!", {
-      //   autoClose: 2000,
-      //   hideProgressBar: true,
-      // });
+      // 2차 시도 (Fallback): 임시 textarea 생성 (아이폰 사파리 필살기)
+      const textArea = document.createElement("textarea");
+      textArea.value = inviteLink;
       
-      setPasteState(true);
+      // 화면에 안 보이게 설정
+      textArea.style.position = "fixed";
+      textArea.style.left = "-9999px";
+      textArea.style.top = "0";
+      document.body.appendChild(textArea);
+      
+      // 선택 및 복사
+      textArea.focus();
+      textArea.select();
+      textArea.setSelectionRange(0, 99999); // iOS 범위를 위한 추가 설정
 
+      const successful = document.execCommand("copy");
+      document.body.removeChild(textArea);
+
+      if (successful) {
+        setPasteState(true);
+      } else {
+        throw new Error("복사 명령어 실패");
+      }
     } catch (error) {
       console.error("Error creating invite link:", error);
       const errorMessage = error.response?.data?.message || "링크를 생성하는 중 오류가 발생했습니다.";

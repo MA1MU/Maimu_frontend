@@ -56,7 +56,6 @@ const MainPage = () => {
             },
           });
 
-          console.log("Backend response:", response.data);
           setProfileInfo(response.data.maimuProfile);
           // ResponseDTO로 감싸진 응답에서 data 배열 추출
           const groupList = response.data.data || [];
@@ -207,7 +206,6 @@ const MainPage = () => {
         },
       });
   
-      console.log("Group deleted:", response.data);
   
       const updatedLockers = lockers.filter((locker) => locker.group_id !== group_id);
       const emptyLocker = {

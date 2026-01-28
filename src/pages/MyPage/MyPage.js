@@ -18,7 +18,6 @@ const MyPage = () => {
   const focusedIcon = location.state?.focusedIcon;
 
   const temp_token = localStorage.getItem("temp_token");
-  console.log("temp_token: ", temp_token);
 
   const [nickname, setNickname] = useState('');
   const [selectedYear, setSelectedYear] = useState(null);
@@ -46,7 +45,6 @@ const MyPage = () => {
               withCredentials: true // 쿠키를 받기 위한 설정
             });
       
-            console.log('Backend response:', response.data);
             
             // 헤더에서 accessToken 추출 (헤더 이름은 소문자로 변환됨)
             const newAccessToken = response.headers['accesstoken'] || response.headers['accessToken'];
@@ -55,7 +53,6 @@ const MyPage = () => {
               // 새로운 accessToken을 localStorage에 저장
               localStorage.setItem('access_token', newAccessToken);
               localStorage.removeItem('temp_token');
-              console.log('New accessToken saved:', newAccessToken);
             }
             
             // refreshToken은 httpOnly 쿠키로 자동 저장되므로 별도 처리 불필요
@@ -63,7 +60,6 @@ const MyPage = () => {
             
             // 성공적으로 백엔드에 데이터를 보낸 후 처리할 작업
             const iconToPass = location.state?.focusedIcon;
-            console.log("iconToPass: ", iconToPass);
             navigate("/MainPage", { state: { focusedIcon: iconToPass } }); 
             
           } catch (error) {
