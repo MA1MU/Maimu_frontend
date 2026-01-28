@@ -22,7 +22,6 @@ const TasteDropdown = ({ isOpen, onClose, onTasteSelected }) => {
   };
 
   const handleSave = () => {
-    console.log("Selected Color:", selectedColor);
     onClose();
   };
 
