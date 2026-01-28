@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import api from "../../api/api";
-
+import ClipboardJS from "clipboard";
 import "./DetailPage.css";
 import "../../components/PasteLinkAlert/PasteLinkAlert.css";
 import SmallLogoImg from "../../images/SmallLogo.svg";
@@ -96,87 +96,61 @@ const DetailPage = () => {
     }
   }, [groupId, access_token, isLoading]);
 
-  const handleCopyLink = async () => {
-    if (!groupId || !access_token) return;
 
-    try {
-      // --- 사파리 대응: ClipboardItem을 이용한 비동기 복사 ---
-      if (typeof ClipboardItem !== "undefined" && navigator.clipboard && navigator.clipboard.write) {
-        const item = new ClipboardItem({
-          "text/plain": (async () => {
-            // 복사 로직 내부에서 API 호출을 수행
-            const response = await axios.post(
-              `${api.baseUrl}/v1/api/group/${groupId}/invitation`,
-              null,
-              {
-                params: { groupName: decodedGroupName },
-                headers: {
-                  Authorization: `Bearer ${access_token}`,
-                },
-              }
-            );
-            const token = response.data;
-            return new Blob([`${window.location.origin}/WriteDetailPage/${token}`], { type: "text/plain" });
-          })(),
-        });
+  // 버튼을 참조할 Ref 생성
+  const copyBtnRef = useRef(null);
 
-        await navigator.clipboard.write([item]);
-        setPasteState(true);
-        return;
-      }
+  // ClipboardJS 설정 (iOS 대응 핵심)
+  useEffect(() => {
+    if (!copyBtnRef.current || !groupId || !access_token) return;
 
-      // --- 기존 방식 (ClipboardItem을 지원하지 않는 환경용) ---
-      const response = await axios.post(
-        `${api.baseUrl}/v1/api/group/${groupId}/invitation`,
-        null,
-        {
-          params: { groupName: decodedGroupName },
-          headers: {
-            Authorization: `Bearer ${access_token}`,
-          },
+    // ClipboardJS는 클릭하는 '순간' 이벤트를 가로채서 유지합니다.
+    const clipboard = new ClipboardJS(copyBtnRef.current, {
+      text: async () => {
+        try {
+          // 클릭 직후 비동기 통신 시작
+          const response = await axios.post(
+            `${api.baseUrl}/v1/api/group/${groupId}/invitation`,
+            null,
+            {
+              params: { groupName: decodedGroupName },
+              headers: {
+                Authorization: `Bearer ${access_token}`,
+              },
+            }
+          );
+          console.log("token 값: ", response.data);
+          console.log("window.location.origin: ", window.location.origin);
+          const token = response.data;
+          // 리턴값이 클립보드에 복사될 텍스트가 됩니다.
+          return `${window.location.origin}/WriteDetailPage/${token}`;
+        } catch (error) {
+          console.error("Error creating invite link:", error);
+          const errorMessage = error.response?.data?.message || "링크를 생성하는 중 오류가 발생했습니다.";
+          toast.error(errorMessage, {
+            autoClose: 3000,
+            hideProgressBar: true,
+          });
+          throw error; // 에러 발생 시 success로 가지 않도록 던짐
         }
-      );
+      },
+    });
 
-      const token = response.data;
-      const inviteLink = `${window.location.origin}/WriteDetailPage/${token}`;
+    clipboard.on("success", (e) => {
+      setPasteState(true);
+      e.clearSelection(); // 텍스트 선택 잔상 제거
+    });
 
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        await navigator.clipboard.writeText(inviteLink);
-        setPasteState(true);
-      } else {
-        // 아주 오래된 브라우저용 Fallback
-        const textArea = document.createElement("textarea");
-        textArea.value = inviteLink;
-        
-        // 화면에 안 보이게 설정
-        textArea.style.position = "fixed";
-        textArea.style.left = "-9999px";
-        textArea.style.top = "0";
-        document.body.appendChild(textArea);
-        
-        // 선택 및 복사
-        textArea.focus();
-        textArea.select();
-        textArea.setSelectionRange(0, 99999); // iOS 범위를 위한 추가 설정
+    clipboard.on("error", (e) => {
+      // 위 text 함수에서 throw error가 발생하거나 복사가 불가능할 때 실행
+      console.error("복사 실패:", e);
+    });
 
-        const successful = document.execCommand("copy");
-        document.body.removeChild(textArea);
+    return () => {
+      clipboard.destroy(); // 컴포넌트 언마운트 시 클린업
+    };
+  }, [groupId, access_token, decodedGroupName]);
 
-        if (successful) {
-          setPasteState(true);
-        } else {
-          throw new Error("복사 명령어 실패");
-        }
-      }
-    } catch (error) {
-      console.error("Error creating invite link:", error);
-      const errorMessage = error.response?.data?.message || "링크를 생성하는 중 오류가 발생했습니다.";
-      toast.error(errorMessage, {
-        autoClose: 3000,
-        hideProgressBar: true,
-      });
-    }
-  };
 
   // 초기 마이무 목록 로드
   useEffect(() => {
@@ -256,9 +230,13 @@ const DetailPage = () => {
           </div>
         </div>
       </div>
-      <img className="PasteLink" alt="PasteLink" src={PasteLink}
-              onClick={handleCopyLink}
-            />
+      <img 
+        ref={copyBtnRef}
+        className="PasteLink" 
+        alt="PasteLink" 
+        src={PasteLink} 
+        style={{ cursor: "pointer" }}
+      />
     </div>
   );
 };
