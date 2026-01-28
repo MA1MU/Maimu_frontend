@@ -100,7 +100,32 @@ const DetailPage = () => {
     if (!groupId || !access_token) return;
 
     try {
-      // 1. 백엔드에 토큰 생성 요청
+      // --- 사파리 대응: ClipboardItem을 이용한 비동기 복사 ---
+      if (typeof ClipboardItem !== "undefined" && navigator.clipboard && navigator.clipboard.write) {
+        const item = new ClipboardItem({
+          "text/plain": (async () => {
+            // 복사 로직 내부에서 API 호출을 수행
+            const response = await axios.post(
+              `${api.baseUrl}/v1/api/group/${groupId}/invitation`,
+              null,
+              {
+                params: { groupName: decodedGroupName },
+                headers: {
+                  Authorization: `Bearer ${access_token}`,
+                },
+              }
+            );
+            const token = response.data;
+            return new Blob([`${window.location.origin}/WriteDetailPage/${token}`], { type: "text/plain" });
+          })(),
+        });
+
+        await navigator.clipboard.write([item]);
+        setPasteState(true);
+        return;
+      }
+
+      // --- 기존 방식 (ClipboardItem을 지원하지 않는 환경용) ---
       const response = await axios.post(
         `${api.baseUrl}/v1/api/group/${groupId}/invitation`,
         null,
@@ -113,45 +138,35 @@ const DetailPage = () => {
       );
 
       const token = response.data;
-      
-      // 현재 브라우저의 origin을 포함한 전체 링크 생성
       const inviteLink = `${window.location.origin}/WriteDetailPage/${token}`;
 
-      // --- iOS 대응 복사 로직 시작 ---
-    
-      // 1차 시도: navigator.clipboard (최신 브라우저용)
-      if (navigator.clipboard && window.isSecureContext) {
-        try {
-          await navigator.clipboard.writeText(inviteLink);
-          setPasteState(true);
-          return; // 성공 시 종료
-        } catch (err) {
-          console.warn("Clipboard API 실패, Fallback 시도");
-        }
-      }
-
-      // 2차 시도 (Fallback): 임시 textarea 생성 (아이폰 사파리 필살기)
-      const textArea = document.createElement("textarea");
-      textArea.value = inviteLink;
-      
-      // 화면에 안 보이게 설정
-      textArea.style.position = "fixed";
-      textArea.style.left = "-9999px";
-      textArea.style.top = "0";
-      document.body.appendChild(textArea);
-      
-      // 선택 및 복사
-      textArea.focus();
-      textArea.select();
-      textArea.setSelectionRange(0, 99999); // iOS 범위를 위한 추가 설정
-
-      const successful = document.execCommand("copy");
-      document.body.removeChild(textArea);
-
-      if (successful) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(inviteLink);
         setPasteState(true);
       } else {
-        throw new Error("복사 명령어 실패");
+        // 아주 오래된 브라우저용 Fallback
+        const textArea = document.createElement("textarea");
+        textArea.value = inviteLink;
+        
+        // 화면에 안 보이게 설정
+        textArea.style.position = "fixed";
+        textArea.style.left = "-9999px";
+        textArea.style.top = "0";
+        document.body.appendChild(textArea);
+        
+        // 선택 및 복사
+        textArea.focus();
+        textArea.select();
+        textArea.setSelectionRange(0, 99999); // iOS 범위를 위한 추가 설정
+
+        const successful = document.execCommand("copy");
+        document.body.removeChild(textArea);
+
+        if (successful) {
+          setPasteState(true);
+        } else {
+          throw new Error("복사 명령어 실패");
+        }
       }
     } catch (error) {
       console.error("Error creating invite link:", error);
