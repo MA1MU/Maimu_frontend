@@ -1,3 +1,4 @@
+/* global Kakao */
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { PasteLinkAlert } from "../../components/PasteLinkAlert/PasteLinkAlert";
@@ -10,6 +11,7 @@ import "./DetailPage.css";
 import "../../components/PasteLinkAlert/PasteLinkAlert.css";
 import SmallLogoImg from "../../images/SmallLogo.svg";
 import PasteLink from "../../images/DetailPage/PasteLink.svg";
+import KakaoIcon from "../../images/StartPage/KakaoLogin.svg"; // 카카오 아이콘으로 사용
 import DetailMaimu from "../../components/DetailMaimu/DetailMaimu";
 
 const DetailPage = () => {
@@ -178,6 +180,65 @@ const DetailPage = () => {
     }
   };
 
+  const handleKakaoShare = async () => {
+    if (!groupId || !access_token) return;
+
+    try {
+      // 1. 백엔드에 토큰 생성 요청 (이미 생성된 토큰이 있다면 재사용하도록 백엔드가 설계되어 있을 것입니다)
+      const response = await axios.post(
+        `${api.baseUrl}/v1/api/group/${groupId}/invitation`,
+        null,
+        {
+          params: { groupName: decodedGroupName },
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        }
+      );
+
+      const token = response.data;
+      const inviteLink = `${window.location.origin}/WriteDetailPage/${token}`;
+
+      // 2. 카카오톡 공유 실행
+      if (window.Kakao) {
+        const kakao = window.Kakao;
+        if (!kakao.isInitialized()) {
+          kakao.init('e57559391d36c76b6ef41b8ce06055d1'); // 여기에 실제 카카오 JavaScript 키를 넣으세요
+        }
+
+        kakao.Share.sendDefault({
+          objectType: 'feed',
+          content: {
+            title: `[MAIMU] ${decodedGroupName} 그룹 초대장`,
+            description: `${decodedGroupName} 그룹에서 당신의 마음을 담은 마이무를 남겨주세요! 🍋`,
+            imageUrl: 'https://github.com/hyunwoozz/Maimu_frontend/blob/develop/src/images/SmallLogo.svg?raw=true', // 적절한 이미지 URL로 변경
+            link: {
+              mobileWebUrl: inviteLink,
+              webUrl: inviteLink,
+            },
+          },
+          buttons: [
+            {
+              title: '마이무 남기러 가기',
+              link: {
+                mobileWebUrl: inviteLink,
+                webUrl: inviteLink,
+              },
+            },
+          ],
+          installTalk: true,
+        });
+      }
+    } catch (error) {
+      console.error("Error sharing to Kakao:", error);
+      const errorMessage = error.response?.data?.message || "카카오 공유 중 오류가 발생했습니다.";
+      toast.error(errorMessage, {
+        autoClose: 3000,
+        hideProgressBar: true,
+      });
+    }
+  };
+
   // 초기 마이무 목록 로드
   useEffect(() => {
     if (groupId && access_token) {
@@ -256,8 +317,11 @@ const DetailPage = () => {
           </div>
         </div>
       </div>
-      <img className="PasteLink" alt="PasteLink" src={PasteLink}
+      {/* <img className="PasteLink" alt="PasteLink" src={PasteLink}
               onClick={handleCopyLink}
+            /> */}
+      <img className="PasteLink" alt="PasteLink" src={KakaoIcon}
+              onClick={handleKakaoShare}
             />
     </div>
   );
