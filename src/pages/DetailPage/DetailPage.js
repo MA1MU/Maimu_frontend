@@ -205,13 +205,13 @@ const DetailPage = () => {
         if (!kakao.isInitialized()) {
           kakao.init('e57559391d36c76b6ef41b8ce06055d1'); // 여기에 실제 카카오 JavaScript 키를 넣으세요
         }
-
+        console.log(inviteLink);
         kakao.Share.sendDefault({
           objectType: 'feed',
           content: {
             title: `[MAIMU] ${decodedGroupName} 그룹 초대장`,
             description: `${decodedGroupName} 그룹에서 당신의 마음을 담은 마이무를 남겨주세요! 🍋`,
-            imageUrl: 'https://github.com/hyunwoozz/Maimu_frontend/blob/develop/src/images/SmallLogo.svg?raw=true', // 적절한 이미지 URL로 변경
+            imageUrl: 'https://github.com/MA1MU/Maimu_frontend/blob/develop/src/images/StartPage/WallPaper.svg?raw=true', // 적절한 이미지 URL로 변경
             link: {
               mobileWebUrl: inviteLink,
               webUrl: inviteLink,
