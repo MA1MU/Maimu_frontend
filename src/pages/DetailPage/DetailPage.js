@@ -21,6 +21,7 @@ const DetailPage = () => {
   
   // 마이무 목록 상태
   const [maimuList, setMaimuList] = useState([]);
+  const [nickName, setNickName] = useState("");
   const [currentPage, setCurrentPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -56,8 +57,11 @@ const DetailPage = () => {
 
       
       // PageMaimuResponse 구조: { data, currentPage, totalPage }
-      const { data, currentPage: responseCurrentPage, totalPage: responseTotalPage } = response.data;
-      
+      const { nickName, data, currentPage: responseCurrentPage, totalPage: responseTotalPage } = response.data;
+      if (nickName) {
+        setNickName(nickName);
+        console.log(nickName);
+      }
       if (append) {
         // 기존 목록에 추가 (중복 제거)
         setMaimuList((prevList) => {
@@ -209,9 +213,9 @@ const DetailPage = () => {
         kakao.Share.sendDefault({
           objectType: 'feed',
           content: {
-            title: `[MAIMU] ${decodedGroupName} 그룹 초대장`,
+            title: `[MAIMU] ${nickName}님의 ${decodedGroupName} 그룹 초대장`,
             description: `${decodedGroupName} 그룹에서 당신의 마음을 담은 마이무를 남겨주세요! 🍋`,
-            imageUrl: 'https://github.com/MA1MU/Maimu_frontend/blob/develop/src/images/StartPage/WallPaper.svg?raw=true', // 적절한 이미지 URL로 변경
+            imageUrl: 'https://raw.githubusercontent.com/MA1MU/Maimu_frontend/01ae45fdfba61e122670a598b8cec91879d24a82/src/images/StartPage/WallPaper.svg?raw=true', // 적절한 이미지 URL로 변경
             link: {
               mobileWebUrl: inviteLink,
               webUrl: inviteLink,

@@ -119,6 +119,7 @@ const CheckNote = () => {
 
   // 날짜 형식 변환 함수
   const formatDate = (dateString) => {
+    console.log(dateString);
     if (!dateString) return "";
     const date = new Date(dateString);
     const year = date.getFullYear();

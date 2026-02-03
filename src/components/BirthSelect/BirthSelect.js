@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./BirthSelect.css";
 import arrowIcon from "../../images/MyPage/SelectorArrow.svg";
 
@@ -44,7 +44,7 @@ const Dropdown = ({ options, value, onChange, placeholder, isOpen, onToggle }) =
   );
 };
 
-const BirthSelect = ({ onSelectYear, onSelectMonth, onSelectDay }) => {
+const BirthSelect = ({ onSelectYear, onSelectMonth, onSelectDay, selectedYear: initialYear, selectedMonth: initialMonth, selectedDay: initialDay }) => {
   const years = Array.from({ length: 100 }, (_, index) => ({
     value: 2024 - index,
     label: `${2024 - index}`,
@@ -52,9 +52,16 @@ const BirthSelect = ({ onSelectYear, onSelectMonth, onSelectDay }) => {
   const months = Array.from({ length: 12 }, (_, index) => ({ value: index + 1, label: `${index + 1}` }));
   const days = Array.from({ length: 31 }, (_, index) => ({ value: index + 1, label: `${index + 1}` }));
 
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(null);
-  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(initialYear || null);
+  const [selectedMonth, setSelectedMonth] = useState(initialMonth || null);
+  const [selectedDay, setSelectedDay] = useState(initialDay || null);
+
+  // 외부에서 주입된 값이 변경될 때 내부 상태 업데이트
+  useEffect(() => {
+    if (initialYear) setSelectedYear(initialYear);
+    if (initialMonth) setSelectedMonth(initialMonth);
+    if (initialDay) setSelectedDay(initialDay);
+  }, [initialYear, initialMonth, initialDay]);
 
   const [isYearOpen, setIsYearOpen] = useState(false);
   const [isMonthOpen, setIsMonthOpen] = useState(false);

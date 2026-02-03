@@ -24,6 +24,39 @@ const MyPageEdit = () => {
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
 
+  // 초기 프로필 정보 가져오기
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (!access_token) return;
+
+      try {
+        const response = await axios.get(`${api.baseUrl}/v1/api/member/profile`, {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+          },
+        });
+
+        const { maimuProfile, birth, nickName } = response.data;
+
+        // 닉네임 설정
+        setNickname(nickName);
+
+        // 생년월일 설정 (YYYY-MM-DD 형식 가정)
+        if (birth) {
+          const [year, month, day] = birth.split('-');
+          setSelectedYear({ value: year, label: `${year}` });
+          setSelectedMonth({ value: month, label: `${month}` });
+          setSelectedDay({ value: day, label: `${day}` });
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+        toast.error("프로필 정보를 불러오는 데 실패했습니다.");
+      }
+    };
+
+    fetchProfile();
+  }, [access_token, location.state?.focusedIcon]);
+
   const handleConfirmClick = async () => {
     if (!nickname) {
       toast.error("닉네임을 입력해주세요!");
@@ -158,6 +191,9 @@ const MyPageEdit = () => {
             onSelectYear={setSelectedYear}
             onSelectMonth={setSelectedMonth}
             onSelectDay={setSelectedDay}
+            selectedYear={selectedYear}
+            selectedMonth={selectedMonth}
+            selectedDay={selectedDay}
           />
         </div>
           <div className="MyPageButtonGroup">
