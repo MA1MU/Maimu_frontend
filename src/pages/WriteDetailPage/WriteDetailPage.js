@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./WriteDetailPage.css";
 import "../../components/PasteLinkAlert/PasteLinkAlert.css";
 import SmallLogoImg from "../../images/SmallLogo.svg";
-import WriteHelpTip from "../../images/WriteDetailPage/WriteHelpTip.svg";
+import WriteHelpIcon from "../../images/WriteDetailPage/WriteHelpIcon.svg";
 import InformationModal from "../../components/InformationModal/InformationModal";
 import BlankMaimu from "../../components/BlankMaimu/BlankMaimu";
 
@@ -86,7 +86,7 @@ const WriteDetailPage = () => {
             <img
               className="WriteHelpIcon"
               alt="WriteHelpIcon"
-              src={WriteHelpTip}
+              src={WriteHelpIcon}
               onClick={openInformationModal}
             />
             <div className="DetailMaimu">
