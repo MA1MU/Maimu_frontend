@@ -334,8 +334,15 @@ const DetailPage = () => {
 
             <div className="DetailMaimu">
               {maimuList.map((maimu) => (
-                <DetailMaimu maimu={maimu}
-                groupName={groupName} groupColor={groupColor} group_id={group_id} />
+                // key 가 없어 React 가 경고했다. 무한 스크롤로 목록이 이어붙는
+                // 화면이라 key 없이 두면 재사용 과정에서 엉뚱한 항목이 남을 수 있다.
+                <DetailMaimu
+                  key={maimu.maimuId}
+                  maimu={maimu}
+                  groupName={groupName}
+                  groupColor={groupColor}
+                  group_id={group_id}
+                />
               ))}
               {/* 무한 스크롤을 위한 관찰 대상 */}
               {hasMore && (
