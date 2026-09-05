@@ -7,7 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./WriteDetailPage.css";
 import "../../components/PasteLinkAlert/PasteLinkAlert.css";
 import SmallLogoImg from "../../images/SmallLogo.svg";
-import WriteHelpIcon from "../../images/WriteDetailPage/WriteHelpIcon.svg";
+import HelpIcon from "../../images/MainPage/HelpIcon.svg";
 import InformationModal from "../../components/InformationModal/InformationModal";
 import BlankMaimu from "../../components/BlankMaimu/BlankMaimu";
 
@@ -81,19 +81,50 @@ const WriteDetailPage = () => {
         <div className="JustifyCenter">
           <ToastContainer />
           <div className="WriteDetailPageContent">
-            <img className="SmallLogo" alt="" src={SmallLogoImg} />
-            <div className="GroupName">{groupData?.groupName || "불러오는 중..."}</div>
-            <img
-              className="WriteHelpIcon"
-              alt="WriteHelpIcon"
-              src={WriteHelpIcon}
-              onClick={openInformationModal}
-            />
-            <div className="DetailMaimu">
-              {groupData && Array.from({ length: groupData.maimuCount || 0 }).map((_, index) => (
-                <BlankMaimu key={index} />
-              ))}
-            </div>
+            {/* 도움말이 콘텐츠 위에 떠 있던 것을 헤더 줄로 옮긴다 (로그인 화면과 동일한 구조) */}
+            <header className="GuestHeader">
+              <span className="GuestHeaderSpacer" aria-hidden="true" />
+              <img className="SmallLogo" alt="MAIMU" src={SmallLogoImg} />
+              <button
+                type="button"
+                className="WriteHelpIcon"
+                onClick={openInformationModal}
+                aria-label="마이무 이용 안내 보기"
+                aria-haspopup="dialog"
+              >
+                <img src={HelpIcon} alt="" aria-hidden="true" />
+              </button>
+            </header>
+
+            <h1 className="GroupName">{groupData?.groupName || "불러오는 중..."}</h1>
+            <p className="GuestSubtitle">
+              {groupData ? "이 사물함에 첫인상을 남겨보세요" : " "}
+            </p>
+            {/* 처음 온 사람은 이 회색 마이무가 뭔지 알 수 없다.
+                무엇인지, 왜 못 여는지, 지금 뭘 하면 되는지를 알려준다. */}
+            {groupData && (groupData.maimuCount || 0) > 0 ? (
+              <>
+                <div className="GuestNoteCount">
+                  이미 도착한 쪽지 {groupData.maimuCount}개
+                </div>
+                <div className="DetailMaimu">
+                  {Array.from({ length: groupData.maimuCount }).map((_, index) => (
+                    <BlankMaimu key={index} />
+                  ))}
+                </div>
+                <p className="GuestNoteHint">
+                  다른 친구들이 남긴 쪽지예요.<br />
+                  내용은 사물함 주인만 열어볼 수 있어요.
+                </p>
+              </>
+            ) : (
+              groupData && (
+                <p className="GuestEmptyHint">
+                  아직 아무도 쪽지를 남기지 않았어요.<br />
+                  첫 번째 쪽지의 주인공이 되어보세요!
+                </p>
+              )
+            )}
 
             <InformationModal
               isInformationOpen={isInformationModalOpen}
@@ -103,9 +134,9 @@ const WriteDetailPage = () => {
           </div>
         </div>
       </div>
-      <div className="WriteDetail_Button" onClick={navigateToWriteNote}>
+      <button type="button" className="WriteDetail_Button" onClick={navigateToWriteNote}>
         쪽지 작성하기
-      </div>
+      </button>
     </div>
   );
 };

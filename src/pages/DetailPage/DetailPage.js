@@ -10,7 +10,7 @@ import api from "../../api/api";
 import "./DetailPage.css";
 import "../../components/PasteLinkAlert/PasteLinkAlert.css";
 import SmallLogoImg from "../../images/SmallLogo.svg";
-import PasteLink from "../../images/DetailPage/PasteLink.svg";
+import BackButton from "../../images/DetailPage/BackButton.svg";
 import KakaoIcon from "../../images/StartPage/KakaoLogin.svg"; // 카카오 아이콘으로 사용
 import DetailMaimu from "../../components/DetailMaimu/DetailMaimu";
 
@@ -303,8 +303,35 @@ const DetailPage = () => {
       <div className="JustifyCenter">
         <div className="DetailPageScroll">
           <div className="DetailPageContent">
-            <img className="SmallLogo" alt="" src={SmallLogoImg} onClick={() => navigate("/MainPage")} />
-            <div className="GroupName">{decodedGroupName}</div>
+            <header className="DetailHeader">
+              <button
+                type="button"
+                className="DetailBack"
+                onClick={() => navigate("/MainPage")}
+                aria-label="사물함 목록으로"
+              >
+                <img src={BackButton} alt="" aria-hidden="true" />
+              </button>
+
+              <img className="SmallLogo" alt="MAIMU" src={SmallLogoImg} />
+
+              <button
+                type="button"
+                className="DetailShare"
+                onClick={handleKakaoShare}
+                aria-label="초대 링크 공유하기"
+              >
+                <img src={KakaoIcon} alt="" aria-hidden="true" />
+              </button>
+            </header>
+
+            <h1 className="GroupName">{decodedGroupName}</h1>
+            <p className="DetailCount">
+              {maimuList.length > 0
+                ? `쪽지 ${maimuList.length}개`
+                : "아직 도착한 쪽지가 없어요"}
+            </p>
+
             <div className="DetailMaimu">
               {maimuList.map((maimu) => (
                 <DetailMaimu maimu={maimu}
@@ -321,12 +348,6 @@ const DetailPage = () => {
           </div>
         </div>
       </div>
-      {/* <img className="PasteLink" alt="PasteLink" src={PasteLink}
-              onClick={handleCopyLink}
-            /> */}
-      <img className="PasteLink" alt="PasteLink" src={KakaoIcon}
-              onClick={handleKakaoShare}
-            />
     </div>
   );
 };

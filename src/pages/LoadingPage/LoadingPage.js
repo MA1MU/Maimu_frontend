@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import "./LoadingPage.css";
@@ -19,13 +19,22 @@ const LoadingPage = () => {
   const groupColor = location.state?.groupColor;
   const group_id = location.state?.group_id;
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      navigate("/CheckTaste", { state: { maimuId, maimuColor, sugarContent, groupName, groupColor, group_id } }); // CheckTaste 페이지로 이동
-    }, 2000); // 2초 후에 이동
+  const goNext = useCallback(() => {
+    navigate("/CheckTaste", {
+      replace: true, // 뒤로가기로 로딩 화면에 다시 갇히지 않도록
+      state: { maimuId, maimuColor, sugarContent, groupName, groupColor, group_id },
+    });
+  }, [navigate, maimuId, maimuColor, sugarContent, groupName, groupColor, group_id]);
 
-    return () => clearTimeout(timer); // 타이머 해제
-  }, [navigate]);
+  useEffect(() => {
+    // 필요한 정보 없이 들어온 경우(주소 직접 입력, 새로고침) 빈 화면으로 넘어가지 않게 한다.
+    if (maimuId === undefined) {
+      navigate("/MainPage", { replace: true });
+      return;
+    }
+    const timer = setTimeout(goNext, 2000);
+    return () => clearTimeout(timer);
+  }, [goNext, navigate, maimuId]);
 
   const getBackgroundClass = () => {
     switch (maimuColor) {
@@ -56,14 +65,24 @@ const LoadingPage = () => {
   return (
     <div className={`LoadingPage ${getBackgroundClass()}`}>
       <div className="JustifyCenter">
-        <img className="SmallLogo" alt="" src={SmallLogoImg} />
-      <div className="LoadingMaimu_Wrapper">
-        <div className="ThreeBubbles">
-          <img src={ThreeBubbles} alt="ThreeBubbles" />
+        <img className="SmallLogo" alt="MAIMU" src={SmallLogoImg} />
+        <div className="LoadingMaimu_Wrapper">
+          <div className="ThreeBubbles">
+            <img src={ThreeBubbles} alt="" aria-hidden="true" />
+          </div>
+          <img className="GreyMaimu" src={getMaimuImage()} alt="" aria-hidden="true" />
+          <p className="CheckTaste_C" role="status" aria-live="polite">
+            마이무 맛 확인 중
+          </p>
+          {/* 막대가 차는 시간(2s)이 실제 대기 시간과 같다 */}
+          <div className="LoadingBar" aria-hidden="true">
+            <i />
+          </div>
+          {/* 2초를 그냥 기다리게만 두지 않고 건너뛸 수 있게 한다 */}
+          <button type="button" className="SkipHint" onClick={goNext}>
+            바로 확인하기
+          </button>
         </div>
-          <img className="GreyMaimu" src={getMaimuImage()} alt="Maimu" />
-        <p className="CheckTaste_C">마이무 맛 확인 중 ...</p>
-      </div>
       </div>
     </div>
   );

@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
+// 반드시 App(=각 페이지 CSS) 다음에 와야 동일 우선순위 규칙에서 이 레이어가 이긴다.
+import './polish.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

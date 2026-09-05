@@ -9,11 +9,15 @@ body {
 
 .WebAppFrame {
   color: black;
-  height: calc(var(--vh, 1vh) * 100);
   display: flex;
   justify-content: center;
   /* align-items: center; */
-  height: 100vh;
+
+  /* App.js 가 --vh 를 계산해 두지만 바로 아래에 있던 height: 100vh 가 그걸
+     덮어써서 모바일 주소창 대응이 작동한 적이 없었다. 아래로 갈수록 우선.
+     1) --vh (JS 폴백)  2) dvh 지원 브라우저에서는 JS 없이도 정확 */
+  height: calc(var(--vh, 1vh) * 100);
+  height: 100dvh;
 }
 
 .Frame {
@@ -25,8 +29,7 @@ body {
   height: 100%;
   min-height: 844px;
   max-height: 844px;
-  overflow-y: auto;
-  overflow-y: hidden;
+  overflow-y: hidden; /* 위에 있던 overflow-y: auto 는 이 줄에 덮여 죽은 선언이라 제거 */
   overflow-x: hidden;
 }
 

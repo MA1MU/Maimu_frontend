@@ -1,111 +1,304 @@
-.MyPage {
+/* 프로필 수정 화면.
+   회원가입 화면(MyPage.js)이 .MyPage / .NicknameInput 등 같은 클래스명을 쓰고
+   CSS 가 전역이므로, 이 화면은 .ProfileSettings 아래로 전부 스코프한다.
+   색상은 서비스에 이미 쓰이는 값만 사용 (#ea4da4 #edecec #434343 #6d6d6d #787878 #d9d9d9). */
+
+.ProfileSettings {
   width: 100%;
-  background-color: rgb(255, 255, 255);
-}
-
-
-.SmallLogoImg {
-  margin: 78px 0 0 0;
-}
-
-.CitronBackground {
-  background: linear-gradient(
-    180deg,
-    #fffac8 0%,
-    rgba(255, 255, 255, 0) 35.06%
-  );
-}
-
-.PlumBackground {
-  background: linear-gradient(
-    180deg,
-    #eeffbd 0%,
-    rgba(255, 255, 255, 0) 35.06%
-  );
-}
-
-.PomegranateBackground {
-  background: linear-gradient(
-    180deg,
-    #ffecf1 0%,
-    rgba(255, 255, 255, 0) 35.06%
-  );
-}
-
-.ProfileImage {
-  margin-top: 90.83px;
-}
-
-.ProfileEditButon {
-  width: 37px;
-  height: 37px;
-  position: relative;
-    top: -486px;
-    left: 57px;
-}
-
-.Nickname {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1px;
-}
-
-.NicknameInput {
-  width: 213px;
-  height: 56px;
-  border-radius: 10px;
-  background: #edecec;
-  margin-top: 16px;
-  padding-left: 16px;
-  border: none;
-  border: 1px solid transparent;
+  min-height: 100%;
   box-sizing: border-box;
-  color: #000;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
+  padding-bottom: 40px;
+  background-color: #fff;
 }
 
-input:focus {
-  outline: 1px solid #ea4da4;
-}
-
-.Birth {
-  margin-top: 19px;
-}
-
-.MyPage .Confirmation {
-  border-radius: 10px;
-  color: #fff;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  width: 100px;
-  height: 43px;
-  background: #ea4da4;
-  border: none;
-  margin-top: 95px;
-  cursor: pointer;
-}
-
-.MyPage .MyPageGroup{
+/* ── 헤더: 돌아갈 길이 없던 화면이라 뒤로가기를 만든다 ─────────────── */
+.ProfileSettings .PsHeader {
+  position: relative;
   display: flex;
-  flex-direction: row;
-  margin-top: 17px;
-}
-
-.MyPage p{
-  text-decoration: underline;
-  margin: 0 28px 0 28px;
-  padding: 0;
-  cursor: pointer;
-}
-
-.MyPageButtonGroup{
-  display: flex;
+  align-items: center;
   justify-content: center;
+  height: 56px;
+  /* 앱 컬럼(390px) 폭에 맞춘다. 창이 넓어도 뒤로가기가 본문에서 떨어지지 않는다. */
+  width: 390px;
+  max-width: 100%;
+  margin: 8px auto 0;
+  box-sizing: border-box;
+}
+.ProfileSettings .PsTitle {
+  margin: 0;
+  color: #1c1c1c;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.ProfileSettings .PsBack {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  translate: 0 -50%;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.16s ease, scale 0.16s ease;
+}
+.ProfileSettings .PsBack img {
+  width: 10px;
+  height: 18px;
+}
+@media (hover: hover) {
+  .ProfileSettings .PsBack:hover {
+    background: rgba(17, 12, 18, 0.06);
+  }
+}
+.ProfileSettings .PsBack:active {
+  scale: 0.9;
+}
+
+/* ── 본문 ─────────────────────────────────────────────────────────── */
+.ProfileSettings .PsBody {
+  width: 326px;
+  margin: 0 auto;
+}
+
+/* 프로필 이미지 + 변경 버튼 */
+.ProfileSettings .PsAvatarBlock {
+  display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 12px;
+}
+.ProfileSettings .PsAvatar {
+  position: relative;
+  width: 155px;
+  height: 156px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: scale 0.18s cubic-bezier(0.34, 1.42, 0.64, 1);
+}
+@media (hover: hover) {
+  .ProfileSettings .PsAvatar:hover {
+    scale: 1.03;
+  }
+}
+.ProfileSettings .PsAvatar:active {
+  scale: 0.97;
+}
+.ProfileSettings .PsAvatarImg {
+  width: 155px;
+  height: 156px;
+  object-fit: contain; /* 프로필 SVG 3종 치수가 달라서(155x156 / 150x150) 상자를 고정한다 */
+}
+.ProfileSettings .PsAvatarBadge {
+  position: absolute;
+  right: 4px;
+  bottom: 8px;
+  width: 37px;
+  height: 37px;
+  pointer-events: none;
+}
+.ProfileSettings .PsAvatarLabel {
+  margin-top: 6px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #6d6d6d;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: color 0.16s ease, background-color 0.16s ease;
+}
+@media (hover: hover) {
+  .ProfileSettings .PsAvatarLabel:hover {
+    color: #ea4da4;
+    background: rgba(234, 77, 164, 0.08);
+  }
 }
 
+/* ── 입력 필드 ────────────────────────────────────────────────────── */
+.ProfileSettings .PsField {
+  margin-top: 28px;
+}
+.ProfileSettings .PsFieldTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.ProfileSettings .PsLabel {
+  display: block;
+  color: #434343;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.ProfileSettings .PsCount {
+  color: #a4a4a4;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.ProfileSettings .PsCount.isMax {
+  color: #ea4da4;
+}
+
+.ProfileSettings .PsInput {
+  width: 100%;
+  height: 52px;
+  box-sizing: border-box;
+  padding: 0 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: #edecec;
+  color: #000;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  caret-color: #ea4da4;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+.ProfileSettings .PsInput::placeholder {
+  color: #a4a4a4;
+  font-weight: 500;
+}
+.ProfileSettings .PsInput:focus {
+  outline: none;
+  border-color: #ea4da4;
+  box-shadow: 0 0 0 3px rgba(234, 77, 164, 0.18);
+}
+
+/* ── 생년월일: 커스텀 드롭다운 대신 네이티브 select ────────────────── */
+.ProfileSettings .PsBirthRow {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr 1fr;
+  gap: 8px;
+}
+.ProfileSettings .PsSelect {
+  width: 100%;
+  height: 52px;
+  box-sizing: border-box;
+  padding: 0 30px 0 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background-color: #edecec;
+  background-image: url("../../images/MyPage/SelectorArrow.svg");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 9px 5px;
+  appearance: none;
+  -webkit-appearance: none;
+  color: #000;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+.ProfileSettings .PsSelect:invalid {
+  color: #6d6d6d; /* 아직 고르지 않은 상태 */
+}
+.ProfileSettings .PsSelect:focus {
+  outline: none;
+  border-color: #ea4da4;
+  box-shadow: 0 0 0 3px rgba(234, 77, 164, 0.18);
+}
+
+/* ── 하단: 저장 + 보조 동작 ───────────────────────────────────────── */
+.ProfileSettings .PsFooter {
+  width: 326px;
+  margin: 36px auto 0;
+}
+.ProfileSettings .PsSave {
+  width: 100%;
+  height: 56px;
+  border: none;
+  border-radius: 12px;
+  background: #ea4da4;
+  color: #fff;
+  font-family: inherit;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(17, 12, 18, 0.07), 0 8px 20px rgba(17, 12, 18, 0.08);
+  transition: translate 0.16s ease, scale 0.16s ease, filter 0.16s ease,
+    background-color 0.16s ease, box-shadow 0.16s ease;
+}
+@media (hover: hover) {
+  .ProfileSettings .PsSave:not(:disabled):hover {
+    translate: 0 -1px;
+    filter: brightness(1.05);
+  }
+}
+.ProfileSettings .PsSave:not(:disabled):active {
+  scale: 0.985;
+  filter: brightness(0.97);
+}
+.ProfileSettings .PsSave:disabled {
+  background: #d9d9d9;
+  color: #787878;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+
+.ProfileSettings .PsSecondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 22px;
+}
+.ProfileSettings .PsTextBtn {
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #6d6d6d;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: color 0.16s ease, background-color 0.16s ease;
+}
+@media (hover: hover) {
+  .ProfileSettings .PsTextBtn:hover {
+    background: rgba(17, 12, 18, 0.05);
+    color: #434343;
+  }
+}
+/* 탈퇴는 되돌릴 수 없는 동작이라 로그아웃과 같은 무게로 두지 않는다 */
+.ProfileSettings .PsTextBtn.isDanger {
+  color: #a4a4a4;
+  font-weight: 500;
+}
+@media (hover: hover) {
+  .ProfileSettings .PsTextBtn.isDanger:hover {
+    color: #787878;
+  }
+}
+.ProfileSettings .PsDot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #d9d9d9;
+}
+
+.ProfileSettings button:focus-visible,
+.ProfileSettings select:focus-visible {
+  outline: 3px solid rgba(234, 77, 164, 0.35);
+  outline-offset: 2px;
+}

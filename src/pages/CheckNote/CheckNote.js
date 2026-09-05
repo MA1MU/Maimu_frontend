@@ -140,13 +140,20 @@ const CheckNote = () => {
   return (
     <div className={`CheckNote ${getBackgroundClass()}`}>
       <div className="Header">
-        <img className="SmallLogo" alt="" src={SmallLogoImg} />
+        <img className="SmallLogo" alt="MAIMU" src={SmallLogoImg} />
       </div>
 
-      <div className="FavoriteSection" onClick={handleFavoriteToggle}>
-        <img src={isFavorite ? FavoriteOn : FavoriteOff} alt="favorite" />
-        <p>즐겨찾기 설정</p>
-      </div>
+      {/* div onClick 이라 키보드로 쓸 수 없었고, 라벨이 항상 "즐겨찾기 설정" 이라
+          지금 켜져 있는지 꺼져 있는지 알 수 없었다. */}
+      <button
+        type="button"
+        className="FavoriteSection"
+        onClick={handleFavoriteToggle}
+        aria-pressed={isFavorite}
+      >
+        <img src={isFavorite ? FavoriteOn : FavoriteOff} alt="" aria-hidden="true" />
+        <p>{isFavorite ? "즐겨찾기 해제" : "즐겨찾기"}</p>
+      </button>
 
       <div className="CheckNote_Box">
         <div>
@@ -162,11 +169,13 @@ const CheckNote = () => {
                 {maimu.message}
               </div>
             </div>
-            <div className="Note_Date">
-              <p>{formatDate(maimu?.createdAt)}</p>
-            </div>
-            <div className={`Note_NickName_Wrapper ${getBackgroundClass()}`}>
-              <p>{maimu?.anonymous ? "익명" : maimu?.writerName}</p>
+            {/* 날짜와 작성자를 한 줄로 묶는다.
+                (작성자 칸이 margin-left: 179px 로 밀려 있던 것을 flex 로 대체) */}
+            <div className="Note_Footer">
+              <p className="Note_Date">{formatDate(maimu?.createdAt)}</p>
+              <div className={`Note_NickName_Wrapper ${getBackgroundClass()}`}>
+                <p>{maimu?.anonymous ? "익명" : maimu?.writerName}</p>
+              </div>
             </div>
           </>
         ) : (

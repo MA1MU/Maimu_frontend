@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import "./SendNote.css";
@@ -26,22 +26,35 @@ const SendNote = () => {
   return (
     <div className="SendNote">
       <div className="Header">
-        <img className="SmallLogo" alt="ShareButton" src={SmallLogoImg} />
+        <img className="SmallLogo" alt="MAIMU" src={SmallLogoImg} />
       </div>
-      <div className="GroupName">{groupName}</div>
-      <div className="ShareButton_Wrapper">
-        <img className="ShareButton" alt="ShareButton" src={ShareButton} />
+
+      <div className="SendNote_Hero">
+        <img className="ShareButton" alt="" aria-hidden="true" src={ShareButton} />
       </div>
-      <p className="SendNote_MSG">
-        쪽지가 성공적으로 <br />
-        전송되었습니다
+
+      <h1 className="SendNote_MSG" role="status" aria-live="polite">
+        쪽지를 보냈어요!
+      </h1>
+      <p className="SendNote_Sub">
+        {groupName ? (
+          <>
+            <b>{groupName}</b> 사물함에 잘 전달됐어요.
+            <br />
+            내 첫인상은 어떨지 궁금하지 않나요?
+          </>
+        ) : (
+          "쪽지가 잘 전달됐어요."
+        )}
       </p>
-      <div className="SendNote_Button" onClick={navigateToWriteDetailPage}>
-        확인
-      </div>
-      <div className="ToStartPage_Button" onClick={navigateToStartPage}>
+
+      {/* 게스트가 서비스를 처음 만나는 순간이라, 내 사물함 만들기를 주 동작으로 둔다 */}
+      <button type="button" className="ToStartPage_Button" onClick={navigateToStartPage}>
         나도 마이무 받으러 가기
-      </div>
+      </button>
+      <button type="button" className="SendNote_Button" onClick={navigateToWriteDetailPage}>
+        쪽지 하나 더 쓰기
+      </button>
     </div>
   );
 };

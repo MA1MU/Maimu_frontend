@@ -37,16 +37,53 @@
   grid-template-rows: 174px 174px 174px;
   gap: 3px;
   justify-content: center;
-  margin: 37px 0 0 0;
+  /* 하단 액션 바(높이 58px + 아래 여백 28px)가 맨 아랫줄을 가리지 않도록 확보.
+     화면이 낮아도 스크롤하면 마지막 줄이 바 위로 올라온다. */
+  margin: 37px 0 104px 0;
 }
 
 
+/* 이 두 아이콘은 JSX 맨 끝(모달들 뒤)에 렌더된 뒤 position: relative 의
+   bottom: 712px / 760px 로 헤더까지 끌어올려져 있었다. relative 오프셋은
+   '흐름상 원래 자리'를 기준으로 하므로, 아래쪽 콘텐츠 높이가 조금만 달라져도
+   아이콘 전체가 어긋난다. 흐름과 무관하게 .Frame(position: relative) 기준으로
+   고정한다. 좌표는 기존 렌더 결과 그대로:
+   로고(top 78px, 높이 32px)와 수직 중심 94px 일치, 가로는 중앙에서 -141 / +147px. */
 .HelpIcon {
   width: 42px;
   height: 42px;
-  position: relative;
-  right: 141px;
-  bottom: 712px;
+  position: absolute;
+  top: 73px;
+  left: calc(50% - 141px);
+  translate: -50% 0;
+
+  /* <img onClick> 이던 것을 진짜 button 으로 바꿨다(키보드 접근 가능).
+     기본 버튼 스타일은 지우고 원래 보이던 모습을 유지한다. */
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: scale 0.18s cubic-bezier(0.34, 1.42, 0.64, 1),
+    filter 0.18s ease;
+}
+.HelpIcon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+@media (hover: hover) {
+  .HelpIcon:hover {
+    scale: 1.1;
+    filter: drop-shadow(0 3px 8px rgba(17, 12, 18, 0.2));
+  }
+}
+.HelpIcon:active {
+  scale: 0.92;
+}
+.HelpIcon:focus-visible {
+  outline: 3px solid rgba(234, 77, 164, 0.35);
+  outline-offset: 3px;
+  border-radius: 50%;
 }
 
 .MainPage .SmallLogo {
@@ -56,9 +93,38 @@
 .ProfilePomegranate {
   width: 55px;
   height: 55px;
-  position: relative;
-  left: 147px;
-  bottom: 760px;
+  position: absolute;
+  top: 67px;
+  left: calc(50% + 147px);
+  translate: -50% 0;
+
+  /* <img onClick> 이던 것을 button 으로 교체(키보드 접근). 기본 버튼 스타일 제거. */
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: scale 0.18s cubic-bezier(0.34, 1.42, 0.64, 1), filter 0.18s ease;
+}
+.ProfilePomegranate img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  /* 프로필 SVG 3종 비율이 서로 다르다(155x156 / 150x150). 찌그러뜨리지 않는다. */
+  object-fit: contain;
+}
+@media (hover: hover) {
+  .ProfilePomegranate:hover {
+    scale: 1.1;
+    filter: drop-shadow(0 3px 8px rgba(17, 12, 18, 0.2));
+  }
+}
+.ProfilePomegranate:active {
+  scale: 0.92;
+}
+.ProfilePomegranate:focus-visible {
+  outline: 3px solid rgba(234, 77, 164, 0.35);
+  outline-offset: 3px;
+  border-radius: 50%;
 }
 
 
@@ -84,4 +150,15 @@
 
 .clicked {
   background-color: #ea4da4;
+}
+
+/* 그룹이 하나도 없을 때만 보이는 안내. 빈 사물함이 눌러도 되는 것임을 알린다. */
+.EmptyGuide {
+  width: 326px;
+  margin: 18px auto -14px;
+  text-align: center;
+  color: #8a8a8a;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }

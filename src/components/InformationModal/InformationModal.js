@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 
@@ -11,18 +11,42 @@ import InformationToggle from "../../images/StartPage/InformationToggle.svg";
 import InformationXButton from "../../images/StartPage/InformationXButton.svg";
 
 function InformationModal({ isInformationOpen, closeInformationModal, page }) {
+  // 기존에는 X 버튼으로만 닫을 수 있었다. Esc 로도 닫는다.
+  useEffect(() => {
+    if (!isInformationOpen) return;
+    const onKey = (e) => {
+      if (e.key === "Escape") closeInformationModal();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [isInformationOpen, closeInformationModal]);
+
   return (
     <div
       style={{
         display: isInformationOpen ? "block" : "none",
       }}
     >
-      <div className="InformationToggleOut">
+      {/* 어두운 배경을 누르면 닫힌다. 내용 위 클릭은 target 비교로 걸러진다. */}
+      <div
+        className="InformationToggleOut"
+        role="dialog"
+        aria-modal="true"
+        aria-label="마이무 이용 안내"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) closeInformationModal();
+        }}
+      >
         <div className="InformationToggle">
-          <img src={InformationToggle} alt="InformationToggle" />
-          <div className="InformationXBtn" onClick={closeInformationModal}>
-            <img src={InformationXButton} alt="InformationXButton" />
-          </div>
+          <img src={InformationToggle} alt="" aria-hidden="true" />
+          <button
+            type="button"
+            className="InformationXBtn"
+            onClick={closeInformationModal}
+            aria-label="안내 닫기"
+          >
+            <img src={InformationXButton} alt="" aria-hidden="true" />
+          </button>
         </div>
         <Swiper
           slidesPerView={1}

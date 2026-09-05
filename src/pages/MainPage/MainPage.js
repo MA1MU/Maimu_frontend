@@ -6,6 +6,7 @@ import ProfilePomegranate from "../../images/ProfilePomegranate.svg";
 import ProfileCitron from "../../images/ProfileCitron.svg";
 import ProfilePlum from "../../images/ProfilePlum.svg";
 import Modal from "../../components/Modal/Modal";
+import LockerActionBar from "../../components/LockerActionBar/LockerActionBar";
 import { useNavigate, useLocation } from "react-router-dom";
 import HelpIcon from "../../images/MainPage/HelpIcon.svg";
 import InformationModal from "../../components/InformationModal/InformationModal";
@@ -155,6 +156,13 @@ const MainPage = () => {
     setIsEditing(false);
   };
 
+  // 모드에서 명시적으로 빠져나오는 경로. 기존에는 같은 버튼을 다시 누르는 방법뿐이었다.
+  const exitMode = () => {
+    setIsEditing(false);
+    setIsDeleting(false);
+    setClickedButton(null);
+  };
+
   const onSave = (groupName, groupColor, group_id) => {
     if (clickedButton === "add") {
       const newGroup = {
@@ -180,18 +188,36 @@ const MainPage = () => {
   };
 
   const handleLockerClick = (index) => {
-    if (lockers[index].groupName !== "" && !isDeleting && !isEditing) {
+    const isEmpty = lockers[index].groupName === "";
+
+    if (!isEmpty && !isDeleting && !isEditing) {
       const encodedGroupName = encodeURI(lockers[index].groupName);
       const encodedGroupColor = encodeURI(lockers[index].groupColor);
       MoveToDetailPage(encodedGroupName, encodedGroupColor, lockers[index].group_id);
-    } else if (lockers[index].groupName !== "" && isEditing) {
+      return;
+    }
+
+    if (!isEmpty && isEditing) {
       setSelectedLocker(index);
       setModalOpen(true);
       setSelectedLockerInfo(lockers[index]);
-    } else {
-      setSelectedLocker(index);
-      setWarningModalOpen(true);
+      return;
     }
+
+    // 빈 사물함을 그냥 누른 경우: 기존에는 "그룹을 추가해주세요" 안내만 뜨고
+    // 정작 추가할 방법이 없는 막다른 길이었다. 그 자리에 바로 만들게 한다.
+    if (isEmpty && !isDeleting) {
+      setClickedButton("add");
+      setModalOpen(true);
+      setIsEditing(false);
+      setSelectedLocker(index);
+      setSelectedLockerInfo(null);
+      return;
+    }
+
+    // 삭제 모드에서 빈 사물함을 누른 경우 등은 기존 안내 그대로
+    setSelectedLocker(index);
+    setWarningModalOpen(true);
   };
 
   const handleWarningModalClose = () => {
@@ -269,6 +295,12 @@ const MainPage = () => {
 
         <img className="SmallLogo" alt="" src={SmallLogoImg} />
 
+        {lockers.every((locker) => locker.groupName === "") && (
+          <p className="EmptyGuide">
+            빈 사물함을 눌러 첫 그룹을 만들어보세요
+          </p>
+        )}
+
         <div className="LockerContainer">
           {lockers.map((locker, index) => (
             <Locker
@@ -283,44 +315,31 @@ const MainPage = () => {
           ))}
         </div>
 
-        <div className="EditGroup">
-          <button
-            className={`EditButton ${clickedButton === "add" ? "clicked" : ""}`}
-            onClick={() => addButtonClick("새 그룹")}
-          >
-            추가
-          </button>
-          <button
-            className={`EditButton ${clickedButton === "edit" && isEditing ? "clicked" : ""}`}
-            onClick={editButtonClick}
-          >
-            편집
-          </button>
-          <button
-            className={`EditButton ${
-              clickedButton === "delete" && isDeleting ? "clicked" : ""
-            }`}
-            onClick={delButtonClick}
-          >
-            삭제
-          </button>
+        <LockerActionBar
+          mode={isEditing ? "edit" : isDeleting ? "delete" : null}
+          count={lockers.filter((locker) => locker.groupName !== "").length}
+          onAdd={() => addButtonClick("새 그룹")}
+          onEdit={editButtonClick}
+          onDelete={delButtonClick}
+          onExit={exitMode}
+        />
 
-          {modalOpen && (
-            <Modal
-              isOpen={modalOpen}
-              onClose={() => {
-                setModalOpen(false);
-                setIsEditing(false);
-                setClickedButton(null);
-                setSelectedLocker(null);
-                setSelectedLockerInfo(null);
-              }}
-              onSave={onSave}
-              clickedButton={clickedButton}
-              locker={selectedLockerInfo} // 이 부분을 수정
-            />
-          )}
-        </div>
+        {modalOpen && (
+          <Modal
+            isOpen={modalOpen}
+            onClose={() => {
+              setModalOpen(false);
+              setIsEditing(false);
+              setClickedButton(null);
+              setSelectedLocker(null);
+              setSelectedLockerInfo(null);
+            }}
+            onSave={onSave}
+            clickedButton={clickedButton}
+            lockers={lockers}
+            locker={selectedLockerInfo}
+          />
+        )}
         <InformationModal
           isInformationOpen={isInformationModalOpen}
           closeInformationModal={closeInformationModal}
@@ -337,19 +356,28 @@ const MainPage = () => {
           />
         )}
 
-        <img
+        <button
+          type="button"
           className="HelpIcon"
-          alt="HelpIcon"
-          src={HelpIcon}
           onClick={openInformationModal}
-        />
+          aria-label="마이무 이용 안내 보기"
+          aria-haspopup="dialog"
+        >
+          <img src={HelpIcon} alt="" aria-hidden="true" />
+        </button>
 
-        <img
+        <button
+          type="button"
           className="ProfilePomegranate"
-          alt="ProfileButton"
-          src={getProfileImage(profileInfo)?.image || ProfilePomegranate}
           onClick={MoveToMyPage}
-        />
+          aria-label={`내 프로필${profileInfo ? ` (${profileInfo})` : ""} 수정`}
+        >
+          <img
+            src={getProfileImage(profileInfo)?.image || ProfilePomegranate}
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
       </div>
     </div>
   );

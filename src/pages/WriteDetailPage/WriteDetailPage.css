@@ -30,21 +30,6 @@
   margin-top: 38px;
 }
 
-.WriteDetailPage .SmallLogo {
-  margin-top: 78px;
-}
-
-.WriteDetailPage .WriteHelpIcon {
-  width: 50px;
-  height: 50px;
-  position: fixed;
-  top: 63px;
-  left: 50%;
-  margin-left: 100px;
-  cursor: pointer;
-  z-index: 100;
-}
-
 .WriteDetailPage .GroupName {
   width: 100%;
   height: 30px;
@@ -52,7 +37,7 @@
   margin-top: -1px;
   color: #000;
   background-color: rgba(255, 255, 255, 0);
-  font-family: Inter;
+  font-family: Inter, "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   font-size: 25px;
   font-style: normal;
   font-weight: 400;
@@ -83,4 +68,208 @@
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
+}
+
+/* ── 게스트 화면 정리 (로그인 화면과 같은 기준 적용) ────────────────── */
+
+/* 사물함 이름: Inter 만 지정돼 한글이 시스템 기본 글꼴로 떨어지고 weight 도 얇았다 */
+.WriteDetailPage .GroupName {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+}
+
+/* img onClick -> button 으로 바꿨으므로 기본 버튼 스타일 제거 */
+.WriteDetailPage .WriteHelpIcon {
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: scale 0.18s cubic-bezier(0.34, 1.42, 0.64, 1);
+}
+.WriteDetailPage .WriteHelpIcon img {
+  display: block;
+}
+@media (hover: hover) {
+  .WriteDetailPage .WriteHelpIcon:hover { scale: 1.08; }
+}
+.WriteDetailPage .WriteHelpIcon:active { scale: 0.92; }
+
+/* div onClick -> button. translateX(-50%) 중앙정렬은 그대로 유지된다 */
+.WriteDetailPage .WriteDetail_Button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.WriteDetailPage .WriteHelpIcon:focus-visible,
+.WriteDetailPage .WriteDetail_Button:focus-visible {
+  outline: 3px solid rgba(234, 77, 164, 0.35);
+  outline-offset: 3px;
+}
+
+/* ── 게스트 헤더: [여백] MAIMU [?] ─────────────────────────────────
+   도움말이 position: fixed 로 콘텐츠 위에 떠 있어 가리고 있었다. */
+.WriteDetailPage .GuestHeader {
+  width: 326px;
+  margin: 62px auto 0;
+  display: grid;
+  grid-template-columns: 44px 1fr 44px;
+  align-items: center;
+}
+.WriteDetailPage .GuestHeader .SmallLogo {
+  justify-self: center;
+  margin: 0;
+}
+.WriteDetailPage .WriteHelpIcon {
+  width: 44px;
+  height: 44px;
+  justify-self: end;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+  transition: scale 0.18s cubic-bezier(0.34, 1.42, 0.64, 1),
+    background-color 0.16s ease, filter 0.18s ease;
+}
+.WriteDetailPage .WriteHelpIcon img {
+  display: block;
+  width: 34px;
+  height: 34px;
+}
+@media (hover: hover) {
+  .WriteDetailPage .WriteHelpIcon:hover {
+    scale: 1.1;
+    filter: drop-shadow(0 3px 8px rgba(17, 12, 18, 0.2));
+  }
+}
+.WriteDetailPage .WriteHelpIcon:active { scale: 0.92; }
+.WriteDetailPage .WriteHelpIcon:focus-visible {
+  outline: 3px solid rgba(234, 77, 164, 0.35);
+  outline-offset: 3px;
+}
+
+.WriteDetailPage .GroupName {
+  width: 326px;
+  margin: 18px auto 0;
+}
+.WriteDetailPage .GuestSubtitle {
+  margin: 6px 0 0;
+  text-align: center;
+  color: #7b7b7b;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ── 쪽지 작성 CTA ──────────────────────────────────────────────────
+   흰 배경 + 4px 오프셋 그림자라 아래에 밋밋하게 놓여 있었고,
+   이 화면에서 유일한 행동인데 눈에 들어오지 않았다.
+   브랜드 색으로 채우고, 처음 도착했을 때 한 번 부드럽게 주의를 끈다. */
+.WriteDetailPage .WriteDetail_Button {
+  width: 326px;
+  height: 60px;
+  border-radius: 999px;
+  background: #ea4da4;
+  color: #fff;
+  font-family: "Pretendard", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  filter: none;
+  box-shadow: 0 6px 16px rgba(234, 77, 164, 0.35),
+    0 2px 6px rgba(17, 12, 18, 0.08);
+  transition: scale 0.18s cubic-bezier(0.34, 1.42, 0.64, 1),
+    box-shadow 0.2s ease, filter 0.18s ease;
+  animation: cta-in 0.5s cubic-bezier(0.34, 1.42, 0.64, 1) 0.35s both,
+    cta-nudge 2.8s ease-in-out 1.4s 2;
+}
+
+/* 등장 — translateX(-50%) 중앙정렬을 유지한 채 올라온다 */
+@keyframes cta-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+/* 한 번 툭 눌렀다 놓는 듯한 신호. 두 번만 반복하고 멈춘다(계속 흔들면 성가시다). */
+@keyframes cta-nudge {
+  0%, 88%, 100% { box-shadow: 0 6px 16px rgba(234, 77, 164, 0.35), 0 2px 6px rgba(17, 12, 18, 0.08); }
+  92%  { box-shadow: 0 6px 22px rgba(234, 77, 164, 0.55), 0 0 0 6px rgba(234, 77, 164, 0.14); }
+}
+
+@media (hover: hover) {
+  .WriteDetailPage .WriteDetail_Button:hover {
+    scale: 1.02;
+    filter: brightness(1.05);
+    box-shadow: 0 8px 22px rgba(234, 77, 164, 0.45), 0 2px 6px rgba(17, 12, 18, 0.08);
+  }
+}
+.WriteDetailPage .WriteDetail_Button:active {
+  scale: 0.97;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .WriteDetailPage .WriteDetail_Button { animation: none; }
+}
+
+/* ── 회색 마이무가 무엇인지 알려주는 안내 ────────────────────────────
+   처음 온 사람은 이게 뭔지 몰라 이것저것 눌러보게 된다.
+   개수를 먼저 말해주고, 왜 열 수 없는지 아래에서 설명한다. */
+.WriteDetailPage .GuestNoteCount {
+  width: 326px;
+  margin: 34px auto 0;
+  text-align: center;
+  color: #434343;
+  font-family: "Pretendard", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+
+.WriteDetailPage .DetailMaimu {
+  margin-top: 14px;
+}
+
+/* 누를 수 없는 자리 표시자임을 시각적으로도 낮춘다 */
+.WriteDetailPage .BlankMaimu {
+  opacity: 0.75;
+  cursor: default;
+  pointer-events: none;
+}
+
+.WriteDetailPage .GuestNoteHint,
+.WriteDetailPage .GuestEmptyHint {
+  width: 300px;
+  margin: 16px auto 0;
+  text-align: center;
+  color: #8a8a8a;
+  font-family: "Pretendard", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+.WriteDetailPage .GuestEmptyHint {
+  margin-top: 54px;
+  color: #6d6d6d;
+  font-size: 15px;
+  font-weight: 600;
 }

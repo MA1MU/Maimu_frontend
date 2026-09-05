@@ -1,54 +1,113 @@
+/* 쪽지를 여는 첫 화면(맛 확인 중).
+   기존에는 .SmallLogo margin 78/40 위에 .LoadingMaimu_Wrapper margin-top 123px 를
+   더 얹어 임의 여백으로 위치를 맞췄다. 흐름 + 중앙정렬로 다시 짠다. */
+
 .LoadingPage {
   width: 100%;
+  min-height: 100%;
 }
 
 .LoadingPage.CitronBackground {
-  background: linear-gradient(
-    180deg,
-    #fffac8 0%,
-    rgba(255, 255, 255, 0) 35.06%
-  );
+  background: linear-gradient(180deg, #fffac8 0%, rgba(255, 255, 255, 0) 35.06%);
 }
-
 .LoadingPage.PlumBackground {
-  background: linear-gradient(
-    180deg,
-    #eeffbd 0%,
-    rgba(255, 255, 255, 0) 35.06%
-  );
+  background: linear-gradient(180deg, #eeffbd 0%, rgba(255, 255, 255, 0) 35.06%);
 }
-
 .LoadingPage.PomegranateBackground {
-  background: linear-gradient(
-    180deg,
-    #ffecf1 0%,
-    rgba(255, 255, 255, 0) 35.06%
-  );
+  background: linear-gradient(180deg, #ffecf1 0%, rgba(255, 255, 255, 0) 35.06%);
 }
-
 
 .LoadingPage .SmallLogo {
-  margin: 78px 0 40px 0;
+  margin: 62px 0 0 0;
 }
 
 .LoadingMaimu_Wrapper {
-  margin-top: 123px;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 120px;
   text-align: center;
 }
 
-.LoadingPage .GreyMaimu {
-  margin-top: 16px;
+.LoadingPage .ThreeBubbles img {
+  display: block;
 }
 
 .CheckTaste_C {
+  margin: 0;
   color: #202020;
-
   text-align: center;
-  font-family: Inter;
-  font-size: 20px;
-  font-style: normal;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-size: 18px;
   font-weight: 700;
   line-height: 140%;
-  margin-top: 26px;
+  letter-spacing: -0.01em;
+}
+
+/* ── 진행 막대: 차오르는 시간(2s)이 실제 대기 시간과 같아 정직하다 ────── */
+.LoadingPage .LoadingBar {
+  width: 168px;
+  height: 6px;
+  margin-top: 2px;
+  border-radius: 999px;
+  background: rgba(17, 12, 18, 0.08);
+  overflow: hidden;
+}
+.LoadingPage .LoadingBar i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: 999px;
+  background: #ea4da4;
+  animation: loading-fill 2s cubic-bezier(0.35, 0, 0.2, 1) forwards;
+}
+@keyframes loading-fill {
+  to { width: 100%; }
+}
+
+/* 마이무가 살짝 떠오르며 기울어져 살아있는 느낌을 준다 */
+.LoadingPage .GreyMaimu {
+  animation: maimu-bob 1.6s ease-in-out infinite;
+}
+@keyframes maimu-bob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-9px) rotate(2deg); }
+}
+
+.LoadingPage .SkipHint {
+  margin-top: 24px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: #9a9a9a;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: color 0.16s ease, background-color 0.16s ease;
+}
+@media (hover: hover) {
+  .LoadingPage .SkipHint:hover {
+    color: #6d6d6d;
+    background: rgba(17, 12, 18, 0.05);
+  }
+}
+.LoadingPage .SkipHint:focus-visible {
+  outline: 3px solid rgba(234, 77, 164, 0.35);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .LoadingPage .LoadingBar i {
+    animation: none;
+    width: 100%;
+  }
+  .LoadingPage .GreyMaimu {
+    animation: none;
+  }
 }

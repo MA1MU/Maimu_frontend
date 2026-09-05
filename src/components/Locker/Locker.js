@@ -29,7 +29,9 @@ const Locker = ({ GroupName, groupColor, unreadMaimuCount, isEditing, isDeleting
     <div className='Locker' onClick={onClick}>
       <img className='LockerIcon' src={lockerIcon} alt='LockerIcon' onClick={onClick}/>
       <div className='GroupName'>{GroupName}</div>
-      {unreadMaimuCount > 0 && (
+      {/* 안읽음 배지는 CheckCircle / EditIcon 과 좌표(top -227px, right -87px)가
+          완전히 같아서, 편집·삭제 모드에서는 겹쳐 보인다. 모드일 때는 숨긴다. */}
+      {unreadMaimuCount > 0 && !isEditing && !isDeleting && (
         <div className='UnreadBadge'>{unreadMaimuCount}</div>
       )}
       {GroupName && isDeleting ? <div className='CheckCircle'></div> : null}

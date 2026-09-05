@@ -29,7 +29,7 @@
   color: #000;
   background-color: rgba(255, 255, 255, 0);
 
-  font-family: Inter;
+  font-family: Inter, "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   font-size: 25px;
   font-style: normal;
   font-weight: 400;
@@ -70,13 +70,8 @@
   align-items: center;
   justify-content: center;
 
-  color: #fff;
-  font-family: Pretendard;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-
+  /* 아래 타이포그래피 블록에 전부 덮여 죽어 있던 선언 제거
+     (color: #fff 는 흰 배경 위 흰 글자였다) */
   position: absolute;
   margin-top: 4px;
   left: 50%;
@@ -95,7 +90,6 @@
   height: 56px;
   flex-shrink: 0;
   border-radius: 10px;
-  border-radius: 10px;
   background: #ea4da4;
 
   display: flex;
@@ -113,4 +107,170 @@
   bottom: 53px;
   left: 50%;
   transform: translateX(-50%);
+}
+
+/* ── div onClick -> button 전환에 따른 기본 스타일 제거 ─────────────── */
+.SendNote .SendNote_Button,
+.SendNote .ToStartPage_Button {
+  font-family: inherit;
+  cursor: pointer;
+  transition: scale 0.16s ease, filter 0.16s ease;
+}
+@media (hover: hover) {
+  .SendNote .SendNote_Button:hover,
+  .SendNote .ToStartPage_Button:hover { filter: brightness(1.05); }
+}
+.SendNote .SendNote_Button:active,
+.SendNote .ToStartPage_Button:active { scale: 0.97; }
+.SendNote .SendNote_Button:focus-visible,
+.SendNote .ToStartPage_Button:focus-visible {
+  outline: 3px solid rgba(234, 77, 164, 0.35);
+  outline-offset: 3px;
+}
+
+/* 사물함 이름 글꼴 통일 */
+.SendNote .GroupName {
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+/* =====================================================================
+   전송 완료 화면 재구성.
+   게스트가 이 서비스를 처음 만나는 마지막 순간이라, 완료를 축하해 주고
+   "나도 받아보고 싶다" 로 이어지는 동선을 주 동작으로 둔다.
+   ===================================================================== */
+
+.SendNote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+  padding-bottom: 40px;
+  box-sizing: border-box;
+}
+
+.SendNote .Header {
+  margin-top: 62px;
+}
+.SendNote .SmallLogo {
+  margin: 0;
+}
+
+.SendNote .SendNote_Hero {
+  margin-top: 66px;
+  display: flex;
+  justify-content: center;
+  animation: send-pop 0.55s cubic-bezier(0.34, 1.5, 0.64, 1) both;
+}
+.SendNote .SendNote_Hero .ShareButton {
+  display: block;
+  width: 150px;
+  height: auto;
+  position: static;
+  margin: 0;
+  animation: send-float 3s ease-in-out 0.6s infinite;
+}
+@keyframes send-pop {
+  from { opacity: 0; transform: translateY(16px) scale(0.8); }
+}
+@keyframes send-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-7px); }
+}
+
+.SendNote .SendNote_MSG {
+  width: 326px;
+  margin: 26px 0 0;
+  text-align: center;
+  color: #1c1c1c;
+  font-family: "Pretendard", -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  animation: send-fade 0.45s ease-out 0.18s both;
+}
+
+.SendNote .SendNote_Sub {
+  width: 300px;
+  margin: 10px 0 0;
+  text-align: center;
+  color: #7b7b7b;
+  font-family: "Pretendard", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+  animation: send-fade 0.45s ease-out 0.26s both;
+}
+.SendNote .SendNote_Sub b {
+  color: #ea4da4;
+  font-weight: 700;
+}
+
+@keyframes send-fade {
+  from { opacity: 0; transform: translateY(10px); }
+}
+
+/* 주 동작: 내 사물함 만들러 가기 */
+.SendNote .ToStartPage_Button {
+  position: static;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  width: 326px;
+  height: 58px;
+  margin: 40px 0 0;
+  border: none;
+  border-radius: 999px;
+  background: #ea4da4;
+  color: #fff;
+  font-family: "Pretendard", sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  box-shadow: 0 6px 16px rgba(234, 77, 164, 0.35), 0 2px 6px rgba(17, 12, 18, 0.08);
+  animation: send-fade 0.45s ease-out 0.34s both;
+}
+
+/* 보조 동작: 같은 사물함에 하나 더 */
+.SendNote .SendNote_Button {
+  position: static;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  width: 326px;
+  height: 52px;
+  margin: 10px 0 0;
+  border: 1px solid rgba(17, 12, 18, 0.14);
+  border-radius: 999px;
+  background: #fff;
+  color: #6d6d6d;
+  font-family: "Pretendard", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  box-shadow: none;
+  animation: send-fade 0.45s ease-out 0.4s both;
+}
+
+@media (hover: hover) {
+  .SendNote .ToStartPage_Button:hover { filter: brightness(1.05); scale: 1.02; }
+  .SendNote .SendNote_Button:hover { background: #f7f7f7; color: #434343; }
+}
+.SendNote .ToStartPage_Button:active,
+.SendNote .SendNote_Button:active { scale: 0.97; }
+
+@media (prefers-reduced-motion: reduce) {
+  .SendNote .SendNote_Hero,
+  .SendNote .SendNote_Hero .ShareButton,
+  .SendNote .SendNote_MSG,
+  .SendNote .SendNote_Sub,
+  .SendNote .ToStartPage_Button,
+  .SendNote .SendNote_Button { animation: none; }
 }

@@ -1,140 +1,211 @@
-
+/* 그룹 추가/편집 모달.
+   기존에는 내용물을 전부 position: fixed 로 만들고 margin: 372px 184px 37px 33px
+   같은 값으로 배치해서, 컨테이너에 transform/backdrop-filter 만 걸어도 기준 상자가
+   바뀌어 레이아웃이 무너졌다. 일반 흐름으로 다시 짠다.
+   색상은 서비스에 이미 쓰이는 값만 사용. */
 
 .ModalContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-  }
-  
-  .ModalContainer .ModalContent {
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    width: 337px;
-    height: 470px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;  
-    border-radius: 20px;
-    border: 1px solid #000;
-    
-  }
-
-  .ModalContainer .ModalTitle{
-    display: flex;
-    width: 183px;
-    height: 40px;
-    color: #000;
-    font-size: 24px;
-    font-style: normal;
-    font-weight: 600;
-    justify-content: center;
-    text-align: center;
-    margin-top: 29px;
-}
-
-.ModalContainer .GroupText{
-  margin-top: 96px;
-}
-  
-.ModalContainer  .CloseButton {
-    cursor: pointer;
-    width: 121px;
-    height: 44px;
-    border-radius: 10px;
-    border: 1px solid #787878;
-    background: #FFF;
-    color: #1C1C1C;
-    text-align: center;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    margin-right: 20px;
-}
-
-.ModalContainer .GroupName{
-    width: 272px;
-    height: 45px;
-    border-radius: 10px;
-    background: #F1F1F1;
-    margin-top: 142px;
-    border: none;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    padding-left: 18px;
-    box-sizing: border-box;
-}
-
-
-
-.ModalContainer h1 {
-    display: flex;
-    width: 272px;
-    flex-direction: column;
-    justify-content: center;
-    color: #000;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 700;
-    margin: 26px 0 0 0;
-    padding: 0;
-}
-
-.ModalContainer .SaveButton{
-  width: 122px;
-  height: 44px;
-  border-radius: 10px;
-  background: #EA4DA4;
-  color: #FFF;
-  text-align: center;
-  font-family: Inter;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 600;
-  border: none;
-}
-
-.ModalContainer .ButtonContainer{
-  margin-top: 372px;
-}
-
-.ModalContainer .ModalTitle,
-.ModalContainer .GroupText,
-.ModalContainer .CloseButton,
-.ModalContainer .GroupName,
-.ModalContainer h1,
-.ModalContainer .SaveButton,
-.ModalContainer .ButtonContainer {
   position: fixed;
-  /* 다른 스타일 속성들 */
-}
-
-.ModalContainer .GroupNameText{
-  margin-top: 96px;
-}
-
-.ModalContainer .GroupText{
-  margin-top: 216px;
-}
-
-.ModalContainer .GroupColorDropdown{
-  margin-top: 260px;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  /* 본문 요소들(안읽음 배지, 액션 바)보다 위여야 한다. */
   z-index: 1000;
 }
 
-.ModalContainer .CloseButton{
-  margin: 372px 184px 37px 33px;
+.ModalContainer .ModalContent {
+  width: 327px;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 24px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 20px;
+  border: 1px solid #000;
+  box-shadow: 0 6px 16px rgba(17, 12, 18, 0.09), 0 20px 48px rgba(17, 12, 18, 0.13);
+  animation: modal-pop 0.26s cubic-bezier(0.34, 1.42, 0.64, 1) both;
+}
+@keyframes modal-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
+  }
 }
 
-.ModalContainer .SaveButton{
-  margin: 372px 40px 37px 175px;
-
+.ModalContainer .ModalTitle {
+  margin: 0 0 20px;
+  color: #000;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
+/* ── 필드 ──────────────────────────────────────────────────────── */
+.ModalContainer .ModalField + .ModalField {
+  margin-top: 20px;
+}
+.ModalContainer .ModalFieldTop {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.ModalContainer .ModalLabel {
+  color: #434343;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.ModalContainer .ModalCount {
+  color: #a4a4a4;
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.ModalContainer .ModalCount.isMax {
+  color: #ea4da4;
+}
+
+.ModalContainer .GroupName {
+  width: 100%;
+  height: 48px;
+  box-sizing: border-box;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: #f1f1f1;
+  color: #000;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  caret-color: #ea4da4;
+  transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+.ModalContainer .GroupName::placeholder {
+  color: #a4a4a4;
+  font-weight: 500;
+}
+.ModalContainer .GroupName:focus {
+  outline: none;
+  border-color: #ea4da4;
+  box-shadow: 0 0 0 3px rgba(234, 77, 164, 0.18);
+}
+
+/* ── 색상 선택: 드롭다운 대신 사물함 미리보기 ────────────────────── */
+.ModalContainer .ColorChoices {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.ModalContainer .ColorChoice {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 0 8px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: #f7f7f7;
+  color: #787878;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease,
+    color 0.16s ease, scale 0.16s ease;
+}
+.ModalContainer .ColorChoice img {
+  width: 40px;
+  height: 61px;
+  pointer-events: none;
+}
+@media (hover: hover) {
+  .ModalContainer .ColorChoice:hover {
+    background: #f1f1f1;
+  }
+}
+.ModalContainer .ColorChoice:active {
+  scale: 0.96;
+}
+.ModalContainer .ColorChoice.isSelected {
+  border-color: #ea4da4;
+  background: rgba(234, 77, 164, 0.08);
+  color: #ea4da4;
+}
+
+/* ── 버튼 ──────────────────────────────────────────────────────── */
+.ModalContainer .ButtonContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 24px;
+}
+.ModalContainer .CloseButton,
+.ModalContainer .SaveButton {
+  height: 48px;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: translate 0.16s ease, scale 0.16s ease, filter 0.16s ease,
+    background-color 0.16s ease;
+}
+.ModalContainer .CloseButton {
+  border: 1px solid #787878;
+  background: #fff;
+  color: #1c1c1c;
+}
+.ModalContainer .SaveButton {
+  border: none;
+  background: #ea4da4;
+  color: #fff;
+}
+@media (hover: hover) {
+  .ModalContainer .CloseButton:hover {
+    background: #f7f7f7;
+  }
+  .ModalContainer .SaveButton:not(:disabled):hover {
+    translate: 0 -1px;
+    filter: brightness(1.05);
+  }
+}
+.ModalContainer .CloseButton:active,
+.ModalContainer .SaveButton:not(:disabled):active {
+  scale: 0.97;
+}
+/* polish.css 가 나중에 로드되어 .ModalContainer .SaveButton:hover 를 덮으므로,
+   비활성 상태는 더 높은 특이도로 못박아 hover 효과가 새지 않게 한다. */
+.ModalContainer .ModalContent .SaveButton:disabled,
+.ModalContainer .ModalContent .SaveButton:disabled:hover {
+  background: #d9d9d9;
+  color: #787878;
+  cursor: not-allowed;
+  translate: 0;
+  scale: 1;
+  filter: none;
+  box-shadow: none;
+}
+
+.ModalContainer button:focus-visible,
+.ModalContainer input:focus-visible {
+  outline: 3px solid rgba(234, 77, 164, 0.35);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ModalContainer .ModalContent {
+    animation: none;
+  }
+}

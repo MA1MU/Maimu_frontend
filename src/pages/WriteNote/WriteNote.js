@@ -6,7 +6,9 @@ import { ToastContainer, toast } from "react-toastify"; // toast 불러오기
 import "react-toastify/dist/ReactToastify.css"; // toast 스타일 추가
 import "./WriteNote.css";
 import SmallLogoImg from "../../images/SmallLogo.svg";
-import TasteDropdown from "../../components/TasteDropdown/TasteDropdown";
+import MaimuRed from "../../images/WriteDetailPage/MaimuRed.svg";
+import MaimuYellow from "../../images/WriteDetailPage/MaimuYellow.svg";
+import MaimuGreen from "../../images/WriteDetailPage/MaimuGreen.svg";
 
 const WriteNote = () => {
   const location = useLocation();
@@ -127,6 +129,19 @@ const WriteNote = () => {
     }
   };
 
+  // 맛은 서비스가 쓰는 세 가지. 친구가 받게 될 마이무 그림을 그대로 보여준다.
+  const TASTES = [
+    { name: "핑크", image: MaimuRed },
+    { name: "노랑", image: MaimuYellow },
+    { name: "초록", image: MaimuGreen },
+  ];
+
+  const canSend =
+    title.trim() !== "" &&
+    message.trim() !== "" &&
+    selectedColor !== "" &&
+    (isAnonymous || writerName.trim() !== "");
+
   // Note_T에서 enter키 막기
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
@@ -139,7 +154,7 @@ const WriteNote = () => {
       <div className="JustifyCenter">
         <ToastContainer />
         <div className="Header">
-          <img className="SmallLogo" alt="" src={SmallLogoImg} />
+          <img className="SmallLogo" alt="MAIMU" src={SmallLogoImg} />
         </div>
         <div className="WriteNote_Box">
           <div>
@@ -186,32 +201,73 @@ const WriteNote = () => {
             </div>
           </div>
         </div>
+        {/* 맛 · 닉네임 · 익명이 카드 밖에 흩어져 있어 한 폼으로 안 읽혔다. 카드 안으로 넣는다. */}
         <div className="Note_Info_Wrapper">
-          <TasteDropdown onTasteSelected={setSelectedColor} />
-          <div className="NickName_Wrapper">
-            <textarea
-              className={`Note_NickName ${isAnonymous ? "disabled" : ""}`}
-              placeholder="닉네임"
-              ref={Note_N_Ref}
-              value={writerName}
-              onKeyDown={handleKeyDown}
-              onChange={onInputHandler_NickName}
-              readOnly={isAnonymous} // 익명일 때 읽기 전용으로 설정
-            ></textarea>
-            {!isAnonymous && (
-              <p className="Count_NickName">
-                <span>{writerName.length}/5</span>
-              </p>
-            )}
+          <p className="Info_Label">마이무 맛</p>
+          <div className="TasteChoices" role="radiogroup" aria-label="마이무 맛">
+            {TASTES.map(({ name, image }) => (
+              <button
+                key={name}
+                type="button"
+                role="radio"
+                aria-checked={selectedColor === name}
+                className={`TasteChoice ${selectedColor === name ? "isSelected" : ""}`}
+                onClick={() => setSelectedColor(name)}
+              >
+                <img src={image} alt="" aria-hidden="true" />
+                {name}
+              </button>
+            ))}
           </div>
-          <div className="Anonymous_Wrapper" onClick={handleAnonymousChange}>
-            <p className="Anonymous_Text">익명</p>
-            <div className={`Anonymous_Checkbox ${isAnonymous ? "checked" : ""}`}></div>
+
+          <div className="WriterRow">
+            <div className="NickName_Wrapper">
+              <label className="Info_Label" htmlFor="writer-name">보내는 사람</label>
+              <input
+                id="writer-name"
+                type="text"
+                className={`Note_NickName ${isAnonymous ? "disabled" : ""}`}
+                placeholder={isAnonymous ? "익명으로 보냅니다" : "닉네임"}
+                ref={Note_N_Ref}
+                value={isAnonymous ? "" : writerName}
+                maxLength={5}
+                onChange={onInputHandler_NickName}
+                disabled={isAnonymous}
+              />
+              {!isAnonymous && (
+                <p className="Count_NickName">
+                  <span>{writerName.length}/5</span>
+                </p>
+              )}
+            </div>
+
+            <button
+              type="button"
+              className={`Anonymous_Wrapper ${isAnonymous ? "checked" : ""}`}
+              onClick={handleAnonymousChange}
+              aria-pressed={isAnonymous}
+            >
+              <span className={`Anonymous_Checkbox ${isAnonymous ? "checked" : ""}`} aria-hidden="true" />
+              <span className="Anonymous_Text">익명</span>
+            </button>
           </div>
         </div>
-        <div className="WriteNote_Button" onClick={handleSendNote}>
-          쪽지 보내기
-        </div>
+        <button
+          type="button"
+          className="WriteNote_Button"
+          onClick={handleSendNote}
+          disabled={!canSend}
+        >
+          {canSend
+            ? "쪽지 보내기"
+            : !title.trim()
+            ? "제목을 입력해주세요"
+            : !message.trim()
+            ? "내용을 입력해주세요"
+            : !selectedColor
+            ? "마이무 맛을 골라주세요"
+            : "보내는 사람을 입력해주세요"}
+        </button>
       </div>
     </div>
   );

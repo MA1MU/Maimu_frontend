@@ -1,119 +1,129 @@
+/* 확인/경고 모달.
+   기존에는 버튼을 margin-left: 116px 로 밀어 배치하고 삭제 버튼이 저장 버튼과
+   똑같은 분홍이라, 되돌릴 수 없는 동작인데도 무게가 같았다. 흐름 배치로 다시 짠다. */
+
 .WarningModal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1;
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  z-index: 1000; /* 본문 요소(배지/액션바)보다 위 */
+}
+
+.WarningModal .ModalContent {
+  width: 327px;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 32px 24px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  border: 1px solid #000;
+  box-shadow: 0 6px 16px rgba(17, 12, 18, 0.09), 0 20px 48px rgba(17, 12, 18, 0.13);
+  animation: warn-pop 0.26s cubic-bezier(0.34, 1.42, 0.64, 1) both;
+}
+@keyframes warn-pop {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.96);
   }
-  
+}
+
+.WarningModal p {
+  margin: 0;
+}
+
+.WarningModal .ModalMessage,
+.WarningModal .EmptyMessage {
+  margin: 0;
+  padding: 8px 0 4px;
+  box-sizing: border-box;
+  color: #000;
+  text-align: center;
+  font-family: Pretendard;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+
+.WarningModal .ModalButtons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  margin-top: 26px;
+}
+
+.WarningModal .CloseButton,
+.WarningModal .DeleteButton,
+.WarningModal .ConfirmButton {
+  width: 100%;
+  height: 48px;
+  margin: 0;
+  border-radius: 10px;
+  text-align: center;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: scale 0.16s ease, filter 0.16s ease, background-color 0.16s ease;
+}
+
+.WarningModal .CloseButton {
+  border: 1px solid #949494;
+  background: #fff;
+  color: #3a3a3a;
+}
+/* 삭제는 되돌릴 수 없다. 저장과 같은 분홍을 쓰지 않고 무채색으로 낮춘 뒤
+   테두리로만 구분해, 무심코 누르는 일을 줄인다. */
+.WarningModal .DeleteButton {
+  border: 1px solid #787878;
+  background-color: #787878;
+  color: white;
+}
+.WarningModal .ConfirmButton {
+  width: 100%;
+  margin-top: 26px;
+  border: none;
+  background: #ea4da4;
+  color: white;
+}
+
+@media (hover: hover) {
+  .WarningModal .CloseButton:hover {
+    background: #f7f7f7;
+  }
+  .WarningModal .DeleteButton:hover,
+  .WarningModal .ConfirmButton:hover {
+    filter: brightness(1.08);
+  }
+}
+.WarningModal .CloseButton:active,
+.WarningModal .DeleteButton:active,
+.WarningModal .ConfirmButton:active {
+  scale: 0.97;
+}
+
+.WarningModal button:focus-visible {
+  outline: 3px solid rgba(234, 77, 164, 0.35);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
   .WarningModal .ModalContent {
-    background-color: white;
-    width: 337px;
-    height: 313px;
-    border-radius: 20px;
-    border: 1px solid #000;
+    animation: none;
   }
-
-  .WarningModal p{
-    margin: 0;
-  }
-  
-  .WarningModal .ModalTitle {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-  }
-  
-  .WarningModal .ModalMessage {
-    font-size: 1rem;
-    margin-bottom: 20px;
-    padding: 57px;
-    box-sizing: border-box;
-    color: #000;
-    text-align: center;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 500;
-    line-height: 140%;
-  }
-  
-  .WarningModal .ModalButtons {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    text-align: center;
-  }
-  
-  .WarningModal .CloseButton,
-  .WarningModal .DeleteButton {
-    border: none;
-    cursor: pointer;
-
-  }
-  
-  .WarningModal .CloseButton {
-    width: 103px;
-    height: 44px;
-    border-radius: 10px;
-    border: 2px solid #949494;
-    background: #FFF;
-    color: #3A3A3A;
-    text-align: center;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 140%;
-    margin-right: 4px;
-  }
-  
- .WarningModal .DeleteButton {
-    background-color: #ea4da4;
-    color: white;
-    width: 103px;
-    height: 44px;
-    border-radius: 10px;
-    text-align: center;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 140%;
-  }
-
-  .WarningModal .ConfirmButton{
-    width: 103px;
-    height: 44px;
-    border-radius: 10px;
-    background: #EA4DA4;
-    border-radius: 10px;
-    text-align: center;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 140%;
-    color: white;
-    border: none;
-    margin-left: 116px;
-
-
-  }
-
-  .EmptyMessage{
-    color: #000;
-    text-align: center;
-    font-family: Inter;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 600;
-    line-height: 140%;
-    padding-top: 120px;
-    box-sizing: border-box;
-    padding-bottom: 45px;
-  }
+}

@@ -23,8 +23,16 @@ const App = () => {
     document.documentElement.style.setProperty("--vh", `${vh}px`);
   }
   useEffect(() => {
+    // 기존에는 의존성 배열이 없어 매 렌더마다 실행되면서도, 정작 화면 크기가
+    // 바뀔 때(주소창 노출/회전)는 갱신되지 않았다.
     setScreenSize();
-  });
+    window.addEventListener("resize", setScreenSize);
+    window.addEventListener("orientationchange", setScreenSize);
+    return () => {
+      window.removeEventListener("resize", setScreenSize);
+      window.removeEventListener("orientationchange", setScreenSize);
+    };
+  }, []);
 
   return (
     <div className="WebAppFrame">

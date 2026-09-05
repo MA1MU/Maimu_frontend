@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./MyPageEdit.css";
-import SmallLogoImg from "../../images/SmallLogo.svg";
 import EditButton from "../../images/MyPage/EditButton.svg";
-import BirthSelect from "../../components/BirthSelect/BirthSelect";
+import BackButton from "../../images/DetailPage/BackButton.svg";
 import ProfileCitron from "../../images/ProfileCitron.svg";
 import ProfilePomegranate from "../../images/ProfilePomegranate.svg";
 import ProfilePlum from "../../images/ProfilePlum.svg";
@@ -23,6 +22,31 @@ const MyPageEdit = () => {
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
+  const [saving, setSaving] = useState(false);
+  // 불러온 원래 값. 바뀐 게 없으면 저장 버튼을 비활성화하기 위해 보관한다.
+  const [initial, setInitial] = useState(null);
+
+  const NICKNAME_MAX = 10;
+  const CURRENT_YEAR = new Date().getFullYear();
+  const years = Array.from({ length: 100 }, (_, i) => CURRENT_YEAR - i);
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  // 월마다 실제 일수가 다르다(윤년 포함). 기존에는 항상 1~31 이라 2월 31일도 고를 수 있었다.
+  const daysInMonth = (y, m) =>
+    y && m ? new Date(Number(y), Number(m), 0).getDate() : 31;
+  const dayCount = daysInMonth(selectedYear?.value, selectedMonth?.value);
+  const days = Array.from({ length: dayCount }, (_, i) => i + 1);
+
+  const asOption = (v) => (v === '' || v === null || v === undefined
+    ? null : { value: Number(v), label: String(v) });
+
+  const currentSnapshot = JSON.stringify({
+    n: nickname || '',
+    y: selectedYear?.value ?? null,
+    m: selectedMonth?.value ?? null,
+    d: selectedDay?.value ?? null,
+  });
+  const isDirty = initial !== null && initial !== currentSnapshot;
+  const isComplete = Boolean(nickname && selectedYear && selectedMonth && selectedDay);
 
   // 초기 프로필 정보 가져오기
   useEffect(() => {
@@ -42,12 +66,16 @@ const MyPageEdit = () => {
         setNickname(nickName);
 
         // 생년월일 설정 (YYYY-MM-DD 형식 가정)
+        let y = null, m = null, d = null;
         if (birth) {
           const [year, month, day] = birth.split('-');
-          setSelectedYear({ value: year, label: `${year}` });
-          setSelectedMonth({ value: month, label: `${month}` });
-          setSelectedDay({ value: day, label: `${day}` });
+          y = Number(year); m = Number(month); d = Number(day);
+          setSelectedYear({ value: y, label: `${y}` });
+          setSelectedMonth({ value: m, label: `${m}` });
+          setSelectedDay({ value: d, label: `${d}` });
         }
+        // 변경 감지 기준값
+        setInitial(JSON.stringify({ n: nickName || '', y, m, d }));
       } catch (error) {
         console.error("Error fetching profile:", error);
         toast.error("프로필 정보를 불러오는 데 실패했습니다.");
@@ -67,6 +95,7 @@ const MyPageEdit = () => {
       return;
     }
 
+    setSaving(true);
     try {
       const profileRequest = {
         maimuProfile: focusedIcon,
@@ -97,6 +126,7 @@ const MyPageEdit = () => {
         }, 2000);
       }
     } catch (error) {
+      setSaving(false);
       console.error("Error updating profile:", error);
 
       if (error.response && error.response.data) {
@@ -171,45 +201,123 @@ const MyPageEdit = () => {
     navigate('/Withdrawal', { state: { focusedIcon: focusedIcon } });
   };
 
+  const handleBack = () => {
+    navigate("/MainPage", { state: { focusedIcon: focusedIcon } });
+  };
+
   return (
-    <div className={`MyPage ${profileInfo?.backgroundClass}`}>
-       <ToastContainer />
-      <div className="JustifyCenter">
-        <img className="SmallLogoImg" src={SmallLogoImg} alt="SmallLogo" />
-        <img className="ProfileImage" src={profileInfo?.image} alt={focusedIcon} onClick={MoveToProfileEdit}/>
-        <div className="Nickname">
-          닉네임
+    <div className={`ProfileSettings ${profileInfo?.backgroundClass || ""}`}>
+      <ToastContainer />
+
+      <header className="PsHeader">
+        <button type="button" className="PsBack" onClick={handleBack} aria-label="뒤로 가기">
+          <img src={BackButton} alt="" aria-hidden="true" />
+        </button>
+        <h1 className="PsTitle">프로필 수정</h1>
+      </header>
+
+      <div className="PsBody">
+        <div className="PsAvatarBlock">
+          <button
+            type="button"
+            className="PsAvatar"
+            onClick={MoveToProfileEdit}
+            aria-label="프로필 이미지 변경"
+          >
+            <img className="PsAvatarImg" src={profileInfo?.image} alt={focusedIcon || "프로필"} />
+            <img className="PsAvatarBadge" src={EditButton} alt="" aria-hidden="true" />
+          </button>
+          <button type="button" className="PsAvatarLabel" onClick={MoveToProfileEdit}>
+            프로필 변경
+          </button>
+        </div>
+
+        <div className="PsField">
+          <div className="PsFieldTop">
+            <label className="PsLabel" htmlFor="ps-nickname">닉네임</label>
+            <span className={`PsCount ${(nickname || "").length >= NICKNAME_MAX ? "isMax" : ""}`}>
+              {(nickname || "").length}/{NICKNAME_MAX}
+            </span>
+          </div>
           <input
-            className="NicknameInput"
-            value={nickname || ''}
+            id="ps-nickname"
+            className="PsInput"
+            value={nickname || ""}
+            maxLength={NICKNAME_MAX}
+            placeholder="닉네임을 입력하세요"
             onChange={(e) => setNickname(e.target.value)}
           />
         </div>
-        <div className="Birth">
-          생년월일
-          <BirthSelect
-            onSelectYear={setSelectedYear}
-            onSelectMonth={setSelectedMonth}
-            onSelectDay={setSelectedDay}
-            selectedYear={selectedYear}
-            selectedMonth={selectedMonth}
-            selectedDay={selectedDay}
-          />
-        </div>
-          <div className="MyPageButtonGroup">
-            <button className="Confirmation" onClick={handleConfirmClick}>
-              확인
-            </button>
-            <div className="MyPageGroup">
-              <p className="Logout" onClick={handleLogout}>로그아웃</p>
-              <p onClick={handleWithdrawal}>탈퇴</p>
-            </div>
+
+        <div className="PsField">
+          <div className="PsFieldTop">
+            <span className="PsLabel">생년월일</span>
           </div>
-        <img className="ProfileEditButon" src={EditButton} alt="ProfileEditButon" onClick={MoveToProfileEdit}/>
+          <div className="PsBirthRow">
+            <select
+              className="PsSelect"
+              required
+              aria-label="태어난 연도"
+              value={selectedYear?.value ?? ""}
+              onChange={(e) => setSelectedYear(asOption(e.target.value))}
+            >
+              <option value="" disabled>년</option>
+              {years.map((y) => <option key={y} value={y}>{y}</option>)}
+            </select>
+
+            <select
+              className="PsSelect"
+              required
+              aria-label="태어난 월"
+              value={selectedMonth?.value ?? ""}
+              onChange={(e) => {
+                const m = asOption(e.target.value);
+                setSelectedMonth(m);
+                // 31일 -> 2월 처럼 없는 날짜가 남지 않도록 정리한다
+                const max = daysInMonth(selectedYear?.value, m?.value);
+                if (selectedDay && selectedDay.value > max) setSelectedDay(null);
+              }}
+            >
+              <option value="" disabled>월</option>
+              {months.map((m) => <option key={m} value={m}>{m}</option>)}
+            </select>
+
+            <select
+              className="PsSelect"
+              required
+              aria-label="태어난 일"
+              value={selectedDay?.value ?? ""}
+              onChange={(e) => setSelectedDay(asOption(e.target.value))}
+            >
+              <option value="" disabled>일</option>
+              {days.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="PsFooter">
+        <button
+          type="button"
+          className="PsSave"
+          onClick={handleConfirmClick}
+          disabled={saving || !isComplete || !isDirty}
+        >
+          {saving ? "저장 중…" : !isDirty && isComplete ? "변경사항 없음" : "저장"}
+        </button>
+
+        <div className="PsSecondary">
+          <button type="button" className="PsTextBtn" onClick={handleLogout}>
+            로그아웃
+          </button>
+          <span className="PsDot" aria-hidden="true" />
+          <button type="button" className="PsTextBtn isDanger" onClick={handleWithdrawal}>
+            회원 탈퇴
+          </button>
+        </div>
       </div>
     </div>
   );
 };
-//
 
 export default MyPageEdit;

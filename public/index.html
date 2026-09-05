@@ -8,6 +8,23 @@
       content="Web site created using create-react-app"
     />
     <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="theme-color" content="#ffe6ec" />
+
+    <!-- CSS 전반에서 Pretendard / Inter 를 지정하고 있으나 실제로 로드된 적이
+         없어 지금까지 시스템 기본 폰트로 렌더링됐다. 원본이 의도한 폰트를 로드한다.
+         로드에 실패해도 polish.css 의 폴백 스택으로 안전하게 대체된다. -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    />
+
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
     <title>MAIMU</title>
   </head>

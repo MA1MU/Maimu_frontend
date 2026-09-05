@@ -49,12 +49,22 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 155px; /* 로고 아래, 박스 위에 떠 있게 설정 (기존 107px 마진 공간 활용) */
+  top: 155px;
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
   z-index: 10;
+  /* div -> button 으로 바꿨으므로 기본 버튼 스타일 제거 */
+  padding: 0;
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+.FavoriteSection:focus-visible {
+  outline: 3px solid rgba(234, 77, 164, 0.35);
+  outline-offset: 4px;
+  border-radius: 8px;
 }
 
 .FavoriteSection img {
@@ -201,7 +211,6 @@
 
 .CheckNote .Note_C::-webkit-scrollbar-thumb {
   background-color: rgba(217, 217, 217, 0.85);
-  border-radius: 20px;
   background-clip: padding-box;
   border: 2px solid transparent;
   border-radius: 50px;
@@ -241,7 +250,6 @@
   height: 45px;
   flex-shrink: 0;
   border-radius: 10px;
-  border-radius: 10px;
   border: 1px solid #adadad;
   word-break: keep-all; /* 너무 길어져서 줄을 바꿔야할 때 단어 쪼개지지 않게 함. */
   overflow-wrap: break-word;
@@ -267,7 +275,6 @@
 
 .CheckNote .Note_NickName_Wrapper p {
   margin: 0;
-  text-align: left;
   padding-top: 12px;
   padding-bottom: 12px;
   padding-left: 28px;
@@ -296,10 +303,176 @@
   flex-shrink: 0;
   color: #fcfcfc;
   text-align: center;
-  font-family: Inter;
+  font-family: Inter, "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   font-size: 16px;
   font-style: normal;
   font-weight: 700;
   line-height: 22px; /* 137.5% */
   letter-spacing: -0.408px;
+}
+
+/* ── 등장 연출: 쪽지를 펼쳐 읽는 느낌으로 위에서부터 차례로 나타난다 ──── */
+.CheckNote_Box {
+  animation: note-rise 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes note-rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.985); }
+}
+
+.CheckNote .Note_T_Wrapper { animation: note-fade 0.4s ease-out 0.10s both; }
+.CheckNote .Note_C_Wrapper { animation: note-fade 0.4s ease-out 0.17s both; }
+.CheckNote .Note_Date { animation: note-fade 0.4s ease-out 0.24s both; }
+.CheckNote .Note_NickName_Wrapper { animation: note-fade 0.4s ease-out 0.30s both; }
+@keyframes note-fade {
+  from { opacity: 0; transform: translateY(8px); }
+}
+
+.FavoriteSection { animation: note-fade 0.4s ease-out both; }
+
+/* 즐겨찾기를 켤 때 별이 톡 튄다 */
+.FavoriteSection img {
+  transition: scale 0.2s cubic-bezier(0.34, 1.5, 0.64, 1);
+}
+.FavoriteSection[aria-pressed="true"] img {
+  animation: star-pop 0.42s cubic-bezier(0.34, 1.6, 0.64, 1);
+}
+@keyframes star-pop {
+  0%   { scale: 1; }
+  45%  { scale: 1.35; }
+  100% { scale: 1; }
+}
+.FavoriteSection[aria-pressed="true"] p {
+  color: #ea4da4;
+}
+
+.CheckNote_Button {
+  animation: note-fade 0.4s ease-out 0.36s both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .CheckNote_Box,
+  .CheckNote .Note_T_Wrapper,
+  .CheckNote .Note_C_Wrapper,
+  .CheckNote .Note_Date,
+  .CheckNote .Note_NickName_Wrapper,
+  .FavoriteSection,
+  .FavoriteSection img,
+  .CheckNote_Button {
+    animation: none;
+  }
+}
+
+/* =====================================================================
+   쪽지 카드 리디자인
+   기존에는 바깥 카드(#a3a3a3) 안에 제목(#a2a2a2) · 내용(#a7a7a7) ·
+   작성자(#adadad) 상자가 각각 회색 테두리를 갖고 4겹으로 중첩돼 있어
+   편지가 아니라 입력 폼처럼 보였다. 안쪽 테두리를 걷어내고, 맛에 따라
+   칠해지는 기존 배경만 남겨 '종이' 처럼 읽히게 한다.
+   ===================================================================== */
+
+.CheckNote_Box {
+  box-sizing: border-box;
+  width: 326px;
+  /* 고정 436px 이라 짧은 쪽지에서 아래가 휑하게 비었다. 내용에 맞춘다.
+     (본문 영역이 210px 고정이라 카드 높이는 여전히 거의 일정하다) */
+  height: auto;
+  padding: 22px 20px 20px;
+  margin-top: 107px;
+  border-radius: 18px;
+  border: 1px solid rgba(17, 12, 18, 0.1);
+  box-shadow: 0 2px 8px rgba(17, 12, 18, 0.06), 0 14px 34px rgba(17, 12, 18, 0.1);
+}
+
+/* "쪽지 내용" 은 제목이 아니라 조용한 라벨로 */
+.CheckNote .CheckNote_T {
+  margin: 0 0 16px;
+  color: #9a9a9a;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+/* 제목: 상자가 아니라 제목답게 */
+.CheckNote .Note_T_Wrapper {
+  width: 100%;
+  height: auto;
+  margin: 0 0 12px;
+  border: none;
+  border-radius: 12px;
+}
+.CheckNote .Note_T_Wrapper p {
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+}
+
+/* 본문: 이 카드의 주인공. 여백과 행간을 넉넉히 */
+.CheckNote .Note_C_Wrapper {
+  position: relative;
+  width: 100%;
+  height: 210px;
+  margin: 0;
+  border: none;
+  border-radius: 12px;
+}
+.CheckNote .Note_C {
+  height: 100%;
+  box-sizing: border-box;
+  padding: 18px 16px;
+  font-size: 15px;
+  line-height: 1.75;
+  letter-spacing: -0.01em;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 날짜 + 작성자를 한 줄로 */
+.CheckNote .Note_Footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 16px;
+}
+.CheckNote .Note_Date {
+  width: auto;
+  height: auto;
+  margin: 0;
+  color: #9a9a9a;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.CheckNote .Note_NickName_Wrapper {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.CheckNote .Note_NickName_Wrapper p {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+/* 돌아가기 버튼도 카드 폭에 맞춰 시원하게 */
+.CheckNote .CheckNote_Button {
+  width: 326px;
+  height: 54px;
+  margin-top: 26px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }

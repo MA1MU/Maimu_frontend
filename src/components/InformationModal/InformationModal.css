@@ -73,6 +73,11 @@
 }
 
 .InformationXBtn {
+  /* div onClick -> button 으로 바꿨으므로 기본 버튼 스타일을 지운다 */
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
   position: absolute;
   margin-top: -619px;
   margin-left: 316px;

@@ -1,6 +1,18 @@
+/* 아래 자식들은 모두 position: relative 에 -154 ~ -239px 같은 음수 오프셋으로
+   제자리를 찾아가고 있었다. relative 는 '흐름상 자기 자리' 기준이라, 조건부로
+   렌더되는 형제(배지/체크/연필)의 유무에 따라 서로를 밀어 좌표가 어긋난다.
+   .Locker 를 기준 상자로 삼고 전부 절대 좌표로 고정한다.
+   좌표는 실측값 그대로라 보이는 결과는 동일하다. */
+.Locker {
+  position: relative;
+}
+
 .Locker .LockerIcon {
   width: 115px;
   height: 175px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .Locker .groupName {
   color: #000;
@@ -17,60 +29,66 @@
 }
 
 .Locker .GroupName {
-  width: 47px;
-  height: 34px;
+  /* 사물함 그림의 흰 이름표는 실측 x 26~87(62px), y 36~79(44px) 인데
+     텍스트 상자가 47px 뿐이라 "1학년 2반" 이 "1학년 2 / 반" 처럼
+     단어 중간에서 끊겼다. 이름표 안쪽에 맞추고 한글 단어 보존을 켠다. */
+  position: absolute;
+  top: 37px;
+  left: 27px;
+  width: 59px;
+  height: 41px;
+  margin: 0;
+  box-sizing: border-box;
+
   color: #000;
   text-align: center;
   font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
-  line-height: normal;
-  position: relative;
-  top: -154px;
-  right: -25px;
-  margin: 8px;
-  box-sizing: border-box;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.25;
+  word-break: keep-all; /* 한글은 어절 단위로만 줄바꿈 */
+  overflow-wrap: break-word; /* 단, 한 단어가 너무 길면 그때는 쪼갠다 (안 그러면 밖으로 넘침) */
+
   display: -webkit-box;
   -webkit-box-orient: vertical;
+  -webkit-box-pack: center; /* 한 줄일 때도 세로 가운데 */
   -webkit-line-clamp: 2;
-  
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .CheckCircle {
-  position: relative;
+  position: absolute;
   width: 23px;
   height: 23px;
   fill: #fff;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.1) inset;
   border-radius: 100%;
-  top: -227px;
-  right: -87px;
+  top: 2px;
+  left: 87px;
   background-color: white;
 }
 
 .delICon {
-  position: relative;
+  position: absolute;
   width: 13px;
   height: 3px;
   background-color: #f33aa0;
-  top: -239px;
-  right: -92px;
+  top: 13px;
+  left: 92px;
 }
 
-.EditIcon{
-  top: -226px;
-  right: -87px;
-  position: relative;
-  
+.EditIcon {
+  position: absolute;
+  top: 3px;
+  left: 87px;
 }
 
 .UnreadBadge {
-  position: relative;
-  top: -227px;
-  right: -87px;
+  position: absolute;
+  top: 2px;
+  left: 87px;
   width: 23px;
   height: 23px;
   border-radius: 50%;
@@ -82,5 +100,6 @@
   font-size: 12px;
   font-weight: 600;
   font-family: Pretendard;
-  z-index: 5;
+  /* z-index: 5 제거. .LockerIcon 보다 DOM 순서가 뒤라 이미 위에 그려지고,
+     굳이 올려두면 모달 같은 상위 레이어까지 뚫고 나온다. */
 }

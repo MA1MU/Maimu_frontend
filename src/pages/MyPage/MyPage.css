@@ -34,14 +34,26 @@
 
 .ProfileImage {
   margin-top: 90.83px;
+  /* 프로필 SVG 3종의 치수가 서로 다르다(유자 155x156, 매실/석류 150x150).
+     그대로 두면 고른 프로필에 따라 흐름 높이가 6px 달라진다. 상자를 고정하고
+     contain 으로 담아 그림 자체는 왜곡 없이 유지하면서 자리만 일정하게 만든다. */
+  width: 155px;
+  height: 156px;
+  object-fit: contain;
 }
 
+/* 이 배지는 JSX 맨 끝에 렌더된 뒤 position: relative 의 top: -486px 로
+   프로필 사진 위까지 끌어올려져 있었다. relative 오프셋은 '흐름상 자기 자리'
+   기준이라, 위쪽 요소 높이가 조금만 달라져도(프로필 SVG 치수 차이, 이미지
+   로드 실패 등) 통째로 어긋난다. 흐름과 무관하게 .Frame 기준으로 고정한다.
+   좌표는 정상 렌더 결과 그대로: top 242px, 가로 중앙에서 +57px. */
 .ProfileEditButon {
   width: 37px;
   height: 37px;
-  position: relative;
-    top: -486px;
-    left: 57px;
+  position: absolute;
+  top: 242px;
+  left: calc(50% + 57px);
+  translate: -50% 0;
 }
 
 .Nickname {
@@ -57,7 +69,6 @@
   background: #edecec;
   margin-top: 16px;
   padding-left: 16px;
-  border: none;
   border: 1px solid transparent;
   box-sizing: border-box;
   color: #000;
@@ -66,7 +77,8 @@
   font-weight: 600;
 }
 
-input:focus {
+/* 전역 선택자라 앱의 모든 input(쪽지 작성 등)에 새어나가고 있었다. 이 화면으로 한정. */
+.MyPage input:focus {
   outline: 1px solid #ea4da4;
 }
 
