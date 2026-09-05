@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "./MyPage.css";
-import SmallLogoImg from "../../images/SmallLogo.svg";
 import EditButton from "../../images/MyPage/EditButton.svg";
-import BirthSelect from "../../components/BirthSelect/BirthSelect";
+// 프로필 수정 화면과 같은 폼이라 디자인을 공유한다 (.ProfileSettings 스코프)
+import "../MyPageEdit/MyPageEdit.css";
 import ProfileCitron from "../../images/ProfileCitron.svg";
 import ProfilePomegranate from "../../images/ProfilePomegranate.svg";
 import ProfilePlum from "../../images/ProfilePlum.svg";
@@ -18,6 +18,16 @@ const MyPage = () => {
   const focusedIcon = location.state?.focusedIcon;
 
   const temp_token = localStorage.getItem("temp_token");
+
+  const NICKNAME_MAX = 10;
+  const CURRENT_YEAR = new Date().getFullYear();
+  const years = Array.from({ length: 100 }, (_, i) => CURRENT_YEAR - i);
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  // 월마다 실제 일수가 다르다(윤년 포함). 기존 드롭다운은 항상 1~31 이라 2월 31일도 고를 수 있었다.
+  const daysInMonth = (y, m) =>
+    y && m ? new Date(Number(y), Number(m), 0).getDate() : 31;
+  const asOption = (v) =>
+    v === "" || v === null || v === undefined ? null : { value: Number(v), label: String(v) };
 
   const [nickname, setNickname] = useState('');
   const [selectedYear, setSelectedYear] = useState(null);
@@ -111,38 +121,114 @@ const MyPage = () => {
     }
   };
 
+  const dayCount = daysInMonth(selectedYear?.value, selectedMonth?.value);
+  const days = Array.from({ length: dayCount }, (_, i) => i + 1);
+  const isComplete = Boolean(nickname && selectedYear && selectedMonth && selectedDay);
+
   return (
-    <div className={`MyPage ${profileInfo?.backgroundClass}`}>
-       <ToastContainer />
-      <div className="JustifyCenter">
-        <img className="SmallLogoImg" src={SmallLogoImg} alt="SmallLogo" />
-        <img className="ProfileImage" src={profileInfo?.image} alt={focusedIcon} onClick={MoveToProfileEdit}/>
-        <div className="Nickname">
-          닉네임
+    <div className={`ProfileSettings isJoin ${profileInfo?.backgroundClass || ""}`}>
+      <ToastContainer />
+
+      <header className="PsHeader">
+        <h1 className="PsTitle">프로필 만들기</h1>
+      </header>
+      <p className="PsJoinLead">마이무에서 사용할 프로필을 설정해주세요</p>
+
+      <div className="PsBody">
+        <div className="PsAvatarBlock">
+          <button
+            type="button"
+            className="PsAvatar"
+            onClick={MoveToProfileEdit}
+            aria-label="프로필 이미지 변경"
+          >
+            <img className="PsAvatarImg" src={profileInfo?.image} alt={focusedIcon || "프로필"} />
+            <img className="PsAvatarBadge" src={EditButton} alt="" aria-hidden="true" />
+          </button>
+          <button type="button" className="PsAvatarLabel" onClick={MoveToProfileEdit}>
+            프로필 변경
+          </button>
+        </div>
+
+        <div className="PsField">
+          <div className="PsFieldTop">
+            <label className="PsLabel" htmlFor="join-nickname">닉네임</label>
+            <span className={`PsCount ${(nickname || "").length >= NICKNAME_MAX ? "isMax" : ""}`}>
+              {(nickname || "").length}/{NICKNAME_MAX}
+            </span>
+          </div>
           <input
-            className="NicknameInput"
-            value={nickname || ''}
+            id="join-nickname"
+            className="PsInput"
+            value={nickname || ""}
+            maxLength={NICKNAME_MAX}
+            placeholder="닉네임을 입력하세요"
             onChange={(e) => setNickname(e.target.value)}
           />
         </div>
-        <div className="Birth">
-          생년월일
-          <BirthSelect
-            onSelectYear={setSelectedYear}
-            onSelectMonth={setSelectedMonth}
-            onSelectDay={setSelectedDay}
-          />
-        </div>
-          <div className="MyPageButtonGroup">
-            <button className="Confirmation" onClick={handleConfirmClick}>
-              확인
-            </button>
+
+        <div className="PsField">
+          <div className="PsFieldTop">
+            <span className="PsLabel">생년월일</span>
           </div>
-        <img className="ProfileEditButon" src={EditButton} alt="ProfileEditButon" onClick={MoveToProfileEdit}/>
+          <div className="PsBirthRow">
+            <select
+              className="PsSelect"
+              required
+              aria-label="태어난 연도"
+              value={selectedYear?.value ?? ""}
+              onChange={(e) => setSelectedYear(asOption(e.target.value))}
+            >
+              <option value="" disabled>년</option>
+              {years.map((y) => <option key={y} value={y}>{y}</option>)}
+            </select>
+
+            <select
+              className="PsSelect"
+              required
+              aria-label="태어난 월"
+              value={selectedMonth?.value ?? ""}
+              onChange={(e) => {
+                const m = asOption(e.target.value);
+                setSelectedMonth(m);
+                const max = daysInMonth(selectedYear?.value, m?.value);
+                if (selectedDay && selectedDay.value > max) setSelectedDay(null);
+              }}
+            >
+              <option value="" disabled>월</option>
+              {months.map((m) => <option key={m} value={m}>{m}</option>)}
+            </select>
+
+            <select
+              className="PsSelect"
+              required
+              aria-label="태어난 일"
+              value={selectedDay?.value ?? ""}
+              onChange={(e) => setSelectedDay(asOption(e.target.value))}
+            >
+              <option value="" disabled>일</option>
+              {days.map((d) => <option key={d} value={d}>{d}</option>)}
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div className="PsFooter">
+        <button
+          type="button"
+          className="PsSave"
+          onClick={handleConfirmClick}
+          disabled={!isComplete}
+        >
+          {isComplete
+            ? "시작하기"
+            : !nickname
+            ? "닉네임을 입력해주세요"
+            : "생년월일을 선택해주세요"}
+        </button>
       </div>
     </div>
   );
 };
-//
 
 export default MyPage;

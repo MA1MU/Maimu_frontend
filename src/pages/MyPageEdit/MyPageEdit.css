@@ -302,3 +302,22 @@
   outline: 3px solid rgba(234, 77, 164, 0.35);
   outline-offset: 2px;
 }
+
+/* ── 회원가입(프로필 만들기) 화면 전용 조정 ──────────────────────────
+   같은 폼이라 .ProfileSettings 를 그대로 쓰되, 가입 단계라
+   뒤로가기·로그아웃·탈퇴가 없고 안내 문구가 하나 더 붙는다. */
+.ProfileSettings.isJoin .PsHeader {
+  height: auto;
+  margin-top: 46px;
+}
+.ProfileSettings .PsJoinLead {
+  margin: 8px 0 0;
+  text-align: center;
+  color: #7b7b7b;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+.ProfileSettings.isJoin .PsBody {
+  margin-top: 4px;
+}

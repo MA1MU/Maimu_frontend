@@ -590,7 +590,11 @@ textarea::placeholder {
 .DetailPageScroll,
 .WriteDetailPageScroll {
   scroll-behavior: smooth;
-  overscroll-behavior: contain; /* 스크롤 끝에서 페이지 전체가 딸려가지 않도록 */
+  /* overscroll-behavior: contain 을 넣었다가 제거했다.
+     이 컨테이너는 내용이 화면보다 짧으면 스스로 스크롤할 게 없는데,
+     contain 이 걸려 있으면 스크롤을 부모(body)로 넘기지도 않는다.
+     그 결과 게스트 화면에서 터치 스크롤이 통째로 막혀 하단 버튼에
+     닿을 수 없었다. 기본값(auto)으로 두어 스크롤 체이닝을 살린다. */
 }
 ::selection {
   background: var(--maimu-ring);
@@ -607,3 +611,4 @@ textarea::placeholder {
     scroll-behavior: auto !important;
   }
 }
+

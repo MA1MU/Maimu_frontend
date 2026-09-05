@@ -23,6 +23,8 @@ const MyPageEdit = () => {
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
   const [saving, setSaving] = useState(false);
+  // 서버에 저장돼 있는 프로필 아이콘. 이미지'만' 바꾼 경우를 감지하는 기준.
+  const [serverProfile, setServerProfile] = useState(null);
   // 불러온 원래 값. 바뀐 게 없으면 저장 버튼을 비활성화하기 위해 보관한다.
   const [initial, setInitial] = useState(null);
 
@@ -39,7 +41,11 @@ const MyPageEdit = () => {
   const asOption = (v) => (v === '' || v === null || v === undefined
     ? null : { value: Number(v), label: String(v) });
 
+  // 화면에 보이는 프로필. 아이콘 변경 화면을 다녀오면 focusedIcon 이 새 값이 된다.
+  const currentProfile = focusedIcon ?? serverProfile ?? null;
+
   const currentSnapshot = JSON.stringify({
+    p: currentProfile,
     n: nickname || '',
     y: selectedYear?.value ?? null,
     m: selectedMonth?.value ?? null,
@@ -75,7 +81,9 @@ const MyPageEdit = () => {
           setSelectedDay({ value: d, label: `${d}` });
         }
         // 변경 감지 기준값
-        setInitial(JSON.stringify({ n: nickName || '', y, m, d }));
+        setServerProfile(maimuProfile ?? null);
+        // 기준값에도 프로필을 포함해야 이미지만 바꾼 경우가 '변경됨'으로 잡힌다.
+        setInitial(JSON.stringify({ p: maimuProfile ?? null, n: nickName || '', y, m, d }));
       } catch (error) {
         console.error("Error fetching profile:", error);
         toast.error("프로필 정보를 불러오는 데 실패했습니다.");
@@ -98,7 +106,7 @@ const MyPageEdit = () => {
     setSaving(true);
     try {
       const profileRequest = {
-        maimuProfile: focusedIcon,
+        maimuProfile: currentProfile, // 직접 URL 진입 등으로 focusedIcon 이 없을 때 서버 값 유지
         year: Number(selectedYear.value),
         month: Number(selectedMonth.value),
         date: Number(selectedDay.value),
