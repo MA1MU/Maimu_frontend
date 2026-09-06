@@ -15,7 +15,7 @@
   left: 0;
 }
 .Locker .groupName {
-  color: #000;
+  color: var(--ink-900);
   display: flex;
   width: 47px;
   height: 42px;
@@ -40,7 +40,7 @@
   margin: 0;
   box-sizing: border-box;
 
-  color: #000;
+  color: var(--ink-900);
   text-align: center;
   font-family: Pretendard;
   font-size: 14px;
@@ -74,7 +74,7 @@
   position: absolute;
   width: 13px;
   height: 3px;
-  background-color: #f33aa0;
+  background-color: var(--brand-600);
   top: 13px;
   left: 92px;
 }
@@ -92,7 +92,7 @@
   width: 23px;
   height: 23px;
   border-radius: 50%;
-  background-color: #f33aa0;
+  background-color: var(--brand-600);
   color: #fff;
   display: flex;
   align-items: center;

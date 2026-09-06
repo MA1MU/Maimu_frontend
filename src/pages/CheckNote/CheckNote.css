@@ -73,7 +73,7 @@
 }
 
 .FavoriteSection p {
-  color: #434343;
+  color: var(--ink-700);
   font-family: Pretendard;
   font-size: 14px;
   font-style: normal;
@@ -90,7 +90,7 @@
   height: 436px;
   flex-shrink: 0;
   border-radius: 15px;
-  border: 1px solid #a3a3a3;
+  border: 1px solid var(--ink-400);
   background: #fff;
   box-shadow: 4px 4px 4px 2px rgba(0, 0, 0, 0.07),
     -4px -4px 4px 2px rgba(0, 0, 0, 0.07);
@@ -99,7 +99,7 @@
 .CheckNote_T {
   margin-top: 32px;
   margin-bottom: 34px;
-  color: #000;
+  color: var(--ink-900);
   text-align: center;
   font-family: Pretendard;
   font-size: 17px;
@@ -116,27 +116,27 @@
   height: 45px;
   flex-shrink: 0;
   border-radius: 10px;
-  border: 1px solid #a2a2a2;
+  border: 1px solid var(--ink-400);
   word-break: keep-all; /* 너무 길어져서 줄을 바꿔야할 때 단어 쪼개지지 않게 함. */
   overflow-wrap: break-word;
 }
 
 .CheckNote .Note_T_Wrapper.PomegranateBackground {
   background: linear-gradient(180deg, #fdebeb 0%, rgba(255, 255, 255, 0.9) 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%), #f1f1f1;
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
 
 .CheckNote .Note_T_Wrapper.CitronBackground {
   background: linear-gradient(180deg, #fef9d4 0%, rgba(255, 255, 255, 0.9) 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%), #f1f1f1;
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
 
 .CheckNote .Note_T_Wrapper.PlumBackground {
   background: linear-gradient(180deg, #f0fae0 0%, rgba(255, 255, 255, 0.9) 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%), #f1f1f1;
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
 
 .CheckNote .Note_T_Wrapper p {
@@ -147,7 +147,7 @@
   padding-left: 28px;
   padding-right: 28px;
 
-  color: #000;
+  color: var(--ink-900);
   text-align: left;
   font-family: Pretendard;
   font-size: 16px;
@@ -164,27 +164,27 @@
   height: 204px;
   flex-shrink: 0;
   border-radius: 10px;
-  border: 1px solid #a7a7a7;
+  border: 1px solid var(--ink-400);
   word-break: keep-all; /* 너무 길어져서 줄을 바꿔야할 때 단어 쪼개지지 않게 함. */
   overflow-wrap: break-word;
 }
 
 .CheckNote .Note_C_Wrapper.PomegranateBackground {
   background: linear-gradient(180deg, #fdeded 0%, #fff 52.45%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%), #f1f1f1;
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
 
 .CheckNote .Note_C_Wrapper.CitronBackground {
   background: linear-gradient(180deg, #fdf8cf 0%, #fff 52.45%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%), #f1f1f1;
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
 
 .CheckNote .Note_C_Wrapper.PlumBackground {
   background: linear-gradient(180deg, #ebf9d4 0%, #fff 52.45%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%), #f1f1f1;
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
 
 .CheckNote .Note_C {
@@ -196,7 +196,7 @@
   padding-left: 28px;
   padding-right: 28px;
 
-  color: #000;
+  color: var(--ink-900);
   font-family: Pretendard;
   font-size: 16px;
   font-style: normal;
@@ -250,27 +250,27 @@
   height: 45px;
   flex-shrink: 0;
   border-radius: 10px;
-  border: 1px solid #adadad;
+  border: 1px solid var(--ink-400);
   word-break: keep-all; /* 너무 길어져서 줄을 바꿔야할 때 단어 쪼개지지 않게 함. */
   overflow-wrap: break-word;
 }
 
 .CheckNote .Note_NickName_Wrapper.PomegranateBackground {
   background: linear-gradient(180deg, #fef0f0 0%, #fff 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%), #f1f1f1;
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
 
 .CheckNote .Note_NickName_Wrapper.CitronBackground {
   background: linear-gradient(180deg, #fefad7 0%, #fff 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%), #f1f1f1;
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
 
 .CheckNote .Note_NickName_Wrapper.PlumBackground {
   background: linear-gradient(180deg, #eefadb 0%, #fff 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%),
-  linear-gradient(0deg, #f1f1f1 0%, #f1f1f1 100%), #f1f1f1;
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
+  linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
 
 .CheckNote .Note_NickName_Wrapper p {
@@ -280,7 +280,7 @@
   padding-left: 28px;
   padding-right: 28px;
 
-  color: #000;
+  color: var(--ink-900);
   text-align: center;
   font-family: Pretendard;
   font-size: 16px;
@@ -297,7 +297,7 @@
   flex-shrink: 0;
   border-radius: 10px;
   border: 0;
-  background: #ea4da4;
+  background: var(--brand-500);
 
   justify-content: center;
   flex-shrink: 0;
@@ -342,7 +342,7 @@
   100% { scale: 1; }
 }
 .FavoriteSection[aria-pressed="true"] p {
-  color: #ea4da4;
+  color: var(--brand-500);
 }
 
 .CheckNote_Button {
@@ -364,8 +364,8 @@
 
 /* =====================================================================
    쪽지 카드 리디자인
-   기존에는 바깥 카드(#a3a3a3) 안에 제목(#a2a2a2) · 내용(#a7a7a7) ·
-   작성자(#adadad) 상자가 각각 회색 테두리를 갖고 4겹으로 중첩돼 있어
+   기존에는 바깥 카드(var(--ink-400)) 안에 제목(var(--ink-400)) · 내용(var(--ink-400)) ·
+   작성자(var(--ink-400)) 상자가 각각 회색 테두리를 갖고 4겹으로 중첩돼 있어
    편지가 아니라 입력 폼처럼 보였다. 안쪽 테두리를 걷어내고, 맛에 따라
    칠해지는 기존 배경만 남겨 '종이' 처럼 읽히게 한다.
    ===================================================================== */
@@ -386,7 +386,7 @@
 /* "쪽지 내용" 은 제목이 아니라 조용한 라벨로 */
 .CheckNote .CheckNote_T {
   margin: 0 0 16px;
-  color: #9a9a9a;
+  color: var(--ink-500);
   text-align: center;
   font-size: 12px;
   font-weight: 700;
@@ -443,7 +443,7 @@
   width: auto;
   height: auto;
   margin: 0;
-  color: #9a9a9a;
+  color: var(--ink-500);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: -0.01em;

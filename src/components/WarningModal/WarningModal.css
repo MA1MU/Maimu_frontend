@@ -26,7 +26,7 @@
   align-items: center;
   background-color: white;
   border-radius: 20px;
-  border: 1px solid #000;
+  border: 1px solid var(--ink-900);
   box-shadow: 0 6px 16px rgba(17, 12, 18, 0.09), 0 20px 48px rgba(17, 12, 18, 0.13);
   animation: warn-pop 0.26s cubic-bezier(0.34, 1.42, 0.64, 1) both;
 }
@@ -46,7 +46,7 @@
   margin: 0;
   padding: 8px 0 4px;
   box-sizing: border-box;
-  color: #000;
+  color: var(--ink-900);
   text-align: center;
   font-family: Pretendard;
   font-size: 17px;
@@ -83,28 +83,28 @@
 }
 
 .WarningModal .CloseButton {
-  border: 1px solid #949494;
+  border: 1px solid var(--ink-500);
   background: #fff;
-  color: #3a3a3a;
+  color: var(--ink-700);
 }
 /* 삭제는 되돌릴 수 없다. 저장과 같은 분홍을 쓰지 않고 무채색으로 낮춘 뒤
    테두리로만 구분해, 무심코 누르는 일을 줄인다. */
 .WarningModal .DeleteButton {
-  border: 1px solid #787878;
-  background-color: #787878;
+  border: 1px solid var(--ink-600);
+  background-color: var(--ink-600);
   color: white;
 }
 .WarningModal .ConfirmButton {
   width: 100%;
   margin-top: 26px;
   border: none;
-  background: #ea4da4;
+  background: var(--brand-500);
   color: white;
 }
 
 @media (hover: hover) {
   .WarningModal .CloseButton:hover {
-    background: #f7f7f7;
+    background: var(--ink-50);
   }
   .WarningModal .DeleteButton:hover,
   .WarningModal .ConfirmButton:hover {

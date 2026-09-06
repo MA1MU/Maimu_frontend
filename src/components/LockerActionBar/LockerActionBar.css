@@ -1,5 +1,5 @@
 /* 사물함 액션 바 — 기존 .EditGroup(분홍 원 3개)을 대체한다.
-   색상은 서비스에 이미 쓰이는 값만 사용한다 (#ea4da4, #434343, #787878, #d9d9d9). */
+   색상은 서비스에 이미 쓰이는 값만 사용한다 (var(--brand-500), var(--ink-700), var(--ink-600), var(--ink-300)). */
 
 .LockerActionBar {
   position: fixed;
@@ -38,7 +38,7 @@
   padding: 0 18px;
   border: none;
   border-radius: 999px;
-  background: #ea4da4;
+  background: var(--brand-500);
   color: #fff;
   font-family: inherit;
   font-size: 15px;
@@ -66,15 +66,15 @@
   filter: brightness(0.96);
 }
 .LockerActionBar .BarPrimary:disabled {
-  background: #d9d9d9;
-  color: #787878;
+  background: var(--ink-300);
+  color: var(--ink-600);
   cursor: not-allowed;
 }
 
 /* ── 그룹 개수 ────────────────────────────────────────────────── */
 .LockerActionBar .BarCount {
   padding: 0 8px;
-  color: #787878;
+  color: var(--ink-600);
   font-size: 13px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -95,7 +95,7 @@
   border: none;
   border-radius: 999px;
   background: transparent;
-  color: #434343;
+  color: var(--ink-700);
   font-family: inherit;
   font-size: 14px;
   font-weight: 600;
@@ -108,7 +108,7 @@
 @media (hover: hover) {
   .LockerActionBar .BarSecondary:hover {
     background: rgba(234, 77, 164, 0.1);
-    color: #ea4da4;
+    color: var(--brand-500);
   }
 }
 .LockerActionBar .BarSecondary:active {
@@ -121,7 +121,7 @@
   gap: 12px;
 }
 .LockerActionBar .BarHint {
-  color: #434343;
+  color: var(--ink-700);
   font-size: 14px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -132,7 +132,7 @@
   padding: 0 20px;
   border: none;
   border-radius: 999px;
-  background: #ea4da4;
+  background: var(--brand-500);
   color: #fff;
   font-family: inherit;
   font-size: 15px;

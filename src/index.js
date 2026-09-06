@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+// 디자인 토큰. 다른 모든 CSS 가 var(--*) 로 참조하므로 가장 먼저 온다.
+import './design-system.css';
 import './index.css';
 import App from './App';
 // 반드시 App(=각 페이지 CSS) 다음에 와야 동일 우선순위 규칙에서 이 레이어가 이긴다.

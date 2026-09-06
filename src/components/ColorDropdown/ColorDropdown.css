@@ -2,7 +2,7 @@
     width: 272px;
     height: 45px;
     border-radius: 10px;
-    background: #F1F1F1;
+    background: var(--ink-100);
     margin-top: 6px;
     border: none;
     font-size: 14px;
@@ -17,7 +17,7 @@
   width: 272px;
   border-radius: 10px;
   background: #F4F4F4;
-  color: #000;
+  color: var(--ink-900);
   font-size: 14px;
   font-style: normal;
   font-weight: 600;

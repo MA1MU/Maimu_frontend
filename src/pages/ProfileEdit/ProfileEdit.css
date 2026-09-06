@@ -1,6 +1,6 @@
 .ProfileEdit {
   width: 100%;
-  background: linear-gradient(0deg, #121212);
+  background: linear-gradient(0deg, var(--ink-900));
 }
 
 .JustifyContainer {

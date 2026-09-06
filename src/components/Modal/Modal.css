@@ -28,7 +28,7 @@
   flex-direction: column;
   background: #fff;
   border-radius: 20px;
-  border: 1px solid #000;
+  border: 1px solid var(--ink-900);
   box-shadow: 0 6px 16px rgba(17, 12, 18, 0.09), 0 20px 48px rgba(17, 12, 18, 0.13);
   animation: modal-pop 0.26s cubic-bezier(0.34, 1.42, 0.64, 1) both;
 }
@@ -41,7 +41,7 @@
 
 .ModalContainer .ModalTitle {
   margin: 0 0 20px;
-  color: #000;
+  color: var(--ink-900);
   text-align: center;
   font-size: 20px;
   font-weight: 700;
@@ -59,19 +59,19 @@
   margin-bottom: 8px;
 }
 .ModalContainer .ModalLabel {
-  color: #434343;
+  color: var(--ink-700);
   font-size: 14px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 .ModalContainer .ModalCount {
-  color: #a4a4a4;
+  color: var(--ink-400);
   font-size: 12px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 .ModalContainer .ModalCount.isMax {
-  color: #ea4da4;
+  color: var(--brand-500);
 }
 
 .ModalContainer .GroupName {
@@ -81,22 +81,22 @@
   padding: 0 14px;
   border: 1px solid transparent;
   border-radius: 10px;
-  background: #f1f1f1;
-  color: #000;
+  background: var(--ink-100);
+  color: var(--ink-900);
   font-family: inherit;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  caret-color: #ea4da4;
+  caret-color: var(--brand-500);
   transition: border-color 0.16s ease, box-shadow 0.16s ease;
 }
 .ModalContainer .GroupName::placeholder {
-  color: #a4a4a4;
+  color: var(--ink-400);
   font-weight: 500;
 }
 .ModalContainer .GroupName:focus {
   outline: none;
-  border-color: #ea4da4;
+  border-color: var(--brand-500);
   box-shadow: 0 0 0 3px rgba(234, 77, 164, 0.18);
 }
 
@@ -114,8 +114,8 @@
   padding: 10px 0 8px;
   border: 2px solid transparent;
   border-radius: 12px;
-  background: #f7f7f7;
-  color: #787878;
+  background: var(--ink-50);
+  color: var(--ink-600);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -131,16 +131,16 @@
 }
 @media (hover: hover) {
   .ModalContainer .ColorChoice:hover {
-    background: #f1f1f1;
+    background: var(--ink-100);
   }
 }
 .ModalContainer .ColorChoice:active {
   scale: 0.96;
 }
 .ModalContainer .ColorChoice.isSelected {
-  border-color: #ea4da4;
+  border-color: var(--brand-500);
   background: rgba(234, 77, 164, 0.08);
-  color: #ea4da4;
+  color: var(--brand-500);
 }
 
 /* ── 버튼 ──────────────────────────────────────────────────────── */
@@ -163,18 +163,18 @@
     background-color 0.16s ease;
 }
 .ModalContainer .CloseButton {
-  border: 1px solid #787878;
+  border: 1px solid var(--ink-600);
   background: #fff;
-  color: #1c1c1c;
+  color: var(--ink-900);
 }
 .ModalContainer .SaveButton {
   border: none;
-  background: #ea4da4;
+  background: var(--brand-500);
   color: #fff;
 }
 @media (hover: hover) {
   .ModalContainer .CloseButton:hover {
-    background: #f7f7f7;
+    background: var(--ink-50);
   }
   .ModalContainer .SaveButton:not(:disabled):hover {
     translate: 0 -1px;
@@ -189,8 +189,8 @@
    비활성 상태는 더 높은 특이도로 못박아 hover 효과가 새지 않게 한다. */
 .ModalContainer .ModalContent .SaveButton:disabled,
 .ModalContainer .ModalContent .SaveButton:disabled:hover {
-  background: #d9d9d9;
-  color: #787878;
+  background: var(--ink-300);
+  color: var(--ink-600);
   cursor: not-allowed;
   translate: 0;
   scale: 1;

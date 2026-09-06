@@ -59,7 +59,7 @@
 
 .CheckTaste .Sugar_T {
   margin: 0;
-  color: #000;
+  color: var(--ink-900);
   text-align: center;
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
@@ -91,7 +91,7 @@
 /* 당도는 이 화면의 주인공이라 크게 보여준다 */
 .CheckTaste .Percent {
   margin: 0;
-  color: #000;
+  color: var(--ink-900);
   text-align: center;
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
@@ -108,11 +108,11 @@
   margin-top: 22px;
   flex-shrink: 0;
   border-radius: 12px;
-  border: 1px solid #434343;
+  border: 1px solid var(--ink-700);
   background: #fbdada;
   /* 기존 box-shadow / text-shadow 가 4px 4px 4px 오프셋이라 글자가 번져 보였다. */
   box-shadow: 0 2px 6px rgba(17, 12, 18, 0.07), 0 8px 20px rgba(17, 12, 18, 0.08);
-  color: #1b1b1b;
+  color: var(--ink-900);
   text-align: center;
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
@@ -150,7 +150,7 @@
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: #ea4da4;
+  background: var(--brand-500);
   transition: width 0.12s linear;
 }
 .CheckTaste.PomegranateBackground .SugarGauge i { background: #f2839c; }

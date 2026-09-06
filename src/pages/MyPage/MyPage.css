@@ -66,12 +66,12 @@
   width: 213px;
   height: 56px;
   border-radius: 10px;
-  background: #edecec;
+  background: var(--ink-100);
   margin-top: 16px;
   padding-left: 16px;
   border: 1px solid transparent;
   box-sizing: border-box;
-  color: #000;
+  color: var(--ink-900);
   font-size: 16px;
   font-style: normal;
   font-weight: 600;
@@ -79,7 +79,7 @@
 
 /* 전역 선택자라 앱의 모든 input(쪽지 작성 등)에 새어나가고 있었다. 이 화면으로 한정. */
 .MyPage input:focus {
-  outline: 1px solid #ea4da4;
+  outline: 1px solid var(--brand-500);
 }
 
 .Birth {
@@ -95,7 +95,7 @@
   line-height: normal;
   width: 100px;
   height: 43px;
-  background: #ea4da4;
+  background: var(--brand-500);
   border: none;
   margin-top: 95px;
   cursor: pointer;

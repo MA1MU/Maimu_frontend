@@ -35,7 +35,7 @@
   height: 30px;
   text-align: center;
   margin-top: -1px;
-  color: #000;
+  color: var(--ink-900);
   background-color: rgba(255, 255, 255, 0);
   font-family: Inter, "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   font-size: 25px;
@@ -56,7 +56,7 @@
   align-items: center;
   justify-content: center;
 
-  color: #242424;
+  color: var(--ink-900);
   font-family: Pretendard;
   font-size: 20px;
   font-style: normal;
@@ -167,7 +167,7 @@
 .WriteDetailPage .GuestSubtitle {
   margin: 6px 0 0;
   text-align: center;
-  color: #7b7b7b;
+  color: var(--ink-600);
   font-size: 13px;
   font-weight: 600;
   letter-spacing: -0.01em;
@@ -181,7 +181,7 @@
   width: 326px;
   height: 60px;
   border-radius: 999px;
-  background: #ea4da4;
+  background: var(--brand-500);
   color: #fff;
   font-family: "Pretendard", sans-serif;
   font-size: 17px;
@@ -235,7 +235,7 @@
   width: 326px;
   margin: 34px auto 0;
   text-align: center;
-  color: #434343;
+  color: var(--ink-700);
   font-family: "Pretendard", sans-serif;
   font-size: 13px;
   font-weight: 700;
@@ -259,7 +259,7 @@
   width: 300px;
   margin: 16px auto 0;
   text-align: center;
-  color: #8a8a8a;
+  color: var(--ink-500);
   font-family: "Pretendard", sans-serif;
   font-size: 13px;
   font-weight: 500;
@@ -269,7 +269,7 @@
 }
 .WriteDetailPage .GuestEmptyHint {
   margin-top: 54px;
-  color: #6d6d6d;
+  color: var(--ink-600);
   font-size: 15px;
   font-weight: 600;
 }

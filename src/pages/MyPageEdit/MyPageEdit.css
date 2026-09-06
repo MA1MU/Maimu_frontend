@@ -1,7 +1,7 @@
 /* 프로필 수정 화면.
    회원가입 화면(MyPage.js)이 .MyPage / .NicknameInput 등 같은 클래스명을 쓰고
    CSS 가 전역이므로, 이 화면은 .ProfileSettings 아래로 전부 스코프한다.
-   색상은 서비스에 이미 쓰이는 값만 사용 (#ea4da4 #edecec #434343 #6d6d6d #787878 #d9d9d9). */
+   색상은 서비스에 이미 쓰이는 값만 사용 (var(--brand-500) var(--ink-100) var(--ink-700) var(--ink-600) var(--ink-600) var(--ink-300)). */
 
 .ProfileSettings {
   width: 100%;
@@ -26,7 +26,7 @@
 }
 .ProfileSettings .PsTitle {
   margin: 0;
-  color: #1c1c1c;
+  color: var(--ink-900);
   font-size: 17px;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -111,7 +111,7 @@
   border: none;
   border-radius: 999px;
   background: transparent;
-  color: #6d6d6d;
+  color: var(--ink-600);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -121,7 +121,7 @@
 }
 @media (hover: hover) {
   .ProfileSettings .PsAvatarLabel:hover {
-    color: #ea4da4;
+    color: var(--brand-500);
     background: rgba(234, 77, 164, 0.08);
   }
 }
@@ -138,19 +138,19 @@
 }
 .ProfileSettings .PsLabel {
   display: block;
-  color: #434343;
+  color: var(--ink-700);
   font-size: 14px;
   font-weight: 700;
   letter-spacing: -0.01em;
 }
 .ProfileSettings .PsCount {
-  color: #a4a4a4;
+  color: var(--ink-400);
   font-size: 12px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 .ProfileSettings .PsCount.isMax {
-  color: #ea4da4;
+  color: var(--brand-500);
 }
 
 .ProfileSettings .PsInput {
@@ -160,22 +160,22 @@
   padding: 0 16px;
   border: 1px solid transparent;
   border-radius: 10px;
-  background: #edecec;
-  color: #000;
+  background: var(--ink-100);
+  color: var(--ink-900);
   font-family: inherit;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: -0.01em;
-  caret-color: #ea4da4;
+  caret-color: var(--brand-500);
   transition: border-color 0.16s ease, box-shadow 0.16s ease;
 }
 .ProfileSettings .PsInput::placeholder {
-  color: #a4a4a4;
+  color: var(--ink-400);
   font-weight: 500;
 }
 .ProfileSettings .PsInput:focus {
   outline: none;
-  border-color: #ea4da4;
+  border-color: var(--brand-500);
   box-shadow: 0 0 0 3px rgba(234, 77, 164, 0.18);
 }
 
@@ -192,14 +192,14 @@
   padding: 0 30px 0 14px;
   border: 1px solid transparent;
   border-radius: 10px;
-  background-color: #edecec;
+  background-color: var(--ink-100);
   background-image: url("../../images/MyPage/SelectorArrow.svg");
   background-repeat: no-repeat;
   background-position: right 14px center;
   background-size: 9px 5px;
   appearance: none;
   -webkit-appearance: none;
-  color: #000;
+  color: var(--ink-900);
   font-family: inherit;
   font-size: 15px;
   font-weight: 600;
@@ -208,11 +208,11 @@
   transition: border-color 0.16s ease, box-shadow 0.16s ease;
 }
 .ProfileSettings .PsSelect:invalid {
-  color: #6d6d6d; /* 아직 고르지 않은 상태 */
+  color: var(--ink-600); /* 아직 고르지 않은 상태 */
 }
 .ProfileSettings .PsSelect:focus {
   outline: none;
-  border-color: #ea4da4;
+  border-color: var(--brand-500);
   box-shadow: 0 0 0 3px rgba(234, 77, 164, 0.18);
 }
 
@@ -226,7 +226,7 @@
   height: 56px;
   border: none;
   border-radius: 12px;
-  background: #ea4da4;
+  background: var(--brand-500);
   color: #fff;
   font-family: inherit;
   font-size: 17px;
@@ -248,8 +248,8 @@
   filter: brightness(0.97);
 }
 .ProfileSettings .PsSave:disabled {
-  background: #d9d9d9;
-  color: #787878;
+  background: var(--ink-300);
+  color: var(--ink-600);
   box-shadow: none;
   cursor: not-allowed;
 }
@@ -266,7 +266,7 @@
   border: none;
   border-radius: 8px;
   background: transparent;
-  color: #6d6d6d;
+  color: var(--ink-600);
   font-family: inherit;
   font-size: 13px;
   font-weight: 600;
@@ -277,24 +277,24 @@
 @media (hover: hover) {
   .ProfileSettings .PsTextBtn:hover {
     background: rgba(17, 12, 18, 0.05);
-    color: #434343;
+    color: var(--ink-700);
   }
 }
 /* 탈퇴는 되돌릴 수 없는 동작이라 로그아웃과 같은 무게로 두지 않는다 */
 .ProfileSettings .PsTextBtn.isDanger {
-  color: #a4a4a4;
+  color: var(--ink-400);
   font-weight: 500;
 }
 @media (hover: hover) {
   .ProfileSettings .PsTextBtn.isDanger:hover {
-    color: #787878;
+    color: var(--ink-600);
   }
 }
 .ProfileSettings .PsDot {
   width: 3px;
   height: 3px;
   border-radius: 50%;
-  background: #d9d9d9;
+  background: var(--ink-300);
 }
 
 .ProfileSettings button:focus-visible,
@@ -313,7 +313,7 @@
 .ProfileSettings .PsJoinLead {
   margin: 8px 0 0;
   text-align: center;
-  color: #7b7b7b;
+  color: var(--ink-600);
   font-size: 14px;
   font-weight: 500;
   letter-spacing: -0.01em;

@@ -84,7 +84,7 @@
 }
 
 .SwiperTitle {
-  color: #000000;
+  color: var(--ink-900);
   text-align: center;
   font-size: 18px;
   height: 20px;
@@ -94,7 +94,7 @@
 }
 
 .InstaLink {
-  color: #ea4da4;
+  color: var(--brand-500);
   text-align: center;
   font-size: 18px;
   height: 20px;
@@ -107,7 +107,7 @@
 }
 
 .SwiperContent {
-  color: #000;
+  color: var(--ink-900);
   text-align: center;
   font-size: 12px;
   font-style: normal;

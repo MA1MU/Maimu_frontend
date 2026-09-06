@@ -26,7 +26,7 @@
   text-align: center;
   margin: auto;
   margin-top: 15px;
-  color: #000;
+  color: var(--ink-900);
   background-color: rgba(255, 255, 255, 0);
 
   font-family: Inter, "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
@@ -50,7 +50,7 @@
   justify-content: center;
   flex-shrink: 0;
 
-  color: #000;
+  color: var(--ink-900);
   text-align: center;
   font-family: Pretendard;
   font-size: 20px;
@@ -63,7 +63,7 @@
   height: 36px;
   flex-shrink: 0;
   border-radius: 10px;
-  border: 2px solid #949494;
+  border: 2px solid var(--ink-500);
   background: #fff;
 
   display: flex;
@@ -77,7 +77,7 @@
   left: 50%;
   transform: translateX(-50%);
 
-  color: #3a3a3a;
+  color: var(--ink-700);
   text-align: center;
   font-family: Pretendard;
   font-size: 16px;
@@ -90,7 +90,7 @@
   height: 56px;
   flex-shrink: 0;
   border-radius: 10px;
-  background: #ea4da4;
+  background: var(--brand-500);
 
   display: flex;
   align-items: center;
@@ -185,7 +185,7 @@
   width: 326px;
   margin: 26px 0 0;
   text-align: center;
-  color: #1c1c1c;
+  color: var(--ink-900);
   font-family: "Pretendard", -apple-system, BlinkMacSystemFont,
     "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
   font-size: 24px;
@@ -199,7 +199,7 @@
   width: 300px;
   margin: 10px 0 0;
   text-align: center;
-  color: #7b7b7b;
+  color: var(--ink-600);
   font-family: "Pretendard", sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -209,7 +209,7 @@
   animation: send-fade 0.45s ease-out 0.26s both;
 }
 .SendNote .SendNote_Sub b {
-  color: #ea4da4;
+  color: var(--brand-500);
   font-weight: 700;
 }
 
@@ -228,7 +228,7 @@
   margin: 40px 0 0;
   border: none;
   border-radius: 999px;
-  background: #ea4da4;
+  background: var(--brand-500);
   color: #fff;
   font-family: "Pretendard", sans-serif;
   font-size: 17px;
@@ -250,7 +250,7 @@
   border: 1px solid rgba(17, 12, 18, 0.14);
   border-radius: 999px;
   background: #fff;
-  color: #6d6d6d;
+  color: var(--ink-600);
   font-family: "Pretendard", sans-serif;
   font-size: 15px;
   font-weight: 600;
@@ -261,7 +261,7 @@
 
 @media (hover: hover) {
   .SendNote .ToStartPage_Button:hover { filter: brightness(1.05); scale: 1.02; }
-  .SendNote .SendNote_Button:hover { background: #f7f7f7; color: #434343; }
+  .SendNote .SendNote_Button:hover { background: var(--ink-50); color: var(--ink-700); }
 }
 .SendNote .ToStartPage_Button:active,
 .SendNote .SendNote_Button:active { scale: 0.97; }
