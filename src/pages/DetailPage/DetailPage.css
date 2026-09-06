@@ -1,13 +1,16 @@
 .DetailPage {
   width: 100%;
-  height: 100%;
+  /* height 고정이면 쪽지가 많을 때 배경이 한 화면에서 끊긴다.
+     최소 한 화면 + 내용만큼 자라기. */
+  min-height: 100%;
   position: relative;
 }
 
 .DetailPageScroll {
   width: 100%;
   height: 100%;
-  max-height: 844px;
+  /* max-height: 844px 는 시안 크기라 화면이 그보다 긴 기기에서 아래쪽에
+     빈 띠를 남겼다. 프레임(App.css)이 이미 기기 높이를 잡아 준다. */
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }

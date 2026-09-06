@@ -33,11 +33,15 @@
 
 .LockerContainer {
   display: grid;
-  grid-template-columns: 117px 117px 117px;
+  /* 칸 폭은 사물함 그림(.LockerIcon 115px)에 정확히 맞춘다.
+     117 이던 시절엔 칸마다 2px 씩 남아 격자가 6px 더 넓었다. */
+  grid-template-columns: repeat(3, 115px);
   grid-template-rows: 174px 174px 174px;
   /* 3px 이라 사물함들이 서로 붙어 한 덩어리로 보였다.
-     390px 화면에서 117*3 + 8*2 = 367px, 좌우 여백 11px 로 여전히 들어간다. */
-  gap: 8px;
+     390px 화면: 115*3 + 8*2 = 361px, 좌우 여백 14.5px.
+     360px 기기(안드로이드에 흔하다)에서는 8px 이면 좌우가 잘려서, 화면이 좁아지는
+     만큼만 간격을 줄인다. 365px 이상에서는 계산값이 8 을 넘으므로 그대로 8px. */
+  gap: min(8px, calc((100vw - 349px) / 2));
   justify-content: center;
   /* 하단 액션 바(높이 58px + 아래 여백 28px)가 맨 아랫줄을 가리지 않도록 확보.
      화면이 낮아도 스크롤하면 마지막 줄이 바 위로 올라온다. */

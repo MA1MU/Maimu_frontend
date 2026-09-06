@@ -47,19 +47,44 @@
   width: 100%;
 }
 
+/* 이 래퍼(App.css 의 공용 클래스)는 내용만큼만 넓어져서, 안쪽 .WallPaper 의
+   width: 100% 가 기댈 폭이 없었다. 배경 그림이 화면 폭을 못 채우고
+   가로로 쪼그라들던 원인. */
+.StartPage > .JustifyCenter {
+  width: 100%;
+}
+
+/* 시안 크기(390 x 844)를 그대로 박아 두었더니 화면이 그보다 짧은 기기
+   (아이폰 SE 375x667, 안드로이드 360x640 …)에서 로그인 버튼(top: 620px)이
+   화면 밖으로 밀려났다. 첫 화면인데 스크롤해야 로그인할 수 있었다.
+   높이를 기기 화면에 맞추고, 버튼은 위가 아니라 아래를 기준으로 세운다. */
 .WallPaper {
   position: relative;
-  /* width: 390px; */
-  height: 844px; /* 정해진 화면 크기 : 390 x 844 */
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100); /* dvh 미지원 브라우저용 폴백 */
+  height: 100dvh;
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+
+  /* 버튼 두 개의 아래 기준선. 844px 기기에서는 167px 이 되어 시안과 같은 자리
+     (top: 620px)에 서고, 화면이 짧아지면 그만큼 같이 올라온다. */
+  --cta-bottom: clamp(56px, 19.8%, 167px);
+}
+
+/* 배경 그림은 화면을 채우되 위쪽(칠판·캐릭터)을 자르지 않는다.
+   짧은 화면에서는 아래쪽 빈 분홍 여백만 잘린다. */
+.WallPaper > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .LoginButton {
   position: absolute;
-  top: 620px;
+  bottom: var(--cta-bottom);
   text-align: center;
   object-fit: cover;
   justify-content: center; /* 가로축의 가운데 */
@@ -69,7 +94,8 @@
 
 .InformationButton {
   position: absolute;
-  top: 564px;
+  /* 버튼 높이(57px) 만큼 위. 시안의 두 버튼 간격이 그대로 유지된다. */
+  bottom: calc(var(--cta-bottom) + 56px);
   text-align: center;
   justify-content: center; /* 가로축의 가운데 */
   align-items: center; /* 세로축의 가운데 */

@@ -15,7 +15,9 @@ body {
 
   /* App.js 가 --vh 를 계산해 두지만 바로 아래에 있던 height: 100vh 가 그걸
      덮어써서 모바일 주소창 대응이 작동한 적이 없었다. 아래로 갈수록 우선.
-     1) --vh (JS 폴백)  2) dvh 지원 브라우저에서는 JS 없이도 정확 */
+     1) --vh (JS 폴백)  2) dvh 지원 브라우저에서는 JS 없이도 정확
+
+     자식이 height: 100% 로 이 높이를 물려받으므로 값이 확정돼 있어야 한다. */
   height: calc(var(--vh, 1vh) * 100);
   height: 100dvh;
 }
@@ -23,14 +25,35 @@ body {
 .Frame {
   position: relative;
   display: flex;
+  /* 자식은 화면 컴포넌트 하나뿐이다(BrowserRouter 는 DOM 을 만들지 않는다).
+     column 이면 가로는 stretch 로 꽉 차고, 세로는 내용만큼 자랄 수 있다.
+     row 였을 때는 세로가 프레임 높이에 못 박혀서, 내용이 길면 화면 배경만
+     한 화면 높이로 끝나고 그 아래가 흰 여백으로 남았다. */
+  flex-direction: column;
   width: 100%;
-  min-width: 390px;
   /* max-width: 643px; */
+
+  /* 예전에는 min-width: 390px + 높이 844px 고정(min/max 동시) 이었다.
+     844 는 디자인 시안의 세로 크기지 기기의 세로 크기가 아니라서 모바일에서
+     두 가지가 어긋났다.
+     1) 폭이 390px 미만인 기기(360·375px 가 흔하다)에서 가로로 삐져나가
+        옆으로 밀리는 스크롤이 생겼다.
+     2) 화면이 844px 보다 짧으면 프레임이 화면 밖으로 177px 쯤 넘쳤다.
+        그래서 문서 스크롤과 화면 안쪽 스크롤(.DetailPageScroll 등)이
+        겹쳐 두 번 스크롤해야 했고, 안쪽 스크롤 영역의 아래끝은 늘 화면
+        밖에 있었다.
+     프레임을 기기 화면 높이에 맞추고 스크롤은 이 한 곳에서만 일어나게 한다. */
   height: 100%;
-  min-height: 844px;
-  max-height: 844px;
-  overflow-y: hidden; /* 위에 있던 overflow-y: auto 는 이 줄에 덮여 죽은 선언이라 제거 */
+  overflow-y: auto;
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* 화면은 최소 한 화면을 채우고(짧은 화면의 배경이 끊기지 않게),
+   내용이 길면 줄어들지 않고 그만큼 자란다(배경이 끝까지 따라오게). */
+.Frame > * {
+  flex-shrink: 0;
+  min-height: 100%;
 }
 
 .JustifyCenter {
