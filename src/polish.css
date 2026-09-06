@@ -697,3 +697,17 @@ body,
 .ProfileSettings .PsJoinLead {
   line-height: var(--lh-relaxed);
 }
+
+/* ── 24. 빈 사물함은 한 단계 뒤로 ──────────────────────────────────────
+   9칸 중 대부분이 비어 있을 때 빈 칸이 화면을 지배해 버린다.
+   채워진 사물함이 도드라지도록 빈 칸의 존재감을 낮춘다.
+   (Locker.js 가 isEmpty 클래스를 직접 붙인다 — CSS 가 추측하지 않는다) */
+.LockerContainer .Locker.isEmpty .LockerIcon {
+  opacity: 0.5;
+  transition: opacity var(--dur-base) var(--ease-out);
+}
+@media (hover: hover) {
+  .LockerContainer .Locker.isEmpty:hover .LockerIcon {
+    opacity: 0.78;
+  }
+}

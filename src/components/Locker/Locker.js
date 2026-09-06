@@ -26,7 +26,7 @@ const Locker = ({ GroupName, groupColor, unreadMaimuCount, isEditing, isDeleting
   }
 
   return (
-    <div className='Locker' onClick={onClick}>
+    <div className={`Locker ${GroupName ? '' : 'isEmpty'}`} onClick={onClick}>
       <img className='LockerIcon' src={lockerIcon} alt='LockerIcon' onClick={onClick}/>
       <div className='GroupName'>{GroupName}</div>
       {/* 안읽음 배지는 CheckCircle / EditIcon 과 좌표(top -227px, right -87px)가

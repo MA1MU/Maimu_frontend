@@ -49,6 +49,12 @@
   --flavor-green: #86c95d;
   --flavor-green-soft: #e4f7d4;
 
+  /* 같은 계열이 16종으로 흩어져 있어 색×2톤으로 묶었다.
+     tint = 그라디언트 시작(조금 진한 쪽), soft = 넓은 면(옅은 쪽) */
+  --flavor-pink-tint: #fbd3dc;
+  --flavor-yellow-tint: #fdf5c2;
+  --flavor-green-tint: #e0f7c4;
+
   /* ── 타이포 스케일 ─────────────────────────────────────────────────── */
   --fs-display: 26px;
   --fs-title: 20px;

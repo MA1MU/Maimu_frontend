@@ -8,7 +8,7 @@
 .CheckNote.CitronBackground {
   background: linear-gradient(
     180deg,
-    #fffac8 0%,
+    var(--flavor-yellow-soft) 0%,
     rgba(255, 255, 255, 0) 35.06%
   );
 }
@@ -16,7 +16,7 @@
 .CheckNote.PlumBackground {
   background: linear-gradient(
     180deg,
-    #eeffbd 0%,
+    var(--flavor-green-soft) 0%,
     rgba(255, 255, 255, 0) 35.06%
   );
 }
@@ -24,7 +24,7 @@
 .CheckNote.PomegranateBackground {
   background: linear-gradient(
     180deg,
-    #ffeaef 0%,
+    var(--flavor-pink-soft) 0%,
     rgba(255, 255, 255, 0) 29.61%,
     rgba(252, 252, 252, 0.36) 84.5%
   );
@@ -122,7 +122,7 @@
 }
 
 .CheckNote .Note_T_Wrapper.PomegranateBackground {
-  background: linear-gradient(180deg, #fdebeb 0%, rgba(255, 255, 255, 0.9) 100%),
+  background: linear-gradient(180deg, var(--flavor-pink-soft) 0%, rgba(255, 255, 255, 0.9) 100%),
   linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
   linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
@@ -170,7 +170,7 @@
 }
 
 .CheckNote .Note_C_Wrapper.PomegranateBackground {
-  background: linear-gradient(180deg, #fdeded 0%, #fff 52.45%),
+  background: linear-gradient(180deg, var(--flavor-pink-soft) 0%, #fff 52.45%),
   linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
   linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }
@@ -262,7 +262,7 @@
 }
 
 .CheckNote .Note_NickName_Wrapper.CitronBackground {
-  background: linear-gradient(180deg, #fefad7 0%, #fff 100%),
+  background: linear-gradient(180deg, var(--flavor-yellow-soft) 0%, #fff 100%),
   linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
   linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
 }

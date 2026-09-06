@@ -2,7 +2,7 @@
   width: 100%;
   background: linear-gradient(
     180deg,
-    #ffe6ec 0%,
+    var(--flavor-pink-soft) 0%,
     rgba(255, 255, 255, 0) 23.06%
   );
 }
@@ -10,7 +10,7 @@
 .MainPage.CitronBackground {
   background: linear-gradient(
     180deg,
-    #fffac8 0%,
+    var(--flavor-yellow-soft) 0%,
     rgba(255, 255, 255, 0) 35.06%
   );
 }
@@ -18,7 +18,7 @@
 .MainPage.PlumBackground {
   background: linear-gradient(
     180deg,
-    #eeffbd 0%,
+    var(--flavor-green-soft) 0%,
     rgba(255, 255, 255, 0) 35.06%
   );
 }
@@ -26,7 +26,7 @@
 .MainPage.PomegranateBackground {
   background: linear-gradient(
     180deg,
-    #ffecf1 0%,
+    var(--flavor-pink-soft) 0%,
     rgba(255, 255, 255, 0) 35.06%
   );
 }
@@ -35,7 +35,9 @@
   display: grid;
   grid-template-columns: 117px 117px 117px;
   grid-template-rows: 174px 174px 174px;
-  gap: 3px;
+  /* 3px 이라 사물함들이 서로 붙어 한 덩어리로 보였다.
+     390px 화면에서 117*3 + 8*2 = 367px, 좌우 여백 11px 로 여전히 들어간다. */
+  gap: 8px;
   justify-content: center;
   /* 하단 액션 바(높이 58px + 아래 여백 28px)가 맨 아랫줄을 가리지 않도록 확보.
      화면이 낮아도 스크롤하면 마지막 줄이 바 위로 올라온다. */

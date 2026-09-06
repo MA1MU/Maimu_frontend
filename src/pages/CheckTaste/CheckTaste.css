@@ -5,30 +5,30 @@
 .CheckTaste.PomegranateBackground{
   background: linear-gradient(
     180deg,
-    #facccc 0%,
+    var(--flavor-pink-tint) 0%,
     rgba(255, 255, 255, 0) 37.96%,
     rgba(252, 252, 252, 0.36) 78.23%,
-    #fce5e5 96%
+    var(--flavor-pink-soft) 96%
   );
 }
 
 .CheckTaste.CitronBackground {
   background: linear-gradient(
     180deg,
-    #fdf7c8 0%,
+    var(--flavor-yellow-tint) 0%,
     rgba(255, 255, 255, 0) 37.96%,
     rgba(252, 252, 252, 0.36) 78.23%,
-    #fcf7c9 96%
+    var(--flavor-yellow-soft) 96%
   );
 }
 
 .CheckTaste.PlumBackground {
   background: linear-gradient(
     180deg,
-    #dffab6 0%,
+    var(--flavor-green-tint) 0%,
     rgba(255, 255, 255, 0) 37.96%,
     rgba(252, 252, 252, 0.36) 78.23%,
-    #dffab8 96%
+    var(--flavor-green-tint) 96%
   );
 }
 
@@ -109,7 +109,7 @@
   flex-shrink: 0;
   border-radius: 12px;
   border: 1px solid var(--ink-700);
-  background: #fbdada;
+  background: var(--flavor-pink-tint);
   /* 기존 box-shadow / text-shadow 가 4px 4px 4px 오프셋이라 글자가 번져 보였다. */
   box-shadow: 0 2px 6px rgba(17, 12, 18, 0.07), 0 8px 20px rgba(17, 12, 18, 0.08);
   color: var(--ink-900);
@@ -124,20 +124,20 @@
 }
 
 .CheckTaste_Button.PomegranateButton {
-  background: #fbdada;
+  background: var(--flavor-pink-tint);
 }
 
 .CheckTaste_Button.CitronButton {
-  background: #feffc2;
+  background: var(--flavor-yellow-tint);
 }
 
 .CheckTaste_Button.PlumButton {
-  background: #e5fbc5;
+  background: var(--flavor-green-tint);
 }
 
 
 /* ── 당도 게이지 ─────────────────────────────────────────────────────
-   색은 마이무 맛에 맞춘 기존 값(#fbdada / #feffc2 / #e5fbc5)을 그대로 쓴다. */
+   색은 마이무 맛에 맞춘 기존 값(var(--flavor-pink-tint) / var(--flavor-yellow-tint) / var(--flavor-green-tint))을 그대로 쓴다. */
 .CheckTaste .SugarGauge {
   width: 190px;
   height: 10px;

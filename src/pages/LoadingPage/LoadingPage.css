@@ -8,13 +8,13 @@
 }
 
 .LoadingPage.CitronBackground {
-  background: linear-gradient(180deg, #fffac8 0%, rgba(255, 255, 255, 0) 35.06%);
+  background: linear-gradient(180deg, var(--flavor-yellow-soft) 0%, rgba(255, 255, 255, 0) 35.06%);
 }
 .LoadingPage.PlumBackground {
-  background: linear-gradient(180deg, #eeffbd 0%, rgba(255, 255, 255, 0) 35.06%);
+  background: linear-gradient(180deg, var(--flavor-green-soft) 0%, rgba(255, 255, 255, 0) 35.06%);
 }
 .LoadingPage.PomegranateBackground {
-  background: linear-gradient(180deg, #ffecf1 0%, rgba(255, 255, 255, 0) 35.06%);
+  background: linear-gradient(180deg, var(--flavor-pink-soft) 0%, rgba(255, 255, 255, 0) 35.06%);
 }
 
 .LoadingPage .SmallLogo {

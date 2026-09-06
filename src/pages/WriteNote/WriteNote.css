@@ -3,7 +3,7 @@
   /* Rectangle 706 */
   background: linear-gradient(
     180deg,
-    #ffeaef 0%,
+    var(--flavor-pink-soft) 0%,
     rgba(255, 255, 255, 0) 22.35%,
     rgba(252, 252, 252, 0.360725) 84.5%
   );
@@ -68,7 +68,7 @@
   flex-shrink: 0;
   border-radius: 10px;
   border: 1px solid var(--ink-400);
-  background: linear-gradient(180deg, #fdebeb 0%, rgba(255, 255, 255, 0.9) 100%),
+  background: linear-gradient(180deg, var(--flavor-pink-soft) 0%, rgba(255, 255, 255, 0.9) 100%),
     linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
     linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
   word-break: keep-all; /* 너무 길어져서 줄을 바꿔야할 때 단어 쪼개지지 않게 함. */
@@ -117,7 +117,7 @@
   flex-shrink: 0;
   border-radius: 10px;
   border: 1px solid var(--ink-400);
-  background: linear-gradient(180deg, #fdeded 0%, #fff 52.45%),
+  background: linear-gradient(180deg, var(--flavor-pink-soft) 0%, #fff 52.45%),
     linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%),
     linear-gradient(0deg, var(--ink-100) 0%, var(--ink-100) 100%), var(--ink-100);
   word-break: keep-all; /* 너무 길어져서 줄을 바꿔야할 때 단어 쪼개지지 않게 함. */
