@@ -711,3 +711,56 @@ body,
     opacity: 0.78;
   }
 }
+
+/* =========================================================================
+   25. 쪽지 작성 폼을 한 장으로
+   제목·내용·당도가 든 .WriteNote_Box 와 맛·보내는사람이 든 .Note_Info_Wrapper 가
+   각각 테두리와 그림자를 가진 별개의 카드라, 하나의 폼인데 둘로 끊겨 보였다.
+   위/아래 모서리만 살려 한 장처럼 이어 붙인다.
+   ========================================================================= */
+
+.WriteNote .WriteNote_Box {
+  /* content-box 라 테두리 2px 이 더해져 아래 카드(326px)보다 넓었다 */
+  box-sizing: border-box;
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+  border-bottom: none;
+  box-shadow: none;
+  margin-bottom: 0;
+}
+.WriteNote .Note_Info_Wrapper {
+  margin-top: 0;
+  border-top: 1px solid var(--ink-200);
+  border-radius: 0 0 var(--r-xl) var(--r-xl);
+  box-shadow: none;
+}
+/* 그림자는 이어붙인 한 장 전체에 한 번만 드리운다 */
+.WriteNote .JustifyCenter {
+  filter: drop-shadow(0 2px 6px rgba(46, 28, 38, 0.06))
+    drop-shadow(0 10px 24px rgba(46, 28, 38, 0.07));
+}
+
+/* =========================================================================
+   26. 여백 척도 적용 (임의값 -> --sp-*)
+   ========================================================================= */
+
+.CheckTaste_Wrapper {
+  gap: var(--sp-3);
+  margin-top: 104px;
+}
+.LoadingMaimu_Wrapper {
+  gap: var(--sp-4);
+}
+.CheckTaste .Taste_Pink {
+  margin: var(--sp-1) 0 var(--sp-1);
+}
+.CheckTaste_Button {
+  margin-top: var(--sp-6);
+}
+.LoadingPage .SkipHint {
+  margin-top: var(--sp-6);
+}
+
+/* 쪽지 그리드도 앱 폭 토큰에 맞춘다 */
+.DetailMaimu {
+  width: var(--app-w);
+}
