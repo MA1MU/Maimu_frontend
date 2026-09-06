@@ -19,14 +19,39 @@
   flex-direction: column;
 }
 
+/* ── 쪽지 그리드 ──────────────────────────────────────────────────────
+   3열 94px + 좌우 gap 27px = 336px 라 헤더·사물함 이름(326px)보다 10px 넓어
+   쪽지 줄의 양 끝이 헤더 밖으로 삐져나와 있었다. 폭을 앱 척도에 맞추고
+   남는 공간을 열 사이로 나눠(space-between) 양 끝을 헤더와 정확히 맞춘다.
+   행 높이도 58px 로 고정돼 쪽지(45px)보다 13px 컸다. 그만큼 세로 간격만
+   40px 로 벌어져 가로(27px)와 리듬이 어긋났으므로, 행은 내용 높이로 두고
+   간격은 척도(--sp-8)로 준다.
+   게스트 화면(WriteDetailPage)이 같은 마크업을 쓰므로 격자 정의는 여기 한 곳뿐이다.
+   화면마다 다른 건 바깥 여백뿐이라 그것만 각자 덮어쓴다. */
 .DetailMaimu {
   display: grid;
+  width: var(--app-w);
   grid-template-columns: repeat(3, 94px);
-  grid-auto-rows: 58px;
-  gap: 27px;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  margin: 30px auto 60px;
+  row-gap: var(--sp-8);
+}
+
+.DetailPage .DetailMaimu {
+  margin: var(--sp-6) auto var(--sp-10);
+}
+
+/* 무한 스크롤 관찰 대상. 격자 안에 있던 시절엔 grid-auto-rows 때문에
+   빈 58px 짜리 행을 통째로 차지해 목록 끝이 어색하게 벌어졌다. */
+.DetailPage .DetailMore {
+  width: var(--app-w);
+  min-height: 24px;
+  margin: 0 auto var(--sp-10);
+  text-align: center;
+  color: var(--ink-500);
+  font-size: var(--fs-caption);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tracking);
 }
 
 /* ── 헤더: [뒤로] MAIMU [공유] ────────────────────────────────────────

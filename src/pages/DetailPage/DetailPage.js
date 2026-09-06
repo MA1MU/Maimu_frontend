@@ -344,13 +344,15 @@ const DetailPage = () => {
                   group_id={group_id}
                 />
               ))}
-              {/* 무한 스크롤을 위한 관찰 대상 */}
-              {hasMore && (
-                <div ref={observerTarget} style={{ width: "100%", height: "20px", gridColumn: "1 / -1" }}>
-                  {isLoading && <div style={{ textAlign: "center", padding: "10px" }}>로딩 중...</div>}
-                </div>
-              )}
             </div>
+
+            {/* 무한 스크롤을 위한 관찰 대상.
+                격자 안에 두면 빈 행을 하나 차지해 목록 끝이 벌어져서 밖으로 뺐다. */}
+            {hasMore && (
+              <div className="DetailMore" ref={observerTarget}>
+                {isLoading && "쪽지를 불러오는 중…"}
+              </div>
+            )}
             {pasteState && <PasteLinkAlert setPasteState={setPasteState} />}
           </div>
         </div>

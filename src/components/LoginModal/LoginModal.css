@@ -1,141 +1,142 @@
+/* =========================================================================
+   로그인 모달
+   -------------------------------------------------------------------------
+   기존에는 334×395 고정 상자 안에서 자식이 전부 절대 좌표로 놓여 있었다
+   (제목 top:34/left:114, 버튼 top:108 / 163 / 218, 약관 bottom:62).
+   글자 크기나 문구가 한 줄만 달라져도 서로 겹치는 구조라 일반 흐름 + 간격
+   척도로 다시 짠다. 상자 자체의 가운데 정렬만 절대 좌표로 남기는데,
+   그건 내용 높이와 무관하고 polish.css 의 등장 모션(maimu-pop-centered)이
+   같은 translate 를 이어 쓰기 때문이다.
+   ========================================================================= */
+
 .LoginToggleOut {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
+  z-index: 1000; /* 본문 요소(배지 5, 액션바 20)보다 확실히 위 */
 
-  background-color: rgba(0, 0, 0, 0.36);
+  background-color: rgba(27, 23, 25, 0.44);
 }
 
 .LoginToggleBG {
   position: absolute;
-  top: 45.6%;
+  top: 50%;
   left: 50%;
-  width: 334px;
-  height: 395px;
+  z-index: 1001;
+  /* 높이는 내용이 정한다. 폭은 좁은 기기에서 잘리지 않게 여백을 남긴다 */
+  width: min(334px, calc(100% - 32px));
+  box-sizing: border-box;
+  padding: var(--sp-6) var(--sp-5) var(--sp-5);
 
-  background-color: white;
-  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+
+  background-color: var(--surface);
+  border-radius: var(--r-xl);
   transform: translate(-50%, -50%);
 }
 
 .LoginXBtn {
   position: absolute;
-  top: 4%;
-  right: 5%;
+  top: 8px;
+  right: 8px;
+  width: 40px;
+  height: 40px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+
+  border: none;
+  border-radius: var(--r-full);
+  background: transparent;
 }
 
 .Login_T {
-  position: absolute;
-  top: 34px;
-  left: 114px;
-  width: 106px;
-  height: 35px;
+  margin: var(--sp-1) 0 var(--sp-5);
 
-  justify-content: center;
   color: var(--ink-900);
   text-align: center;
   font-family: Inter, "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
-  font-size: 16px;
+  font-size: var(--fs-subtitle);
   font-style: normal;
-  font-weight: 700;
-  line-height: 0px;
+  font-weight: var(--fw-bold);
+  /* 원래 line-height: 0px 이라 제목 상자가 찌그러져 있었다 */
+  line-height: var(--lh-tight);
 }
 
-.KakaoLogin {
-  position: absolute;
-  top: 108px;
-  left: 26px;
-  width: 282px;
-  height: 45px;
-  cursor: pointer;
+/* 세 버튼은 아이콘만 다르고 나머지가 같다.
+   글자는 상자 한가운데, 아이콘만 왼쪽에 고정한다. */
+.KakaoLogin,
+.NaverLogin,
+.GoogleLogin {
+  position: relative;
+  width: 100%;
+  height: 48px;
+  box-sizing: border-box;
+  /* 아이콘 자리만큼 좌우를 비워야 글자가 길어져도 아이콘에 닿지 않는다 */
+  padding: 0 44px;
+  margin-bottom: var(--sp-2);
 
-  border-radius: 5px;
-  border: 1px solid var(--ink-600);
-  background: #fff;
   display: flex;
-  justify-content: center;
   align-items: center;
-}
+  justify-content: center;
 
-.KakaoLoginImg {
-  position: absolute;
-  top: 8px;
-  left: 20px;
-  width: 27px;
-  height: 27px;
-}
-
-.NaverLogin {
-  position: absolute;
-  top: 163px;
-  left: 26px;
-  width: 282px;
-  height: 45px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--ink-300);
+  background: var(--surface);
+  color: var(--ink-800);
+  font-family: inherit;
+  font-size: var(--fs-body);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--tracking);
   cursor: pointer;
-
-  border-radius: 5px;
-  border: 1px solid var(--ink-600);
-  background: #fff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.NaverLoginImg {
-  position: absolute;
-  top: 10px;
-  left: 20px;
-  width: 27px;
-  height: 27px;
 }
 
 .GoogleLogin {
-  position: absolute;
-  top: 218px;
-  left: 26px;
-  width: 282px;
-  height: 45px;
-  cursor: pointer;
+  margin-bottom: 0;
+}
 
-  border-radius: 5px;
-  border: 1px solid var(--ink-600);
-  background: #fff;
+.KakaoLoginImg,
+.NaverLoginImg,
+.GoogleLoginImg {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  translate: 0 -50%;
+
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
-.GoogleLoginImg {
-  position: absolute;
-  top: 3px;
-  left: 13px;
-  width: 38px;
-  height: 38px;
+.KakaoLoginImg img,
+.NaverLoginImg img {
+  width: 26px;
+  height: 26px;
+}
+
+/* 구글 아이콘만 원본에 여백이 포함돼 있어 조금 크게 잡아야 나머지와 같아 보인다 */
+.GoogleLoginImg img {
+  width: 34px;
+  height: 34px;
 }
 
 .TermsOfUse {
-  position: absolute;
-  bottom: 62px;
-  left: 24px;
-  width: 287px;
-  height: 39px;
+  margin: var(--sp-5) 0 0;
 
+  color: var(--ink-500);
   text-align: center;
-  font-family: Pretendard;
-  font-size: 12px;
+  font-family: inherit;
+  font-size: var(--fs-micro);
   font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-normal);
+  word-break: keep-all;
 }
 
 .TermsOfUse_C {
-  color: #00f;
-  font-family: Pretendard;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
+  color: var(--brand-600);
+  font: inherit;
   text-decoration-line: underline;
+  text-underline-offset: 2px;
 }

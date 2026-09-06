@@ -20,13 +20,9 @@
   padding-bottom: 150px; /* 버튼 공간 확보 */
 }
 
+/* 격자 자체는 DetailPage.css 의 .DetailMaimu 한 곳에서만 정의한다.
+   여기에 같은 값을 다시 적어 두면 한쪽만 고쳤을 때 조용히 어긋난다. */
 .WriteDetailPage .DetailMaimu {
-  display: grid;
-  grid-template-columns: repeat(3, 94px);
-  grid-auto-rows: 58px;
-  gap: 27px;
-  align-items: center;
-  justify-content: center;
   margin-top: 38px;
 }
 

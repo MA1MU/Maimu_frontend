@@ -8,24 +8,26 @@ import Arrow from '../../images/ProfileEdit/NextArrow.svg';
 import PomegranateBubble from '../../images/ProfileEdit/PomegranateBubble.svg';
 import CitronBubble from '../../images/ProfileEdit/CitronBubble.svg';
 import PlumBubble from '../../images/ProfileEdit/PlumBubble.svg';
-import TwinkleImg from '../../images/ProfileEdit/Twinkle.svg';
 import Citron from '../../images/ProfileEdit/Citron.svg';
 
 import '../../App.css'
 
+// 화면에 놓이는 순서 그대로. name 은 그대로 서버까지 가는 값이라 바꾸지 않는다.
+const PROFILES = [
+  { name: '석류', image: Pomegranate, bubble: PomegranateBubble },
+  { name: '유자', image: Citron, bubble: CitronBubble },
+  { name: '매실', image: Plum, bubble: PlumBubble },
+];
+
 const ProfileEdit = () => {
-  const [name, setName] = useState('');
   const [iconName, setIconName] = useState('');
-  const [iconPosition, setIconPosition] = useState({ top: 0, left: 0 });
   const [bubbleImage, setBubbleImage] = useState(SpeechBubble);
 
   const navigate = useNavigate();
 
-  const handleIconClick = (iconName, position, bubbleImage) => {
-    setName(iconName);
-    setIconName(iconName);
-    setIconPosition(position);
-    setBubbleImage(bubbleImage);
+  const handleIconClick = (name, bubble) => {
+    setIconName(name);
+    setBubbleImage(bubble);
   };
 
   const handleNextButtonClick = () => {
@@ -37,56 +39,35 @@ const ProfileEdit = () => {
 
     <div className='ProfileEdit'>
       <div className="JustifyContainer">
-        <img className='SpeechBubble' src={bubbleImage} alt='SpeechBubble' />
-        {iconName === '석류' && <img className='PomegranateTwinkle' src={TwinkleImg} alt='TwinkleImg'/>}
-        {iconName === '유자' && <img  className='CitronTwinkle' src={TwinkleImg} alt='TwinkleImg'/>}
-        {iconName === '매실' && <img className='PlumTwinkle' src={TwinkleImg} alt='TwinkleImg'/>}
-      
-      <div className="MaimuContainer">
-      <img
-        className='Pomegranate'
-        src={Pomegranate}
-        alt='Pomegranate'
-        onClick={() =>
-          handleIconClick('석류', { top: 487, marginRight:"236px" }, PomegranateBubble)
-        }
-      />
-      <img
-        className='Citron'
-        src={Citron}
-        alt='Citron'
-        onClick={() =>
-          handleIconClick('유자', { top: 487 }, CitronBubble)
-        }
-      />
-      <img
-        className='Plum'
-        src={Plum}
-        alt='Plum'
-        onClick={() =>
-          handleIconClick('매실', { top: 487, marginLeft:"232px" }, PlumBubble)
-        }
-      />
-      </div>
+        <img className='SpeechBubble' src={bubbleImage} alt='' />
 
-  
-
-      {name && (
-        <div
-          className='IconName'
-          style={{ 
-            position: 'absolute',
-           ...iconPosition }}
-        >
-          <p>{name}</p>
+        <div className="MaimuContainer">
+          {PROFILES.map(({ name, image, bubble }) => {
+            const selected = iconName === name;
+            return (
+              <button
+                type='button'
+                key={name}
+                className={`MaimuChoice${selected ? ' isSelected' : ''}`}
+                aria-pressed={selected}
+                onClick={() => handleIconClick(name, bubble)}
+              >
+                <span className='Twinkle' aria-hidden='true' />
+                <img className='MaimuChoiceImg' src={image} alt='' />
+                <span className='IconName'>{name}</span>
+              </button>
+            );
+          })}
         </div>
-      )}
 
-{iconName && (
-        <button className='NextButton' onClick={handleNextButtonClick}>
-          다음 <img className='Arrow' src={Arrow} alt='Arrow' />
+        <button
+          type='button'
+          className='NextButton'
+          onClick={handleNextButtonClick}
+          disabled={!iconName}
+        >
+          다음 <img className='Arrow' src={Arrow} alt='' />
         </button>
-      )}
       </div>
     </div>
   );

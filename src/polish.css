@@ -760,7 +760,5 @@ body,
   margin-top: var(--sp-6);
 }
 
-/* 쪽지 그리드도 앱 폭 토큰에 맞춘다 */
-.DetailMaimu {
-  width: var(--app-w);
-}
+/* 쪽지 그리드의 폭은 격자 정의와 붙어 있어야 뜻이 통해서
+   DetailPage.css 의 .DetailMaimu 로 옮겼다. */
