@@ -45,6 +45,9 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  /* 배경 그림 폭을 480px 로 묶었으므로 넓은 창에서는 양옆이 남는다.
+     그림 좌우 끝 색(#ffd2dc → #fdc5d7)을 이어 받아 흰 띠가 생기지 않게 한다. */
+  background: linear-gradient(180deg, #ffd2dc 0%, #fff0f3 62%, #fdc5d7 100%);
 }
 
 /* 이 래퍼(App.css 의 공용 클래스)는 내용만큼만 넓어져서, 안쪽 .WallPaper 의
@@ -61,6 +64,9 @@
 .WallPaper {
   position: relative;
   width: 100%;
+  /* 노트북 브라우저에서는 창 폭이 그대로 그림 폭이 되어 배경이 3~4배로
+     확대돼 보였다. 휴대폰 폭(430px 안팎)까지만 늘리고 그 위로는 가운데 정렬. */
+  max-width: 480px;
   height: calc(var(--vh, 1vh) * 100); /* dvh 미지원 브라우저용 폴백 */
   height: 100dvh;
   display: flex;
@@ -68,9 +74,30 @@
   align-items: center;
   flex-direction: column;
 
-  /* 버튼 두 개의 아래 기준선. 844px 기기에서는 167px 이 되어 시안과 같은 자리
-     (top: 620px)에 서고, 화면이 짧아지면 그만큼 같이 올라온다. */
-  --cta-bottom: clamp(56px, 19.8%, 167px);
+  /* 버튼 두 개의 아래 기준선. svh 를 모르는 브라우저용 폴백. */
+  --cta-bottom: 24px;
+}
+
+/* 버튼이 그림의 책상과 겹치지 않게 책상 아래로 내린다.
+   책상 밑단은 원본 그림(390x844) 기준 y=530 이고, 그림은 화면을 채우도록
+   확대되므로 화면에서의 위치는 max(그림폭 x 1.36, 화면높이 x 0.628) 이다.
+   그 아래로 버튼 두 개(57x2)와 여유 20px 을 둔 자리가 기준선이 된다.
+   844px 기기에서는 상한 167px 이 걸려 시안과 같은 자리(top: 620px)에 선다. */
+@supports (height: 1svh) {
+  .WallPaper {
+    /* 빌드 최소화기(postcss-calc)가 svh 를 몰라서 calc() 안에 그대로 두면
+       "Lexical error" 경고를 남긴다(값 자체는 그대로 나간다).
+       단위를 변수에 담으면 calc 가 var() 를 줄이지 못해 손대지 않고 지나간다. */
+    --svh: 1svh;
+    --cta-bottom: clamp(
+      20px,
+      calc(
+        100 * var(--svh) - max(min(100vw, 480px) * 1.36, 62.8 * var(--svh)) -
+          134px
+      ),
+      167px
+    );
+  }
 }
 
 /* 배경 그림은 화면을 채우되 위쪽(칠판·캐릭터)을 자르지 않는다.
