@@ -16,6 +16,7 @@ import WriteDetailPage from "./pages/WriteDetailPage/WriteDetailPage";
 import WriteNote from "./pages/WriteNote/WriteNote";
 import SendNote from "./pages/SendNote/SendNote";
 import LoginHandler from "./pages/LoginHandler/LoginHandler";
+import MaimuNotifier from "./components/MaimuNotifier/MaimuNotifier";
 
 const App = () => {
   function setScreenSize() {
@@ -38,6 +39,7 @@ const App = () => {
     <div className="WebAppFrame">
       <div className="Frame">
         <BrowserRouter>
+          <MaimuNotifier />
           <Routes>
             <Route path="/" exact element={<StartPage />} />
             <Route path="/MainPage" element={<MainPage />}></Route>

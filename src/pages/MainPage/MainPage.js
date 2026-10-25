@@ -30,6 +30,7 @@ const MainPage = () => {
   const [warningModalOpen, setWarningModalOpen] = useState(false);
   const [lockers, setLockers] = useState(Array.from({ length: 9 }, () => ({ groupName: "", groupColor: "", group_id: null, unreadMaimuCount: 0 })));
   const [profileInfo, setProfileInfo] = useState(null); // 사용자 프로필 아이콘 상태
+  const [refreshKey, setRefreshKey] = useState(0); // 실시간 알림(SSE)이 오면 올려서 안 읽은 개수를 다시 불러온다
 
   const access_token = localStorage.getItem("access_token");
 
@@ -103,7 +104,13 @@ const MainPage = () => {
     };
 
     fetchData();
-  }, [access_token]);
+  }, [access_token, refreshKey]);
+
+  useEffect(() => {
+    const onNewMaimu = () => setRefreshKey((key) => key + 1);
+    window.addEventListener("maimu:new", onNewMaimu);
+    return () => window.removeEventListener("maimu:new", onNewMaimu);
+  }, []);
 
   useEffect(() => {
     // 현재 페이지의 히스토리를 하나 더 추가하여 뒤로 가기를 눌러도 현재 페이지에 머물게 함

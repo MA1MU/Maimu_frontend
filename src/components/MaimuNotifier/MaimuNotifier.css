@@ -1,0 +1,12 @@
+/* 새 마이무 도착 알림 토스트. 앱 폭 안에 들어오게 하고 브랜드 톤으로 맞춘다. */
+.MaimuNotifier_Toast {
+  max-width: min(360px, calc(100vw - 32px));
+  margin: 8px auto 0;
+  border-radius: var(--r-lg);
+  border: 1px solid var(--brand-100);
+  background: #fff;
+  color: var(--ink-900);
+  box-shadow: var(--shadow-md);
+  font-weight: 600;
+  cursor: pointer;
+}
