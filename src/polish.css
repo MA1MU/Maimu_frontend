@@ -591,7 +591,9 @@ textarea::placeholder {
 
 /* ── 15. 모션 최소화 설정 존중 (접근성) ──────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  *,
+  /* Toastify의 진행 바 애니메이션은 숨겨져 있어도 자동 닫기 타이머로 쓰인다.
+     시간을 줄이면 4초 알림이 즉시 닫히므로 시각적 모션과 구분한다. */
+  *:not(.Toastify__progress-bar),
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
