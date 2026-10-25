@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -16,6 +16,21 @@ const AUTH_RETRY_MS = 30000;
 
 const MaimuNotifier = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const navigateRef = useRef(navigate);
+  const [accessToken, setAccessToken] = useState(() => localStorage.getItem("access_token"));
+
+  useEffect(() => {
+    navigateRef.current = navigate;
+  }, [navigate]);
+
+  useEffect(() => {
+    // 로그인/로그아웃 후 경로가 바뀌거나 다른 탭에서 인증이 바뀌면 연결을 갱신한다.
+    const syncToken = () => setAccessToken(localStorage.getItem("access_token"));
+    syncToken();
+    window.addEventListener("storage", syncToken);
+    return () => window.removeEventListener("storage", syncToken);
+  }, [pathname]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -39,7 +54,7 @@ const MaimuNotifier = () => {
         autoClose: 4000,
         hideProgressBar: true,
         onClick: () =>
-          navigate(`/DetailPage/${encodeURI(groupName)}/${encodeURI(groupColor)}/${groupId}`),
+          navigateRef.current(`/DetailPage/${encodeURI(groupName)}/${encodeURI(groupColor)}/${groupId}`),
       });
     };
 
@@ -80,7 +95,8 @@ const MaimuNotifier = () => {
       controller.abort();
       clearTimeout(timer);
     };
-  }, [navigate]);
+  // useNavigate는 경로마다 함수가 바뀐다. 경로 이동 때문에 SSE를 끊으면 저장 직후 알림을 놓친다.
+  }, [accessToken]);
 
   // .Frame > * 의 min-height: 100% 및 스크롤 영역과 분리한다.
   return createPortal(

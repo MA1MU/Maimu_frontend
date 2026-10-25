@@ -1,7 +1,7 @@
 import React from "react";
 import "@testing-library/jest-dom";
-import { act, render, screen, waitFor } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { MemoryRouter, useNavigate } from "react-router-dom";
 import { TextDecoder, TextEncoder } from "util";
 import MaimuNotifier from "./MaimuNotifier";
 import readEvents from "./readEvents";
@@ -42,7 +42,12 @@ test("heartbeat를 건너뛰고 LF로 구분된 여러 이벤트를 수신한다
   expect(onEvent.mock.calls).toEqual([["connect", "connected"], ["maimu", '{"count":1}']]);
 });
 
-test("SSE 수신 시 실제 토스트와 갱신 이벤트를 만들고 화면 레이아웃 밖에 표시한다", async () => {
+function ChangePage() {
+  const navigate = useNavigate();
+  return <button onClick={() => navigate("/SendNote")}>화면 이동</button>;
+}
+
+test("토스트와 갱신 이벤트를 표시하고 화면 이동 중에도 SSE 연결을 유지한다", async () => {
   localStorage.setItem("access_token", "test-token");
   const onNewMaimu = jest.fn();
   window.addEventListener("maimu:new", onNewMaimu);
@@ -55,7 +60,7 @@ test("SSE 수신 시 실제 토스트와 갱신 이벤트를 만들고 화면 �
   const originalFetch = global.fetch;
   global.fetch = jest.fn().mockResolvedValue({ ok: true, body: { getReader: () => reader } });
   const { container, unmount } = render(
-    <MemoryRouter><div className="Frame"><MaimuNotifier /><main>사물함 화면</main></div></MemoryRouter>
+    <MemoryRouter><div className="Frame"><MaimuNotifier /><main>사물함 화면<ChangePage /></main></div></MemoryRouter>
   );
   try {
     await waitFor(() => expect(deliver).toBeDefined());
@@ -67,6 +72,10 @@ test("SSE 수신 시 실제 토스트와 갱신 이벤트를 만들고 화면 �
     expect(document.body.querySelector("#maimu-notifier").parentElement).toBe(document.body);
     expect(onNewMaimu).toHaveBeenCalledTimes(1);
     expect(onNewMaimu.mock.calls[0][0].detail).toEqual({ groupId: 1 });
+    const connectionSignal = global.fetch.mock.calls[0][1].signal;
+    fireEvent.click(screen.getByRole("button", { name: "화면 이동" }));
+    expect(connectionSignal.aborted).toBe(false);
+    expect(global.fetch).toHaveBeenCalledTimes(1);
   } finally {
     unmount();
     window.removeEventListener("maimu:new", onNewMaimu);
